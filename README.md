@@ -1,3 +1,2 @@
 # Walk-of-war-PMO
-
-Progetto PMO di Baffioni  William e Galli Thomas
+Progetto PMO di Baffioni William e Galli Thomas
