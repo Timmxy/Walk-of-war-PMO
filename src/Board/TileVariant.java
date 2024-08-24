@@ -1,3 +1,4 @@
+package Board;
 public enum TileVariant {
     EMPTY,
     BONUS_POSITION,

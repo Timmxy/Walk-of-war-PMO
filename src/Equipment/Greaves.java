@@ -1,3 +1,5 @@
+package Equipment;
+
 public class Greaves extends Armor{
 
     public Greaves(String name, Rarity rarity) {

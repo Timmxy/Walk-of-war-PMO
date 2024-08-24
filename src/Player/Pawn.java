@@ -1,3 +1,5 @@
+package Player;
+
 public class Pawn {
 
     private int position;

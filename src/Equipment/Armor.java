@@ -1,3 +1,5 @@
+package Equipment;
+
 public abstract class Armor implements Equipment {
 
     private String name;

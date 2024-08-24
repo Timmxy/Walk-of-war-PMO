@@ -1,3 +1,5 @@
+package Equipment;
+
 public interface Equipment {
     
     //metodi

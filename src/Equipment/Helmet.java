@@ -1,3 +1,5 @@
+package Equipment;
+
 public class Helmet extends Armor{
 
     public Helmet(String name, Rarity rarity) {
