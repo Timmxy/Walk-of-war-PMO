@@ -1,4 +1,4 @@
-package Player;
+package Controller;
 
 public class PlayerController {
     

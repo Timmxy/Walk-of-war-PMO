@@ -1,6 +1,7 @@
 package MatchInfo;
 
-import Menus.MainMenu;
+import Controller.MenuController;
+import View.AppWindow;
 
 public class GameLauncher {
 
@@ -9,6 +10,7 @@ public class GameLauncher {
         //MatchController prende info dalla gamemode scelta (click) -> crea Match
         //Match crea tutto il necessario 
 
-        MainMenu mMenu = new MainMenu();
+        MenuController menuController = new MenuController();
+        AppWindow window = new AppWindow(menuController);
     }
 }

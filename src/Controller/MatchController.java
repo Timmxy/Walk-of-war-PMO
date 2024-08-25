@@ -1,4 +1,4 @@
-package MatchInfo;
+package Controller;
 
 public class MatchController {
     

@@ -1,6 +1,7 @@
-package Player;
+package Model;
 
 import Equipment.Equipment;
+import Player.Inventory;
 
 public class Player {
 
@@ -20,9 +21,10 @@ public class Player {
     public Player(int id, String name){
         this.id = id;
         this.name = name;
-        this.inventory = new Inventory();
         this.money = 0;
         this. winCounter = 0;
+        
+        this.inventory = new Inventory();
     }
 
     //DEFINIZIONE METODI
@@ -62,5 +64,10 @@ public class Player {
 
     public int getcurrentShields(){
         return this.currentShields;
+    }
+
+    @Override
+    public String toString() {
+        return this.name;
     }
 }
