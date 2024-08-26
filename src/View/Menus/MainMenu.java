@@ -1,15 +1,12 @@
 package View.Menus;
 
+import Controller.MenuController;
+import MatchInfo.GameMode;
+import java.awt.*;
 import javax.swing.*;
 import javax.swing.border.EmptyBorder;
 
-import Controller.MenuController;
-import MatchInfo.GameMode;
-
-import java.awt.*;
-import java.awt.event.*;
-
-public class MainMenu {
+public class MainMenu extends JFrame{
 
 	//DICHIARAZIONE VARIABILI
 
@@ -32,6 +29,8 @@ public class MainMenu {
 	{
 		this.mc = menuController;
 		
+		// Imposta l'operazione di chiusura della finestra
+        setDefaultCloseOperation(JFrame.EXIT_ON_CLOSE);
 
 		this.menuPanel = new JPanel();
 
@@ -52,7 +51,7 @@ public class MainMenu {
 		txt = new JLabel("Seleziona una Modalità di Gioco: ");
 		txt.setLocation(new Point(50, 25));
 		this.menuPanel.add(txt);
-		
+
 		// creazione bottoni per scelta GameMode
 		b1 = new JButton("2 Player Mode : P1 vs P2");
 		b2 = new JButton("2 Player Mode : P1 vs CPU");
