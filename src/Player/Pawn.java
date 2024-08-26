@@ -12,4 +12,8 @@ public class Pawn {
     public void move(int diceResult){
         this.position += diceResult;
     }
+
+    public void newPosition(int p) {
+        this.position += p;
+    }
 }

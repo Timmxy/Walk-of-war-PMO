@@ -1,6 +1,7 @@
 package Model;
 import java.util.ArrayList;
 
+import Controller.PlayerController;
 import MatchInfo.GameMode;
 
 public class Match {
@@ -17,6 +18,9 @@ public class Match {
     // Shop
     private Shop shop;
 
+    // Controller
+    private PlayerController playerController;
+
 
     public Match(GameMode gameMode){
         this.initGameMode(gameMode);
@@ -28,6 +32,10 @@ public class Match {
         //creo la board
         //creo lo shop 
         //creo "Fight"?
+
+
+        //debug
+        System.out.println("sono dentro match");
 
         //controllo quale GameMode e' stata scelta,
         //agisco di conseguenza
@@ -47,17 +55,19 @@ public class Match {
         
         this.playersSetup(realPlayers, cpuPlayers);
         boardSetup(realPlayers + cpuPlayers);
-        shopSetup();
+        //shopSetup();
     }
     
     //creazione player reali e cpu
     private void playersSetup(int real, int cpu){
         for (int i = 0; i < real; i++) {
-            this.realPlayers.add(new Player(i, "Player " + i));
+            this.realPlayers.add(new Player(i, "Player " + i, playerController));
+            this.playerController.addPlayer(realPlayers.get(i));
         }
         
         for (int i = 0; i < cpu; i++) {
-            this.cpuPlayers.add(new Player(i+real, "(CPU) Player " + i+real));
+            this.cpuPlayers.add(new Player(i+real, "(CPU) Player " + i+real, playerController));
+            this.playerController.addPlayer(cpuPlayers.get(i));
         }
     }
 
