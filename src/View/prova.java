@@ -1,4 +1,7 @@
-package View;
+/*package View;
+
+public class prova {
+    package View;
 import Controller.MenuController;
 import java.awt.*;
 import java.awt.event.ActionEvent;
@@ -80,3 +83,4 @@ public class AppWindow extends JFrame {
         setVisible(true);
     }
 }
+*/

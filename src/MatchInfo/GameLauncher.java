@@ -1,7 +1,7 @@
 package MatchInfo;
 
 import Controller.MenuController;
-import View.AppWindow;
+import View.Window;
 
 public class GameLauncher {
 
@@ -11,6 +11,6 @@ public class GameLauncher {
         //Match crea tutto il necessario 
 
         MenuController menuController = new MenuController();
-        AppWindow window = new AppWindow(menuController);
+        Window window = new Window(menuController);
     }
 }
