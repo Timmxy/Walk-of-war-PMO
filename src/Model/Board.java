@@ -4,6 +4,7 @@ import java.util.*;
 
 import Board.Tile;
 import Board.TileVariant;
+import Controller.BoardController;
 
 public class Board {
 
@@ -13,12 +14,24 @@ public class Board {
     // forse la faremo variare in base al num di Player?
     private ArrayList<Tile> tilePath = new ArrayList<>(Board.MAX_NUM_TILES);
 
+    private BoardController boardController;
+
     //COSTRUTTORE
-    public Board() {
+    public Board(BoardController bc) {
+        this.boardController = bc;
         this.tileDisposition();
     }
 
     // METODI
+    public Tile getTileAt(int index) {
+        return this.tilePath.get(index);
+    }
+
+    public void activateCorrespondingEffect(int index, Player p) {
+        this.getTileAt(index).activateEffect(p);
+    }
+
+
     // algoritmo per generare la board e disporre le caselle
     // N.B. ancora non so come collegarle alla View per disporle anche graficamente
     // suppongo che il Controller accederà direttamente alla lista delle caselle..
@@ -67,19 +80,19 @@ public class Board {
         System.out.println(index+". "+outcome);
 
         if (outcome < 40) {
-            tile = new Tile(index, TileVariant.EMPTY);
+            tile = new Tile(index, TileVariant.EMPTY, this.boardController);
         }
         else if (outcome >= 40 && outcome < 55) {
-            tile = new Tile(index, TileVariant.BONUS_POSITION);
+            tile = new Tile(index, TileVariant.BONUS_POSITION, this.boardController);
         }
         else if (outcome >= 55 && outcome < 70) {
-            tile = new Tile(index, TileVariant.MALUS_POSITION);
+            tile = new Tile(index, TileVariant.MALUS_POSITION, this.boardController);
         }
         else if (outcome >= 70 && outcome < 85) {
-            tile = new Tile(index, TileVariant.BONUS_MONEY);
+            tile = new Tile(index, TileVariant.BONUS_MONEY, this.boardController);
         }
         else if (outcome >= 85 && outcome < 100) {
-            tile = new Tile(index, TileVariant.MALUS_MONEY);
+            tile = new Tile(index, TileVariant.MALUS_MONEY, this.boardController);
         }
         return tile;
     }
@@ -94,22 +107,22 @@ public class Board {
         System.out.println(index+". furto possibile "+outcome);
 
         if (outcome < 40) {
-            tile = new Tile(index, TileVariant.EMPTY);
+            tile = new Tile(index, TileVariant.EMPTY, this.boardController);
         }
         else if (outcome >= 40 && outcome < 48) {
-            tile = new Tile(index, TileVariant.BONUS_POSITION);
+            tile = new Tile(index, TileVariant.BONUS_POSITION, this.boardController);
         }
         else if (outcome >= 48 && outcome < 56) {
-            tile = new Tile(index, TileVariant.MALUS_POSITION);
+            tile = new Tile(index, TileVariant.MALUS_POSITION, this.boardController);
         }
         else if (outcome >= 56 && outcome < 64) {
-            tile = new Tile(index, TileVariant.BONUS_MONEY);
+            tile = new Tile(index, TileVariant.BONUS_MONEY, this.boardController);
         }
         else if (outcome >= 64 && outcome < 72) {
-            tile = new Tile(index, TileVariant.MALUS_MONEY);
+            tile = new Tile(index, TileVariant.MALUS_MONEY, this.boardController);
         }
         else if (outcome >= 72 && outcome < 100) {
-            tile = new Tile(index, TileVariant.STEAL);
+            tile = new Tile(index, TileVariant.STEAL, this.boardController);
         }
         return tile;
     }

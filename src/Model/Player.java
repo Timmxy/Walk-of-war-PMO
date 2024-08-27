@@ -8,6 +8,10 @@ import Player.Pawn;
 public class Player {
 
     //DICHIARAZIONE VARIABILI
+    private static final int DEFAULT_HP = 3;
+    private static final int DEFAULT_ATKS = 1;
+    private static final int DEFAULT_SHIELDS = 1;
+
     private String name;
     private int id;
     private int winCounter;
@@ -39,6 +43,44 @@ public class Player {
     public void addItemToInventory(Equipment equipment){
         this.inventory.equip(equipment);
     }
+
+    public void removeItemFromInventory(Equipment equipment){
+
+    }
+    
+    
+    public void resetToDefaultStats(){
+        this.currentHp = Player.DEFAULT_HP;
+        this.currentAtks = Player.DEFAULT_ATKS;
+        this.currentShields = Player.DEFAULT_SHIELDS;
+    }
+    
+    public void addOrRemoveHP(int value){
+        this.maxHp += value;
+        this.currentHp = this.maxHp;
+    }
+    
+    public void addOrRemoveAttacks(int value){
+        this.maxAtks += value;
+        this.currentAtks = this.maxAtks;
+    }
+    
+    public void addOrRemoveShields(int value){
+        this.maxShields += value;
+        this.currentShields = this.maxShields;
+    }
+    
+    public void addMoney(int value) {
+        this.money += value;
+    }
+    
+    public void updatePosition(int value) {
+        this.pawn.newPosition(value);
+    }
+
+
+
+
 
 
     //getter e setter
@@ -74,29 +116,13 @@ public class Player {
         return this.currentShields;
     }
 
-
-    public void addOrRemoveHP(int value){
-        this.maxHp += value;
-    }
-
-    public void addOrRemoveAttacks(int value){
-        this.maxAtks += value;
-    }
-
-    public void addOrRemoveShields(int value){
-        this.maxShields += value;
-    }
-    
-    public void addMoney(int value) {
-        this.money += value;
-    }
-    
-    public void updatePosition(int value) {
-        this.pawn.newPosition(value);
+    public Pawn getPawn() {
+        return this.pawn;    
     }
 
     @Override
     public String toString() {
         return this.name;
     }
+
 }

@@ -1,6 +1,7 @@
 package Model;
 import java.util.ArrayList;
 
+import Controller.BoardController;
 import Controller.PlayerController;
 import MatchInfo.GameMode;
 
@@ -20,9 +21,13 @@ public class Match {
 
     // Controller
     private PlayerController playerController;
+    private BoardController boardController;
 
 
     public Match(GameMode gameMode){
+        this.playerController = new PlayerController(this);
+        this.boardController = new BoardController(this);
+
         this.initGameMode(gameMode);
     }
 
@@ -62,23 +67,33 @@ public class Match {
     private void playersSetup(int real, int cpu){
         for (int i = 0; i < real; i++) {
             this.realPlayers.add(new Player(i, "Player " + i, playerController));
-            this.playerController.addPlayer(realPlayers.get(i));
+
+            //this.playerController.addPlayer(realPlayers.get(i));
         }
         
         for (int i = 0; i < cpu; i++) {
             this.cpuPlayers.add(new Player(i+real, "(CPU) Player " + i+real, playerController));
-            this.playerController.addPlayer(cpuPlayers.get(i));
+            
+            //this.playerController.addPlayer(cpuPlayers.get(i));
         }
     }
 
     // creazione e disposizione della Board di gioco
     private void boardSetup(int numPlayers){
         //renderla più grande per più giocatori???
-        this.board = new Board();
+        this.board = new Board(this.boardController);
     }
 
     // creazione dello Shop
     private void shopSetup(){
         this.shop = new Shop();
+    }
+
+    public BoardController getBoardController() {
+        return this.boardController;
+    }
+
+    public Board getBoard() {
+        return this.board;
     }
 }

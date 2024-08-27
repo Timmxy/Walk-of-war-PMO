@@ -10,16 +10,22 @@ public abstract class Armor implements Equipment {
         this.name = name;
         this.rarity = rarity;
     }
+    
+    // METODI
 
-    //metodi
-    public int getHpValue(){
+    // da chiamare al momento opportuno
+    // probabilmente necessita di un counter per sapere quante volte può usare l'abilità
+    public abstract void specialAbility();
+
+    public int getValue(){
         return this.hpValue;
     }
 
-    @Override
+
     public Rarity getRarity(){
         return this.rarity;
     }
+
 
     @Override
     public String toString() {
