@@ -1,8 +1,14 @@
 package Model;
 import java.util.ArrayList;
+import java.util.List;
 
 import Controller.BoardController;
+import Controller.MatchController;
 import Controller.PlayerController;
+import Equipment.Chestplate;
+import Equipment.Rarity;
+import Equipment.Shield;
+import Equipment.Weapon;
 import MatchInfo.GameMode;
 
 public class Match {
@@ -22,13 +28,40 @@ public class Match {
     // Controller
     private PlayerController playerController;
     private BoardController boardController;
+    private MatchController matchController;
+
+    private int currentPlayerIndex;
+    private boolean isGameOver;
 
 
     public Match(GameMode gameMode){
-        this.playerController = new PlayerController(this);
-        this.boardController = new BoardController(this);
-
         this.initGameMode(gameMode);
+
+        this.playerController = new PlayerController(allPlayers);
+        this.boardController = new BoardController(this.board);
+        this.matchController = new MatchController(this, playerController, boardController);
+
+        // non bellissimo, penso di spostarlo, non so come ancora però
+        for (int i = 0; i < this.board.getNumberOfTiles(); i++) {
+            this.board.getTileAt(i).addTileEffectListener(playerController);
+        }
+
+        // DEBUG
+        if (this.allPlayers.size() == 2) {
+            this.allPlayers.get(0).addItemToInventory(new Chestplate("Corazza Delvo", Rarity.COMMON));
+            this.allPlayers.get(0).addItemToInventory(new Weapon("Pugnale Delvo", Rarity.COMMON));
+            this.allPlayers.get(0).inventoryContents();
+            this.allPlayers.get(0).printStats();
+
+
+            this.allPlayers.get(1).addItemToInventory(new Chestplate("Corazza Deica", Rarity.RARE));
+            this.allPlayers.get(1).addItemToInventory(new Shield("Scudo Deica", Rarity.RARE));
+            this.allPlayers.get(1).inventoryContents();
+            this.allPlayers.get(1).printStats();
+        }
+
+        // credo che dovrei avviare il gioco QUI
+        this.matchController.startGame();
     }
 
     private void initGameMode(GameMode g){
@@ -40,7 +73,7 @@ public class Match {
 
 
         //debug
-        System.out.println("sono dentro match");
+        System.out.println("Inizalizzando il gioco secondo la GameMode selezionata...");
 
         //controllo quale GameMode e' stata scelta,
         //agisco di conseguenza
@@ -66,22 +99,20 @@ public class Match {
     //creazione player reali e cpu
     private void playersSetup(int real, int cpu){
         for (int i = 0; i < real; i++) {
-            this.realPlayers.add(new Player(i, "Player " + i, playerController));
-
-            //this.playerController.addPlayer(realPlayers.get(i));
+            Player p = new Player(i, "Player " + i);
+            this.allPlayers.add(p);
         }
         
         for (int i = 0; i < cpu; i++) {
-            this.cpuPlayers.add(new Player(i+real, "(CPU) Player " + i+real, playerController));
-            
-            //this.playerController.addPlayer(cpuPlayers.get(i));
+            Player p = new Player(i+real, "(CPU) Player " + (i+real));
+            this.allPlayers.add(p);
         }
     }
 
     // creazione e disposizione della Board di gioco
     private void boardSetup(int numPlayers){
         //renderla più grande per più giocatori???
-        this.board = new Board(this.boardController);
+        this.board = new Board();
     }
 
     // creazione dello Shop
@@ -89,11 +120,28 @@ public class Match {
         this.shop = new Shop();
     }
 
-    public BoardController getBoardController() {
-        return this.boardController;
+
+    // CHATGPT !!!!!!!!!
+
+    
+    public boolean isGameOver() {
+        return this.isGameOver;
     }
 
-    public Board getBoard() {
-        return this.board;
+    public void setGameOver(boolean b) {
+        this.isGameOver = b;
     }
+    
+    public List<Player> getPlayers() {
+        return this.allPlayers;
+    }
+    
+    public int getCurrentPlayerIndex() {
+        return this.currentPlayerIndex;
+    }
+    
+    public void setCurrentPlayerIndex(int i) {
+        this.currentPlayerIndex = i;
+    }
+    
 }

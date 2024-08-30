@@ -9,6 +9,7 @@ public class Weapon implements Equipment {
     public Weapon(String name, Rarity rarity){
         this.name = name;
         this.rarity = rarity;
+        this.attackValue = this.rarity.getValue();
     }
 
     //metodi
@@ -23,6 +24,6 @@ public class Weapon implements Equipment {
 
     @Override
     public String toString() {
-        return this.name  + "\t" + this.rarity;
+        return this.name  + " " + this.rarity;
     }
 }

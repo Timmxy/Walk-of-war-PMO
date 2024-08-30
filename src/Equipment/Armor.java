@@ -9,6 +9,7 @@ public abstract class Armor implements Equipment {
     public Armor(String name, Rarity rarity){
         this.name = name;
         this.rarity = rarity;
+        this.hpValue = this.rarity.getValue();
     }
     
     // METODI
@@ -29,7 +30,7 @@ public abstract class Armor implements Equipment {
 
     @Override
     public String toString() {
-        return this.name  + "\t" + this.rarity;
+        return this.name  + " " + this.rarity;
     }
 
     

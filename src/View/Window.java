@@ -1,7 +1,7 @@
 package View;
 
 import Controller.MenuController;
-import View.Menus.Menu;
+
 import javax.swing.JFrame;
 
 public class Window extends JFrame {

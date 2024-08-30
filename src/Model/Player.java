@@ -1,6 +1,5 @@
 package Model;
 
-import Controller.PlayerController;
 import Equipment.Equipment;
 import Player.Inventory;
 import Player.Pawn;
@@ -23,38 +22,55 @@ public class Player {
     private int maxShields;     //numero massimo di scudi
     private int currentShields; //contatore scudi disponibili
 
-    private PlayerController playerController;
+    // derivanti da effetti speciali armatura
+    private int rerolls;
+    private int stealProtections;
+
+    // composizioni
     private Inventory inventory;
     private Pawn pawn;
+    private int positionModifiers;
     
-    public Player(int id, String name, PlayerController pc){
+    public Player(int id, String name){
         this.id = id;
         this.name = name;
-        this.playerController = pc;
 
+        this.maxHp = 4;
+        this.maxAtks = 2;
+        this.maxShields = 2;
+        this.resetToMaxStats();
         this.money = 0;
         this. winCounter = 0;
         
-        this.inventory = new Inventory(this.playerController, this);
-        this.pawn = new Pawn();
+        this.inventory = new Inventory(this);
+        this.pawn = new Pawn(0);
     }
 
     //DEFINIZIONE METODI
+
+// gestione sistema INVENTORY
     public void addItemToInventory(Equipment equipment){
         this.inventory.equip(equipment);
     }
 
+    // potrebbe servire?
     public void removeItemFromInventory(Equipment equipment){
 
     }
-    
-    
-    public void resetToDefaultStats(){
-        this.currentHp = Player.DEFAULT_HP;
-        this.currentAtks = Player.DEFAULT_ATKS;
-        this.currentShields = Player.DEFAULT_SHIELDS;
+
+    // quando subisce un furto
+    public Equipment getStolenEquipment() {
+        return this.inventory.removeRandomEquipment();
     }
     
+    // da chiamare a fine scontro
+    public void resetToMaxStats(){
+        this.currentHp = this.maxHp;
+        this.currentAtks = this.maxAtks;
+        this.currentShields = this.maxShields;
+    }
+    
+// gestione statistiche EQUIPMENT
     public void addOrRemoveHP(int value){
         this.maxHp += value;
         this.currentHp = this.maxHp;
@@ -70,8 +86,16 @@ public class Player {
         this.currentShields = this.maxShields;
     }
     
+
+// gestione effetti TILE
     public void addMoney(int value) {
         this.money += value;
+    }
+
+    public void removeMoney(int value) {
+        if (!(this.money < value)) {
+            this.money -= value;
+        }
     }
     
     public void updatePosition(int value) {
@@ -79,11 +103,48 @@ public class Player {
     }
 
 
+// gestione effetti speciali ARMOR
+    public boolean hasStealProtection() {
+        return this.stealProtections >= 1;
+    }
+    
+    public void useStealProtection() {
+        this.stealProtections--;
+        System.out.println(this.toString() + " blocca il furto! Protezioni rimaste: "+ this.stealProtections);
+    }
 
+    public void addStealProtections(int value) {
+        this.stealProtections = value;
+    }
 
+    public boolean hasRerolls() {
+        return this.rerolls >= 1;
+    }
 
+    public void useReroll() {
+        this.rerolls--;
+        System.out.println(this.toString() + " usa un reroll! Reroll rimasti: "+ this.rerolls);
+    }
+    
+    public void addRerolls(int value) {
+        this.rerolls = value;
+    }
+    
+    public boolean hasPositionModifiers() {
+        return this.positionModifiers >= 1;
+    }
 
-    //getter e setter
+    public void usePositionModifiers() {
+        this.positionModifiers--;
+        System.out.println(this.toString() + " usa un modificatore di posizione! Modificatori rimasti: "+ this.positionModifiers);
+    }
+    
+    public void addPositionModifiers(int value) {
+        this.positionModifiers = value;
+    }
+    
+
+//getter e setter
     public String getName() {
         return this.name;
     }
@@ -116,8 +177,25 @@ public class Player {
         return this.currentShields;
     }
 
-    public Pawn getPawn() {
-        return this.pawn;    
+    public int getPawnPosition() {
+        return this.pawn.getPosition();    
+    }
+
+    public void printStats() {
+        System.out.println("\nStatistiche di "+ this.toString() +":"
+                                                               +"\nHP -> "                     + this.maxHp
+                                                               +"\nAttacks -> "                + this.maxAtks
+                                                               +"\nShields -> "                + this.maxShields
+                                                               +"\nMonete -> "                 + this.money
+                                                               +"\nReroll -> "                 + this.rerolls
+                                                               +"\nProtezioni Furto -> "       + this.stealProtections
+                                                               +"\nModificatori Posizione -> " + this.positionModifiers +"\n");
+        
+        System.out.println("--------------------------------------------");
+    }
+
+    public void inventoryContents() {
+        this.inventory.printEquipment();
     }
 
     @Override

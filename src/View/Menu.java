@@ -1,7 +1,8 @@
-package View.Menus;
+package View;
 import Controller.MenuController;
 import MatchInfo.GameMode;
-import View.Menus.Menu;
+import View.Menu;
+
 import java.awt.*;
 import java.awt.event.ActionEvent;
 import javax.swing.*;

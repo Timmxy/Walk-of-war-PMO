@@ -1,28 +1,25 @@
 package Controller;
 
-import Model.Match;
+import Model.Board;
 import Model.Player;
 
 public class BoardController {
 
-    private Match match;
+    // DICHIARAZIONE VARIABILI
+    private Board board;
 
-    public BoardController(Match m) {
-        this.match = m;
+    // COSTRUTTORE
+    public BoardController(Board b) {
+        this.board = b;
     }
 
-    public void checkTileEffect(Player p, int position) {
-        this.match.getBoard().activateCorrespondingEffect(position, p);
+    // METODI
+    public void performActionOnTile(Player p, int position) {
+        //gpt qui si salva Tile temporaneamente
+        this.board.activateCorrespondingEffect(position, p);
     }
 
-    public void updatePlayerStatus(int value) {
-        // mi sembra che l'unico modo sia di trasferire la logica di..
-        // ..activateEffect() di Tile qui, ma poi Tile a che cazzo serve?
-        // inoltre risparmierebbe di fare avanti e indietro tra questa classe e Tile
-    }
-
-    public void updateMoney() {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'updateMoney'");
+    public int getNumberOfTiles() {
+        return this.board.getNumberOfTiles();
     }
 }

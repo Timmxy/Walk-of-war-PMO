@@ -1,8 +1,20 @@
 package Equipment;
 
 public enum Rarity {
-    COMMON, 
-    RARE,
-    EPIC,
-    LEGENDARY;
+
+    COMMON(1), 
+    RARE(2),
+    EPIC(3),
+    LEGENDARY(4);
+
+    private int value;
+
+    Rarity(int val) {
+        this.value = val;
+    }
+
+    public int getValue() {
+        return this.value;
+    }
+
 }

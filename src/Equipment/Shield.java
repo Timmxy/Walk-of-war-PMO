@@ -9,6 +9,7 @@ public class Shield implements Equipment {
     public Shield(String name, Rarity rarity){
         this.name = name;
         this.rarity = rarity;
+        this.shieldValue = this.rarity.getValue();
     }
 
     //metodi
@@ -23,7 +24,7 @@ public class Shield implements Equipment {
 
     @Override
     public String toString() {
-        return this.name  + "\t" + this.rarity;
+        return this.name  + " " + this.rarity;
     }
 
 }

@@ -4,16 +4,18 @@ public class Pawn {
 
     private int position;
 
-    //metods
+    public Pawn(int p) {
+        this.position = p;
+    }
+
+    // METODI
     public int getPosition(){
         return this.position;
     }
 
-    public void move(int diceResult){
-        this.position += diceResult;
-    }
-
     public void newPosition(int p) {
-        this.position += p;
+        System.out.println("cane"+this.position);
+        this.position = p;
+        System.out.println("cane"+this.position);
     }
 }
