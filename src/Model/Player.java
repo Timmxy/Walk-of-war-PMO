@@ -1,8 +1,14 @@
 package Model;
 
+import Equipment.Chestplate;
 import Equipment.Equipment;
+import Equipment.Greaves;
+import Equipment.Helmet;
+import Equipment.Shield;
+import Equipment.Weapon;
 import Player.Inventory;
 import Player.Pawn;
+import java.util.List;
 
 public class Player {
 
@@ -11,6 +17,7 @@ public class Player {
     private static final int DEFAULT_ATKS = 1;
     private static final int DEFAULT_SHIELDS = 1;
 
+    // statistiche base
     private String name;
     private int id;
     private int winCounter;
@@ -31,14 +38,12 @@ public class Player {
     private Pawn pawn;
     private int positionModifiers;
     
+    // COSTRUTTORE
     public Player(int id, String name){
         this.id = id;
         this.name = name;
 
-        this.maxHp = 4;
-        this.maxAtks = 2;
-        this.maxShields = 2;
-        this.resetToMaxStats();
+        this.resetToDefaultStats();
         this.money = 0;
         this. winCounter = 0;
         
@@ -46,11 +51,12 @@ public class Player {
         this.pawn = new Pawn(0);
     }
 
+
     //DEFINIZIONE METODI
 
 // gestione sistema INVENTORY
     public void addItemToInventory(Equipment equipment){
-        this.inventory.equip(equipment);
+        this.inventory.addEquipment(equipment);
     }
 
     // potrebbe servire?
@@ -64,26 +70,61 @@ public class Player {
     }
     
     // da chiamare a fine scontro
-    public void resetToMaxStats(){
+    public void resetCurrentToMaxStats(){
         this.currentHp = this.maxHp;
         this.currentAtks = this.maxAtks;
         this.currentShields = this.maxShields;
     }
+
+    // chiamato da computeStats() per partire dai valori default
+    private void resetToDefaultStats() {
+        this.maxHp = Player.DEFAULT_HP;
+        this.maxAtks = Player.DEFAULT_ATKS;
+        this.maxShields = Player.DEFAULT_SHIELDS;
+        resetCurrentToMaxStats();
+    }
     
 // gestione statistiche EQUIPMENT
-    public void addOrRemoveHP(int value){
+    private void addOrRemoveHP(int value){
         this.maxHp += value;
         this.currentHp = this.maxHp;
     }
     
-    public void addOrRemoveAttacks(int value){
+    private void addOrRemoveAttacks(int value){
         this.maxAtks += value;
         this.currentAtks = this.maxAtks;
     }
     
-    public void addOrRemoveShields(int value){
+    private void addOrRemoveShields(int value){
         this.maxShields += value;
         this.currentShields = this.maxShields;
+    }
+
+    public void computeStats(List<Equipment> list) {
+        // resetto al default per ricalcolare tutto
+        this.resetToDefaultStats();
+        // scorro la lista e aggiorno stats
+        for (Equipment equipment : list) {
+            switch (equipment){
+                case Helmet h -> {
+                    this.addOrRemoveHP(h.getValue());
+                    this.addRerolls(h.getValue());
+                }
+                case Chestplate c -> {
+                    this.addOrRemoveHP(c.getValue());
+                    this.addStealProtections(c.getValue());
+                }
+                case Greaves g -> {
+                    this.addOrRemoveHP(g.getValue());
+                    this.addPositionModifiers(g.getValue());
+                }
+                case Weapon w -> this.addOrRemoveAttacks(w.getValue());
+
+                case Shield s -> this.addOrRemoveShields(s.getValue());
+                
+                default -> {}
+            }
+        }
     }
     
 
@@ -128,6 +169,7 @@ public class Player {
     
     public void addRerolls(int value) {
         this.rerolls = value;
+
     }
     
     public boolean hasPositionModifiers() {
@@ -181,6 +223,8 @@ public class Player {
         return this.pawn.getPosition();    
     }
 
+
+// stampe utili
     public void printStats() {
         System.out.println("\nStatistiche di "+ this.toString() +":"
                                                                +"\nHP -> "                     + this.maxHp
