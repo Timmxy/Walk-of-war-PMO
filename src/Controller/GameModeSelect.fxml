@@ -1,0 +1,58 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.control.MenuButton?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MenuController">
+   <children>
+      <Text layoutX="396.0" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Walk of War">
+         <font>
+            <Font size="90.0" />
+         </font>
+      </Text>
+      <Text layoutX="495.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by Baffioni William and Galli Thomas">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="505.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="project assignment for OOP exam">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <MenuButton alignment="CENTER" contentDisplay="CENTER" layoutX="389.0" layoutY="360.0" minWidth="500.0" mnemonicParsing="false" popupSide="RIGHT" text="2 Players">
+        <items>
+          <MenuItem mnemonicParsing="false" onAction="#twoRealPlayers" text="Player 1 vs Player 2" />
+          <MenuItem mnemonicParsing="false" onAction="#playerVsCPU" text="Player 1 vs CPU" />
+        </items>
+         <font>
+            <Font size="38.0" />
+         </font>
+      </MenuButton>
+      <MenuButton alignment="CENTER" contentDisplay="CENTER" layoutX="390.0" layoutY="497.0" minWidth="500.0" mnemonicParsing="false" popupSide="RIGHT" text="4 Players">
+         <items>
+            <MenuItem mnemonicParsing="false" onAction="#fourRealPlayers" text="P1 vs P2 vs P3 vs P4" />
+            <MenuItem mnemonicParsing="false" onAction="#threePlayersVsCPU" text="P1 vs P2 vs P3 vs CPU" />
+            <MenuItem mnemonicParsing="false" onAction="#twoPlayersVsTwoCPU" text="P1 vs P2 vs 2xCPU" />
+            <MenuItem mnemonicParsing="false" onAction="#playerVsThreeCPU" text="P1 vs 3xCPU" />
+         </items>
+         <font>
+            <Font size="38.0" />
+         </font>
+      </MenuButton>
+      <Text layoutX="472.0" layoutY="313.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Select a Game Mode:">
+         <font>
+            <Font size="36.0" />
+         </font>
+      </Text>
+      <Button alignment="CENTER" contentDisplay="CENTER" layoutX="495.0" layoutY="620.0" minWidth="300.0" mnemonicParsing="false" onAction="#switchToGameLauncherScene" text="Back to Main Menu">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Button>
+   </children>
+</AnchorPane>

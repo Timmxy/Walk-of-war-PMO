@@ -2,21 +2,31 @@ package Model;
 import java.util.ArrayList;
 import java.util.List;
 
-import Controller.BoardController;
-import Controller.MatchController;
-import Controller.PlayerController;
 import Equipment.Chestplate;
 import Equipment.Rarity;
 import Equipment.Shield;
 import Equipment.Weapon;
+
 import MatchInfo.GameMode;
+
+import Controller.BoardController;
+import Controller.MatchController;
+import Controller.PlayerController;
+
+import View.ShopView;
+import javafx.stage.Stage;
+import View.BoardView;
+import View.MatchView;
 
 public class Match {
 
+    // per una CORRETTA IMPLEMENTAZIONE MVC -> creare qui dentro tutti i Model
+    //                                      -> tenere qui dentro solo MatchController a cui passiamo i Model
+    //                                      -> MatchController crea i vari Controller specifici
+    //                                      -> Controller specifici creano le proprie View                                                  
+
     //DICHIARAZIONE VARIABILI
     // Players
-    private ArrayList<Player> realPlayers = new ArrayList<>();  
-    private ArrayList<Player> cpuPlayers = new ArrayList<>();
     private ArrayList<Player> allPlayers = new ArrayList<>();   // contiene tutti i giocatori di una partita
 
     // Board
@@ -26,34 +36,29 @@ public class Match {
     private Shop shop;
 
     // Controller
-    private PlayerController playerController;
-    private BoardController boardController;
     private MatchController matchController;
+
+    // View va dentro i controller
 
     private int currentPlayerIndex;
     private boolean isGameOver;
 
 
-    public Match(GameMode gameMode){
+    public Match(GameMode gameMode, Stage stage){
         this.initGameMode(gameMode);
+        // a questo punto tutti i Model di gioco dovrebbero essere stati creati, li passo al Controller
 
-        this.playerController = new PlayerController(allPlayers);
-        this.boardController = new BoardController(this.board);
-        this.matchController = new MatchController(this, playerController, boardController);
+        this.matchController = new MatchController(this, this.allPlayers, this.board, this.shop, stage);
 
-        // non bellissimo, penso di spostarlo, non so come ancora però
-        for (int i = 0; i < this.board.getNumberOfTiles(); i++) {
-            this.board.getTileAt(i).addTileEffectListener(playerController);
-        }
-
+        
         // DEBUG
         if (this.allPlayers.size() == 2) {
             this.allPlayers.get(0).addItemToInventory(new Chestplate("Corazza Delvo", Rarity.COMMON));
             this.allPlayers.get(0).addItemToInventory(new Weapon("Pugnale Delvo", Rarity.COMMON));
             this.allPlayers.get(0).inventoryContents();
             this.allPlayers.get(0).printStats();
-
-
+            
+            
             this.allPlayers.get(1).addItemToInventory(new Chestplate("Corazza Deica", Rarity.RARE));
             this.allPlayers.get(1).addItemToInventory(new Shield("Scudo Deica", Rarity.RARE));
             this.allPlayers.get(1).inventoryContents();
@@ -61,7 +66,7 @@ public class Match {
         }
 
         // credo che dovrei avviare il gioco QUI
-        this.matchController.startGame();
+        //this.matchController.startGame();
     }
 
     private void initGameMode(GameMode g){
@@ -92,8 +97,8 @@ public class Match {
     private void gameSetup(int realPlayers, int cpuPlayers){
         
         this.playersSetup(realPlayers, cpuPlayers);
-        boardSetup(realPlayers + cpuPlayers);
-        //shopSetup();
+        this.boardSetup(realPlayers + cpuPlayers);
+        this.shopSetup();
     }
     
     //creazione player reali e cpu

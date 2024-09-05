@@ -1,30 +1,31 @@
 package Equipment;
 
-public abstract class Armor implements Equipment {
+public abstract class Armor {
 
     private String name;
     private Rarity rarity;
-    private int hpValue; //quantità di hp che fornisce
+    private int value;  // quantità di stats che fornisce
+    private int cost;   // valore allo shop
     
     public Armor(String name, Rarity rarity){
         this.name = name;
         this.rarity = rarity;
-        this.hpValue = this.rarity.getValue();
+        this.value = this.rarity.getValue();
+        this.cost = this.rarity.getValue() + 3;
     }
     
     // METODI
-
-    // da chiamare al momento opportuno
-    // probabilmente necessita di un counter per sapere quante volte può usare l'abilità
-    public abstract void specialAbility();
-
     public int getValue(){
-        return this.hpValue;
+        return this.value;
     }
 
 
     public Rarity getRarity(){
         return this.rarity;
+    }
+
+    public int getCost() {
+        return this.cost;
     }
 
 

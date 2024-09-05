@@ -30,6 +30,10 @@ public class Board {
         return this.tilePath.size();
     }
 
+    public List<Tile> getTilePath() {
+        return this.tilePath;
+    }
+
     // algoritmo per generare la board e disporre le caselle
     // N.B. ancora non so come collegarle alla View per disporle anche graficamente
     // suppongo che il Controller accederà direttamente alla lista delle caselle..
@@ -44,7 +48,9 @@ public class Board {
         int lastStealTile = 15;
 
         // corpo
-        for (int i = 0; i < Board.MAX_NUM_TILES; i++) {
+        // aggiungo la prima Tile che DEVE essere empty
+        this.tilePath.addFirst(new Tile(0, TileVariant.EMPTY));
+        for (int i = 1; i < Board.MAX_NUM_TILES - 1; i++) {
 
             // se l'ultima Furto non è troppo vicina 
             if (lastStealTile <= 0) {
@@ -62,6 +68,10 @@ public class Board {
                 lastStealTile--;
             }
         }
+        // aggiungo l'ultima Tile che DEVE essere empty
+        this.tilePath.addLast(new Tile(Board.MAX_NUM_TILES, TileVariant.EMPTY));
+
+        // stampo mappa completa
         for (Tile tile : tilePath) {
             System.out.println(tile.toString());
         }
@@ -74,8 +84,6 @@ public class Board {
         Tile tile = null;
         double outcome = Math.random() * 100;
 
-        // DEBUG
-        System.out.println(index+". "+outcome);
 
         if (outcome < 40) {
             tile = new Tile(index, TileVariant.EMPTY);
@@ -101,8 +109,6 @@ public class Board {
         Tile tile = null;
         double outcome = Math.random() * 100;
 
-        // DEBUG
-        System.out.println(index+". furto possibile "+outcome);
 
         if (outcome < 40) {
             tile = new Tile(index, TileVariant.EMPTY);

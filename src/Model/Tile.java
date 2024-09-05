@@ -71,8 +71,20 @@ public class Tile {
         return this.variant;
     }
 
+    // ritorna il valore effetto della Tile
+    public int getEffectValue() {
+        return this.effectValue;
+    }
+
+    public String getEffectValueString() {
+        if (this.effectValue != 0) {
+            return "" + this.effectValue;
+        }
+        else return "";
+    }
+
     @Override
     public String toString() {
-        return "Casella num. "+ this.position +" di tipo: "+this.variant;
+        return "Casella num. "+ this.position +" di tipo: "+this.variant+" "+this.effectValue;
     }
 }

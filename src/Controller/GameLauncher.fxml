@@ -1,0 +1,41 @@
+<?xml version="1.0" encoding="UTF-8"?>
+
+<?import javafx.scene.control.Button?>
+<?import javafx.scene.layout.AnchorPane?>
+<?import javafx.scene.text.Font?>
+<?import javafx.scene.text.Text?>
+
+<AnchorPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="400.0" prefWidth="600.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MenuController">
+   <children>
+      <Button alignment="CENTER" layoutX="390.0" layoutY="320.0" minWidth="500.0" mnemonicParsing="false" onAction="#switchToGameModeSelectScene" text="Start Game" textAlignment="CENTER" AnchorPane.bottomAnchor="319.0">
+         <font>
+            <Font size="38.0" />
+         </font>
+      </Button>
+      <Button alignment="CENTER" layoutX="390.0" layoutY="437.0" minWidth="500.0" mnemonicParsing="false" onAction="#leaderboards" text="Leaderboards" textAlignment="CENTER" AnchorPane.bottomAnchor="200.0">
+         <font>
+            <Font size="38.0" />
+         </font>
+      </Button>
+      <Button alignment="CENTER" layoutX="390.0" layoutY="555.0" minWidth="500.0" mnemonicParsing="false" onAction="#exitGame" text="Exit Game" textAlignment="CENTER" AnchorPane.bottomAnchor="81.0">
+         <font>
+            <Font size="38.0" />
+         </font>
+      </Button>
+      <Text layoutX="396.0" layoutY="143.0" strokeType="OUTSIDE" strokeWidth="0.0" text="Walk of War">
+         <font>
+            <Font size="90.0" />
+         </font>
+      </Text>
+      <Text layoutX="495.0" layoutY="185.0" strokeType="OUTSIDE" strokeWidth="0.0" text="by Baffioni William and Galli Thomas">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+      <Text layoutX="505.0" layoutY="219.0" strokeType="OUTSIDE" strokeWidth="0.0" text="project assignment for OOP exam">
+         <font>
+            <Font size="18.0" />
+         </font>
+      </Text>
+   </children>
+</AnchorPane>

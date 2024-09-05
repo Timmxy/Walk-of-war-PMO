@@ -2,21 +2,46 @@ package Controller;
 
 import java.util.concurrent.TimeUnit;
 
+import Model.Board;
 import Model.Match;
 import Model.Player;
+import Model.Shop;
+import View.MatchView;
+import javafx.stage.Stage;
+
+import java.util.List;
 
 
 // FATTO DA CHATGPT !!!!
 
 public class MatchController {
+    // COMPONENTI
     private Match match;
     private PlayerController playerController;
     private BoardController boardController;
+    private ShopController shopController;
 
-    public MatchController(Match match, PlayerController playerController, BoardController boardController) {
+    // later
+    private MatchView matchView; // conterrà un'aggregazione di tutte le view
+
+    // INFO UTILI
+    private int currentRoundNumber;
+
+
+    // GPT ha detto che avrebbe più senso crearli direttamente qui i vari altri controller
+    public MatchController(Match match, List<Player> players, Board board, Shop shop, Stage stage) {
         this.match = match;
-        this.playerController = playerController;
-        this.boardController = boardController;
+        this.playerController = new PlayerController(players);
+        this.boardController = new BoardController(board);
+
+
+        // da spostare su matchController
+        for (int i = 0; i < board.getNumberOfTiles(); i++) {
+            board.getTileAt(i).addTileEffectListener(playerController);
+        }
+
+        // later
+        this.matchView = new MatchView(stage, this.boardController.getView());
     }
 
     public void startGame() {
@@ -31,6 +56,9 @@ public class MatchController {
         // tornare al menu principale / rigioca
     }
 
+
+    // da modificare: chiamare tipo handleTurnSystem() -> deve regolare lo svolgimento generale del gioco,
+    // implementare takeTurn() su player per cose specifiche al player (tirare dado, muoversi, scela shop, reroll, mod. posiz. -> differenziare tra real e cpu)
     private void playTurn() {
         Player currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
 
@@ -57,13 +85,23 @@ public class MatchController {
             return;
         }
 
-        /* try {
-            TimeUnit.SECONDS.sleep(1);
+        // DEBUG
+        try {
+            TimeUnit.SECONDS.sleep(3);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();
-        } */
+        }
        
+        // gestione shop
+        if (currentPlayer.isVisitingShop()) {
+            // accedo allo Shop
+        }
+                                                        // fare funzione apposita per questi 2 step
+        // gestione fight
+        if (this.currentRoundNumber % 3 == 0) {
+            // avviare il Fight
+        }
         System.out.println("\n ******************************************************************\n");
         this.nextTurn(); // passa al turno successivo
     }

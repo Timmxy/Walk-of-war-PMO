@@ -18,9 +18,6 @@ public class Player {
     private static final int DEFAULT_SHIELDS = 1;
 
     // statistiche base
-    private String name;
-    private int id;
-    private int winCounter;
     private int money;
     private int maxHp;
     private int currentHp;             
@@ -28,20 +25,30 @@ public class Player {
     private int currentAtks;    //contatore attacchi disponibili
     private int maxShields;     //numero massimo di scudi
     private int currentShields; //contatore scudi disponibili
+    
+    // info gioco
+    private String name;
+    private int id;
+    private int winCounter;
+    private int turnsTaken;
+    private boolean visitingShop;   // settato true dalla view a fine turno -> resettare false ogni turno
 
     // derivanti da effetti speciali armatura
     private int rerolls;
     private int stealProtections;
+    private int positionModifiers;
 
     // composizioni
     private Inventory inventory;
     private Pawn pawn;
-    private int positionModifiers;
     
     // COSTRUTTORE
     public Player(int id, String name){
         this.id = id;
         this.name = name;
+        this.winCounter = 0;
+        this.turnsTaken = 0;
+        this.visitingShop = false;
 
         this.resetToDefaultStats();
         this.money = 0;
@@ -122,7 +129,7 @@ public class Player {
 
                 case Shield s -> this.addOrRemoveShields(s.getValue());
                 
-                default -> {}
+                default -> {System.out.println("Errore: computeStats() ha trovato oggetto non supportato nell'inventario.");}
             }
         }
     }
@@ -169,13 +176,13 @@ public class Player {
     
     public void addRerolls(int value) {
         this.rerolls = value;
-
+        
     }
     
     public boolean hasPositionModifiers() {
         return this.positionModifiers >= 1;
     }
-
+    
     public void usePositionModifiers() {
         this.positionModifiers--;
         System.out.println(this.toString() + " usa un modificatore di posizione! Modificatori rimasti: "+ this.positionModifiers);
@@ -185,6 +192,10 @@ public class Player {
         this.positionModifiers = value;
     }
     
+// per SHOP    
+    public boolean isVisitingShop() {
+        return this.visitingShop;
+    }
 
 //getter e setter
     public String getName() {
@@ -246,5 +257,7 @@ public class Player {
     public String toString() {
         return this.name;
     }
+
+
 
 }

@@ -10,6 +10,9 @@ import Model.TileEffectListener;
 
 //Controller che regola le azioni dei Player in gioco
 public class PlayerController implements TileEffectListener {
+
+    private final static int SHOP_POSITION_MALUS = 2;
+
     // DICHIARAZIONE VARIABILI
     private Random rnd;
     private List<Player> players;
@@ -24,12 +27,24 @@ public class PlayerController implements TileEffectListener {
         this.rnd = new Random();
     }
 
-    //quando un Player compra (e quindi equipaggia) un Equipment. Chiamato dal bottone della view
+    // *****************************************************************************************
+    // quando finisce la visita allo shop
+    public void exitShop(Player p, Equipment e) {
+        // calcola quante pos. arretrare dopo la visita allo shop
+        int k = PlayerController.SHOP_POSITION_MALUS;
+        if (e != null) {
+            this.equipmentBought(p, e);
+        }
+        // SHIT NON HO BOARDCONTROLLER !!!
+        this.movePlayer(p, -k, null);
+    }
+
+    // quando un Player compra (e quindi equipaggia) un Equipment. Chiamato dal bottone della view (SHOP)
     public void equipmentBought(Player p, Equipment e) {
         p.addItemToInventory(e);
     }
-
-    // CHATGPT !!!!!!!!
+    // *******************************************************************************************
+    
 
     // muove la pedina del giocatore sulla Board
     // ha bisogno di BoardController per controllare che non superi il numero max di caselle della board
