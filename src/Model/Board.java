@@ -7,7 +7,7 @@ import Board.TileVariant;
 public class Board {
 
     //DEFINIZIONE VARIABILI
-    private final static int MAX_NUM_TILES = 60;
+    private final static int MAX_NUM_TILES = 109;
 
     // forse la faremo variare in base al num di Player?
     private ArrayList<Tile> tilePath = new ArrayList<>(Board.MAX_NUM_TILES);
@@ -69,7 +69,7 @@ public class Board {
             }
         }
         // aggiungo l'ultima Tile che DEVE essere empty
-        this.tilePath.addLast(new Tile(Board.MAX_NUM_TILES, TileVariant.EMPTY));
+        this.tilePath.addLast(new Tile(Board.MAX_NUM_TILES - 1, TileVariant.EMPTY));
 
         // stampo mappa completa
         for (Tile tile : tilePath) {
@@ -79,53 +79,53 @@ public class Board {
 
      
     // sorteggia una casella random con queste percentuali:
-    // 40% EMPTY, 15% ciascuna delle restanti
+    // 32% EMPTY, 20% bonus, 14% malus
     private Tile randomTile(int index) {
         Tile tile = null;
         double outcome = Math.random() * 100;
 
 
-        if (outcome < 40) {
+        if (outcome < 32) {
             tile = new Tile(index, TileVariant.EMPTY);
         }
-        else if (outcome >= 40 && outcome < 55) {
+        else if (outcome >= 32 && outcome < 52) {
             tile = new Tile(index, TileVariant.BONUS_POSITION);
         }
-        else if (outcome >= 55 && outcome < 70) {
+        else if (outcome >= 52 && outcome < 66) {
             tile = new Tile(index, TileVariant.MALUS_POSITION);
         }
-        else if (outcome >= 70 && outcome < 85) {
+        else if (outcome >= 66 && outcome < 86) {
             tile = new Tile(index, TileVariant.BONUS_MONEY);
         }
-        else if (outcome >= 85 && outcome < 100) {
+        else if (outcome >= 86 && outcome < 100) {
             tile = new Tile(index, TileVariant.MALUS_MONEY);
         }
         return tile;
     }
 
     // sorteggia casella random includendo Furto
-    // 40% Empty, 28% Furto, 8% ciascuna delle restanti
+    // 30% Empty, 30% Furto, 12% bonus, 8% malus
     private Tile randomTileIncludingSteal(int index) {
         Tile tile = null;
         double outcome = Math.random() * 100;
 
 
-        if (outcome < 40) {
+        if (outcome < 30) {
             tile = new Tile(index, TileVariant.EMPTY);
         }
-        else if (outcome >= 40 && outcome < 48) {
+        else if (outcome >= 30 && outcome < 42) {
             tile = new Tile(index, TileVariant.BONUS_POSITION);
         }
-        else if (outcome >= 48 && outcome < 56) {
+        else if (outcome >= 42 && outcome < 50) {
             tile = new Tile(index, TileVariant.MALUS_POSITION);
         }
-        else if (outcome >= 56 && outcome < 64) {
+        else if (outcome >= 50 && outcome < 62) {
             tile = new Tile(index, TileVariant.BONUS_MONEY);
         }
-        else if (outcome >= 64 && outcome < 72) {
+        else if (outcome >= 62 && outcome < 70) {
             tile = new Tile(index, TileVariant.MALUS_MONEY);
         }
-        else if (outcome >= 72 && outcome < 100) {
+        else if (outcome >= 70 && outcome < 100) {
             tile = new Tile(index, TileVariant.STEAL);
         }
         return tile;

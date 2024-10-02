@@ -3,6 +3,7 @@ package View;
 import Model.Tile;
 import javafx.geometry.Insets;
 import javafx.geometry.Pos;
+import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.HBox;
@@ -18,23 +19,25 @@ import java.util.List;
 public class BoardView extends Pane {
 
     private static final int TILE_SIZE = 50; // Dimensione di ogni tile
-    private static final int BOARD_PADDING = 20; // Padding attorno alla board
-    private static final int TILE_SPACING = 5; // Spazio tra le tiles
+    private static final int BOARD_PADDING = 30; // Padding attorno alla board
+    private static final int PANE_WIDTH = 1050    ;
+    private static final int PANE_HEIGTH = 450;
 
     // DICHIARAZIONE VARIABILI
 
     // COSTRUTTORE
     public BoardView(List<Tile> tiles) {
-        this.setMaxSize(1080, 520);
-        // Creazione delle righe per il pattern a S
-        VBox topRow = new VBox(TILE_SPACING);
-        VBox bottomRow = new VBox(TILE_SPACING);
+        // Imposta la larghezza e altezza del Pane
+        this.setPrefSize(BoardView.PANE_WIDTH, BoardView.PANE_HEIGTH);
+        this.setMaxSize(1050, 520);
 
-        // Crea HBox per la riga inferiore
-        HBox currentRow = new HBox(TILE_SPACING);
+        // flag per determinare la direzione della riga
+        boolean isUpToDown = true;
+        boolean changingDirection = false;
+        int numOfColumns = 0;
+        int numOfRows = 0;
+        int numOfLoops = 0;
 
-        // Flag per determinare la direzione della riga
-        boolean isLeftToRight = true;
 
         for (int i = 0; i < tiles.size(); i++) {
             Tile tile = tiles.get(i);
@@ -42,53 +45,60 @@ public class BoardView extends Pane {
             // Crea una casella
             Rectangle tileShape = new Rectangle(TILE_SIZE, TILE_SIZE);
             tileShape.setFill(getTileColor(tile));
-            tileShape.setStroke(Color.BLACK);
+            tileShape.setStroke(Color.WHITE);
 
             // Crea un testo per la casella
-            Text tileLabel = new Text(getTileSymbol(tile)+" "+tile.getEffectValueString()+"\n"+i);
+            Text tileLabel = new Text(getTileSymbol(tile)+" "+tile.getEffectValueString() + "\n" + (i));
             tileLabel.setFill(Color.BLACK); // Colore del testo
-            tileLabel.setStyle("-fx-font-size: 15;"); // Dimensione del testo
+            tileLabel.setStyle("-fx-font-size: 12;"); // Dimensione del testo
 
             // Crea uno StackPane per combinare Rectangle e Text
             StackPane tileStack = new StackPane(tileShape, tileLabel);
             tileStack.setPrefSize(TILE_SIZE, TILE_SIZE);
             tileStack.setAlignment(Pos.CENTER); // Centro il testo sopra la casella
 
-            // Aggiungi la casella all'HBox
-            currentRow.getChildren().add(tileStack);
-
-            // Se è il momento di cambiare direzione
-            if (i % 10 == 9) { // Cambia riga dopo ogni 5 caselle
-                if (isLeftToRight) {
-                    topRow.getChildren().add(currentRow);
-                } else {
-                    bottomRow.getChildren().add(currentRow);
+            
+            
+            // se non sono ancora state inserite 10 caselle dall'ultimo cambio direzione...
+            if ((i+1) % 10 != 0 && changingDirection == false) { 
+                
+                // continua con la direzione corrente
+                if (isUpToDown) {
+                    tileStack.setLayoutX(numOfColumns * BoardView.TILE_SIZE);
+                    tileStack.setLayoutY((++numOfRows * BoardView.TILE_SIZE));
+                    this.getChildren().add(tileStack);
+                } 
+                // vado alla direzione opposta
+                else {
+                    tileStack.setLayoutX(numOfColumns * BoardView.TILE_SIZE);
+                    tileStack.setLayoutY((--numOfRows * BoardView.TILE_SIZE));
+                    this.getChildren().add(tileStack);
                 }
-                isLeftToRight = !isLeftToRight; // Cambia direzione
-                currentRow = new HBox(TILE_SPACING); // Nuova riga
+            }
+            // altrimenti cambio direzione
+            else {
+                if (isUpToDown) {
+                    tileStack.setLayoutX(++numOfColumns * BoardView.TILE_SIZE);
+                    tileStack.setLayoutY((numOfRows * BoardView.TILE_SIZE));
+                    this.getChildren().add(tileStack);
+                } 
+                else {
+                    tileStack.setLayoutX(++numOfColumns * BoardView.TILE_SIZE);
+                    tileStack.setLayoutY((numOfRows * BoardView.TILE_SIZE));
+                    this.getChildren().add(tileStack);
+                }
+                // se ho già impilato due caselle in vertivale per il cambio direzione...
+                if (++numOfLoops >= 2) {
+                    // faccio sì che le prossime caselle continuino in verticale
+                    changingDirection = false;
+                    numOfLoops = 0;
+                    isUpToDown = !isUpToDown;
+                    
+                } else 
+                    //altrimenti aggiungo di nuovo in orizzontale
+                    changingDirection = true;
             }
         }
-
-        // Aggiungi l'ultima riga se necessario
-        if (!currentRow.getChildren().isEmpty()) {
-            if (isLeftToRight) {
-                topRow.getChildren().add(currentRow);
-            } else {
-                bottomRow.getChildren().add(currentRow);
-            }
-        }
-
-        // Aggiungi le righe al layout principale
-        HBox layout = new HBox(TILE_SPACING);
-        if (isLeftToRight) {
-            layout.getChildren().addAll(topRow, bottomRow);
-        } else {
-            layout.getChildren().addAll(bottomRow, topRow);
-        }
-        layout.setAlignment(Pos.CENTER);
-
-        this.getChildren().add(layout);
-        this.setPrefSize(layout.getWidth(), layout.getHeight());
     }
     
     private Color getTileColor(Tile tile) {
@@ -99,7 +109,7 @@ public class BoardView extends Pane {
             case MALUS_MONEY:
             return Color.RED;
             case BONUS_POSITION:
-            return Color.BLUE;
+            return Color.CYAN;
             case MALUS_POSITION:
             return Color.ORANGE;
             case STEAL:
@@ -113,7 +123,7 @@ public class BoardView extends Pane {
         // Definisci i simboli per i vari tipi di tile
         switch (tile.getVariant()) {
             case BONUS_MONEY:
-                return "$";
+                return "+ $";
                 case MALUS_MONEY:
                 return "- $";
                 case BONUS_POSITION:

@@ -45,12 +45,8 @@ public class Inventory {
     }
 
     private void checkAlreadyEquipped(Equipment e) {
-        // debug
-        System.out.println(e.getClass());
 
         for (Equipment equipment : equipments) {
-            // debug
-            System.out.println(equipment.getClass());
 
             if (equipment.getClass() == e.getClass()) {
                 System.out.println("cuuuuuuuulo");

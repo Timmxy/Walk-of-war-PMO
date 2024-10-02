@@ -50,8 +50,8 @@ public class Match {
 
         this.matchController = new MatchController(this, this.allPlayers, this.board, this.shop, stage);
 
-        
-        // DEBUG
+        /* 
+        // DEBUG: testing equipaggiaenti 
         if (this.allPlayers.size() == 2) {
             this.allPlayers.get(0).addItemToInventory(new Chestplate("Corazza Delvo", Rarity.COMMON));
             this.allPlayers.get(0).addItemToInventory(new Weapon("Pugnale Delvo", Rarity.COMMON));
@@ -64,7 +64,8 @@ public class Match {
             this.allPlayers.get(1).inventoryContents();
             this.allPlayers.get(1).printStats();
         }
-
+        */
+        
         // credo che dovrei avviare il gioco QUI
         //this.matchController.startGame();
     }

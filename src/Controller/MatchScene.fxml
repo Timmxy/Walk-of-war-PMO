@@ -1,16 +1,230 @@
 <?xml version="1.0" encoding="UTF-8"?>
 
+<?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.Label?>
 <?import javafx.scene.layout.BorderPane?>
+<?import javafx.scene.layout.ColumnConstraints?>
+<?import javafx.scene.layout.GridPane?>
+<?import javafx.scene.layout.RowConstraints?>
+<?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
-
 
 <BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
-      <Button mnemonicParsing="false" text="Roll / Reroll Dice" textAlignment="CENTER" BorderPane.alignment="TOP_CENTER">
-         <font>
-            <Font size="25.0" />
-         </font>
-      </Button>
+      <GridPane alignment="CENTER" prefHeight="160.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="320.0" minWidth="320.0" prefWidth="320.0" />
+            <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="320.0" minWidth="320.0" prefWidth="320.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="320.0" minWidth="320.0" prefWidth="320.0" />
+          <ColumnConstraints halignment="CENTER" hgrow="SOMETIMES" maxWidth="320.0" minWidth="320.0" prefWidth="320.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#616161" height="160.0" layoutX="200.0" stroke="WHITE" strokeType="INSIDE" translateX="480.0" translateY="40.0" width="1280.0" />
+            <Button mnemonicParsing="false" prefHeight="43.0" prefWidth="218.0" text="Roll Dice" textAlignment="CENTER" GridPane.rowIndex="1">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Button>
+            <Button layoutX="541.0" layoutY="15.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="218.0" text="Visit Shop " textAlignment="CENTER" GridPane.columnIndex="3">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Button>
+            <Button layoutX="541.0" layoutY="15.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="263.0" text="Use Greaves Ability" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Button>
+            <Label style="-fx-font-weight: bold;" text="Player X turn!" textFill="WHITE">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label layoutX="117.0" layoutY="27.0" style="-fx-font-weight: bold;" text="Stats &amp; Inventory:" textFill="WHITE" GridPane.columnIndex="2">
+               <font>
+                  <Font size="24.0" />
+               </font>
+            </Label>
+            <Label text="Money: XXX" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="1">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+            <Button layoutX="359.0" layoutY="75.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="263.0" text="Use Helmet Ability" textAlignment="CENTER" GridPane.columnIndex="1">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Button>
+            <Label text="Inventory contents ..." textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
+               <font>
+                  <Font size="16.0" />
+               </font>
+            </Label>
+         </children>
+      </GridPane>
    </bottom>
+   <left>
+      <GridPane prefHeight="560.0" prefWidth="126.0" BorderPane.alignment="CENTER">
+        <columnConstraints>
+          <ColumnConstraints hgrow="SOMETIMES" minWidth="10.0" prefWidth="100.0" />
+        </columnConstraints>
+        <rowConstraints>
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+          <RowConstraints minHeight="10.0" prefHeight="30.0" vgrow="SOMETIMES" />
+        </rowConstraints>
+         <children>
+            <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#616161" height="562.0" stroke="WHITE" strokeType="INSIDE" translateY="185.0" width="128.0" />
+            <Label alignment="CENTER" style="-fx-font-weight: bold;" text="&gt; Other Player 1" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER" GridPane.valignment="TOP">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets top="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label alignment="CENTER" layoutX="13.0" layoutY="10.0" style="-fx-font-weight: bold;" text="&gt; Other Player 2" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets top="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label alignment="CENTER" layoutX="13.0" layoutY="10.0" style="-fx-font-weight: bold;" text="&gt; Other Player 3" textAlignment="CENTER" textFill="WHITE" GridPane.halignment="CENTER" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <font>
+                  <Font size="15.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets top="5.0" />
+               </GridPane.margin>
+            </Label>
+            <Label text="HP: xxx" textFill="WHITE" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="30.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="40.0" text="Attacks: xxx" textFill="WHITE" GridPane.halignment="LEFT" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="60.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="70.0" text="Shields: xxx" textFill="WHITE" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="90.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="100.0" text="Money: xxx" textFill="WHITE" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="120.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="130.0" text="Steal Prot: xxx" textFill="WHITE" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="150.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="40.0" text="HP: xxx" textFill="WHITE" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="30.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="70.0" text="Attacks: xxx" textFill="WHITE" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="60.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="100.0" text="Shields: xxx" textFill="WHITE" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="90.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="130.0" text="Money: xxx" textFill="WHITE" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="120.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="160.0" text="Steal Prot: xxx" textFill="WHITE" GridPane.rowIndex="1" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="150.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="227.0" text="HP: xxx" textFill="WHITE" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="30.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="257.0" text="Attacks: xxx" textFill="WHITE" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="60.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="287.0" text="Shields: xxx" textFill="WHITE" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="90.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="317.0" text="Money: xxx" textFill="WHITE" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="120.0" />
+               </GridPane.margin>
+            </Label>
+            <Label layoutX="10.0" layoutY="347.0" text="Steal Prot: xxx" textFill="WHITE" GridPane.rowIndex="2" GridPane.valignment="TOP">
+               <font>
+                  <Font size="16.0" />
+               </font>
+               <GridPane.margin>
+                  <Insets left="10.0" top="150.0" />
+               </GridPane.margin>
+            </Label>
+         </children>
+      </GridPane>
+   </left>
 </BorderPane>
