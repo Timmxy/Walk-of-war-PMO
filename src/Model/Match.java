@@ -2,21 +2,11 @@ package Model;
 import java.util.ArrayList;
 import java.util.List;
 
-import Equipment.Chestplate;
-import Equipment.Rarity;
-import Equipment.Shield;
-import Equipment.Weapon;
-
 import MatchInfo.GameMode;
 
-import Controller.BoardController;
 import Controller.MatchController;
-import Controller.PlayerController;
 
-import View.ShopView;
 import javafx.stage.Stage;
-import View.BoardView;
-import View.MatchView;
 
 public class Match {
 
@@ -35,6 +25,9 @@ public class Match {
     // Shop
     private Shop shop;
 
+    // Fight
+    private Fight fight;
+
     // Controller
     private MatchController matchController;
 
@@ -44,27 +37,11 @@ public class Match {
     private boolean isGameOver;
 
 
-    public Match(GameMode gameMode, Stage stage){
+    public Match(GameMode gameMode, Stage stage){   
         this.initGameMode(gameMode);
         // a questo punto tutti i Model di gioco dovrebbero essere stati creati, li passo al Controller
 
-        this.matchController = new MatchController(this, this.allPlayers, this.board, this.shop, stage);
-
-        /* 
-        // DEBUG: testing equipaggiaenti 
-        if (this.allPlayers.size() == 2) {
-            this.allPlayers.get(0).addItemToInventory(new Chestplate("Corazza Delvo", Rarity.COMMON));
-            this.allPlayers.get(0).addItemToInventory(new Weapon("Pugnale Delvo", Rarity.COMMON));
-            this.allPlayers.get(0).inventoryContents();
-            this.allPlayers.get(0).printStats();
-            
-            
-            this.allPlayers.get(1).addItemToInventory(new Chestplate("Corazza Deica", Rarity.RARE));
-            this.allPlayers.get(1).addItemToInventory(new Shield("Scudo Deica", Rarity.RARE));
-            this.allPlayers.get(1).inventoryContents();
-            this.allPlayers.get(1).printStats();
-        }
-        */
+        this.matchController = new MatchController(this, this.allPlayers, this.board, this.shop, this.fight, stage);
         
         // credo che dovrei avviare il gioco QUI
         //this.matchController.startGame();
@@ -76,10 +53,6 @@ public class Match {
         //creo la board
         //creo lo shop 
         //creo "Fight"?
-
-
-        //debug
-        System.out.println("Inizalizzando il gioco secondo la GameMode selezionata...");
 
         //controllo quale GameMode e' stata scelta,
         //agisco di conseguenza
@@ -102,7 +75,7 @@ public class Match {
         this.shopSetup();
     }
     
-    //creazione player reali e cpu
+    // creazione player reali e cpu
     private void playersSetup(int real, int cpu){
         for (int i = 0; i < real; i++) {
             Player p = new Player(i, "Player " + i);
@@ -117,7 +90,7 @@ public class Match {
 
     // creazione e disposizione della Board di gioco
     private void boardSetup(int numPlayers){
-        //renderla più grande per più giocatori???
+        //renderla più grande per più giocatori??? NO
         this.board = new Board();
     }
 

@@ -14,8 +14,6 @@ import MatchInfo.GameMode;
 import Model.Match;
 
 public class MenuController {
-    
-    private Match match;
 
     // view
     private Stage stage;
@@ -40,7 +38,7 @@ public class MenuController {
         Stage currentStage = (Stage) ((MenuItem) e.getSource()).getParentPopup().getOwnerWindow();
         
         System.out.println("MenuController inizializza il match..");
-        this.match = new Match(g, currentStage);
+        new Match(g, currentStage);
     }
 
     public void twoRealPlayers(ActionEvent e) {

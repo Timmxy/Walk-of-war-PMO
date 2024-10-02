@@ -14,4 +14,9 @@ public class ShopController {
         this.shop = s;
         this.view = new ShopView();
     }
+
+    public ShopView getView() {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'getView'");
+    }
 }

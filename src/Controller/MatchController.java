@@ -3,6 +3,7 @@ package Controller;
 import java.util.concurrent.TimeUnit;
 
 import Model.Board;
+import Model.Fight;
 import Model.Match;
 import Model.Player;
 import Model.Shop;
@@ -20,6 +21,7 @@ public class MatchController {
     private PlayerController playerController;
     private BoardController boardController;
     private ShopController shopController;
+    private FightController fightController;
 
     // later
     private MatchView matchView; // conterrà un'aggregazione di tutte le view
@@ -29,10 +31,12 @@ public class MatchController {
 
 
     // GPT ha detto che avrebbe più senso crearli direttamente qui i vari altri controller
-    public MatchController(Match match, List<Player> players, Board board, Shop shop, Stage stage) {
+    public MatchController(Match match, List<Player> players, Board board, Shop shop, Fight fight, Stage stage) {
         this.match = match;
         this.playerController = new PlayerController(players);
         this.boardController = new BoardController(board);
+        this.shopController = new ShopController(shop);
+        this.fightController = new FightController(fight);
 
 
         // da spostare su matchController
@@ -41,7 +45,9 @@ public class MatchController {
         }
 
         // later
-        this.matchView = new MatchView(stage, this.boardController.getView());
+        this.matchView = new MatchView(stage, this.boardController.getView(),
+                                                this.shopController.getView(),
+                                                this.fightController.getView());
     }
 
     public void startGame() {

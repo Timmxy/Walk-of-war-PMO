@@ -50,33 +50,4 @@ public class GameLauncher extends Application {
         // Con JavaFX !!!
         Application.launch(args);
     }
-    
 }
-
-
-        /* 
-        Group root = new Group();
-        // impostazioni Testo
-        Text text = new Text();
-        text.setText("Walk of War");
-        text.setX(450);
-        text.setY(100);
-        text.setFont(Font.font("Verdana", 50));
-        text.setFill(Color.FORESTGREEN);
-
-        // impostazioni Line 
-        Line line = new Line();
-        // punto di partenza e arrivo
-        line.setStartX(445);
-        line.setStartY(110);
-        line.setEndX(765);
-        line.setEndY(110);
-        line.setStrokeWidth(3);
-        line.setStroke(Color.FORESTGREEN);
-        //line.setOpacity(0.5);
-        
-        // aggiungere Nodes alla Scena... Nodes -> Componenti
-        root.getChildren().add(text);
-        root.getChildren().add(line);
-         */
-        // aggiungere una Scena allo Stage... Stage -> Finestra, Scene -> Pannello Contenitore

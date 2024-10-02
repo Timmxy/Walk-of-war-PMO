@@ -20,12 +20,16 @@ public class MatchView {
     // Viste principali
     private BoardView boardView;
     private ShopView shopView;
+    private FightView fightView;
 
     
     // COSTRUTTORE
-    public MatchView(Stage s, BoardView boardView) {
+    public MatchView(Stage s, BoardView bView, ShopView sView, FightView fView) {
         this.stage = s;
-        this.boardView = boardView;
+        this.boardView = bView;
+        this.shopView = sView;
+        this.fightView = fView;
+        
         try {
             this.initialize();
         } catch (Exception e) {
@@ -38,26 +42,23 @@ public class MatchView {
         this.rootPane = FXMLLoader.load(getClass().getResource("/Controller/MatchScene.fxml"));
         this.rootPane.setMaxSize(1280, 720);
         this.rootPane.setMinSize(1280, 720);
-        this.rootPane.setCenter(boardView);
         this.rootPane.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         
         
         
         // Imposta la BoardView
+        this.rootPane.setCenter(boardView);
         
         
         // Aggiungi PlayerView o PawnView
         
         // Aggiungi ShopView
         
-        // Aggiungi margini e padding
-        
         // Crea e mostra la scena
         Scene scene = new Scene(rootPane);
-        scene.setFill(Color.BLACK);
         this.stage.setScene(scene);
         this.stage.setTitle("Walk of War - Game Scene");
-        this.stage.sizeToScene();
+        this.stage.sizeToScene();   // adatta lo stage alla scena contenuta
         this.stage.show();
     }
 }
