@@ -1,38 +1,8 @@
 package Equipment;
 
-public abstract class Armor {
+public abstract class Armor extends Equipment{
 
-    private String name;
-    private Rarity rarity;
-    private int value;  // quantità di stats che fornisce
-    private int cost;   // valore allo shop
-    
-    public Armor(String name, Rarity rarity){
-        this.name = name;
-        this.rarity = rarity;
-        this.value = this.rarity.getValue();
-        this.cost = this.rarity.getValue() + 3;
+    public Armor (String name, Rarity rarity) {
+        super(name, rarity);
     }
-    
-    // METODI
-    public int getValue(){
-        return this.value;
-    }
-
-
-    public Rarity getRarity(){
-        return this.rarity;
-    }
-
-    public int getCost() {
-        return this.cost;
-    }
-
-
-    @Override
-    public String toString() {
-        return this.name  + " " + this.rarity;
-    }
-
-    
 }

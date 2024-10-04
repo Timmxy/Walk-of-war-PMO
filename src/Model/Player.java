@@ -25,6 +25,7 @@ public class Player {
     private int currentAtks;    //contatore attacchi disponibili
     private int maxShields;     //numero massimo di scudi
     private int currentShields; //contatore scudi disponibili
+    private boolean defending;  //booleano per gestire la difesa nello scontro
     
     // info gioco
     private String name;
@@ -48,6 +49,7 @@ public class Player {
         this.name = name;
         this.winCounter = 0;
         this.turnsTaken = 0;
+        this.defending = false;
         this.visitingShop = false;
 
         this.resetToDefaultStats();
@@ -75,6 +77,10 @@ public class Player {
     public Equipment getStolenEquipment() {
         return this.inventory.removeRandomEquipment();
     }
+
+    public int getCurrentHp(){
+        return this.currentHp;
+    }
     
     // da chiamare a fine scontro
     public void resetCurrentToMaxStats(){
@@ -92,17 +98,17 @@ public class Player {
     }
     
 // gestione statistiche EQUIPMENT
-    private void addOrRemoveHP(int value){
+    public void addOrRemoveHP(int value){
         this.maxHp += value;
         this.currentHp = this.maxHp;
     }
     
-    private void addOrRemoveAttacks(int value){
+    public void addOrRemoveAttacks(int value){
         this.maxAtks += value;
         this.currentAtks = this.maxAtks;
     }
     
-    private void addOrRemoveShields(int value){
+    public void addOrRemoveShields(int value){
         this.maxShields += value;
         this.currentShields = this.maxShields;
     }
@@ -134,7 +140,6 @@ public class Player {
         }
     }
     
-
 // gestione effetti TILE
     public void addMoney(int value) {
         this.money += value;
@@ -148,6 +153,19 @@ public class Player {
     
     public void updatePosition(int value) {
         this.pawn.newPosition(value);
+    }
+
+    //aggiungo funzioni per il fight
+    public boolean isDefending() {
+        return defending;
+    }
+
+    public void setDefending(boolean defending) {
+        this.defending = defending;
+    }
+
+    public void resetDefending() {
+        this.defending = false;  // Dopo ogni turno, il giocatore non è più in difesa
     }
 
 
@@ -234,7 +252,6 @@ public class Player {
         return this.pawn.getPosition();    
     }
 
-
 // stampe utili
     public void printStats() {
         System.out.println("\nStatistiche di "+ this.toString() +":"
@@ -257,7 +274,4 @@ public class Player {
     public String toString() {
         return this.name;
     }
-
-
-
 }
