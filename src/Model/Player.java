@@ -73,22 +73,15 @@ public class Player {
 
     }
 
-    // quando subisce un furto
-    public Equipment getStolenEquipment() {
-        return this.inventory.removeRandomEquipment();
-    }
-
-    public int getCurrentHp(){
-        return this.currentHp;
-    }
     
     // da chiamare a fine scontro
     public void resetCurrentToMaxStats(){
         this.currentHp = this.maxHp;
         this.currentAtks = this.maxAtks;
         this.currentShields = this.maxShields;
+        this.defending = false;  // Dopo ogni turno, il giocatore non è più in difesa
     }
-
+    
     // chiamato da computeStats() per partire dai valori default
     private void resetToDefaultStats() {
         this.maxHp = Player.DEFAULT_HP;
@@ -97,7 +90,7 @@ public class Player {
         resetCurrentToMaxStats();
     }
     
-// gestione statistiche EQUIPMENT
+    // gestione statistiche EQUIPMENT
     public void addOrRemoveHP(int value){
         this.maxHp += value;
         this.currentHp = this.maxHp;
@@ -112,7 +105,7 @@ public class Player {
         this.maxShields += value;
         this.currentShields = this.maxShields;
     }
-
+    
     public void computeStats(List<Equipment> list) {
         // resetto al default per ricalcolare tutto
         this.resetToDefaultStats();
@@ -132,7 +125,7 @@ public class Player {
                     this.addPositionModifiers(g.getValue());
                 }
                 case Weapon w -> this.addOrRemoveAttacks(w.getValue());
-
+                
                 case Shield s -> this.addOrRemoveShields(s.getValue());
                 
                 default -> {System.out.println("Errore: computeStats() ha trovato oggetto non supportato nell'inventario.");}
@@ -140,11 +133,11 @@ public class Player {
         }
     }
     
-// gestione effetti TILE
+    // gestione effetti TILE
     public void addMoney(int value) {
         this.money += value;
     }
-
+    
     public void removeMoney(int value) {
         if (!(this.money < value)) {
             this.money -= value;
@@ -154,22 +147,17 @@ public class Player {
     public void updatePosition(int value) {
         this.pawn.newPosition(value);
     }
-
+    
     //aggiungo funzioni per il fight
     public boolean isDefending() {
         return defending;
     }
-
+    
     public void setDefending(boolean defending) {
         this.defending = defending;
     }
-
-    public void resetDefending() {
-        this.defending = false;  // Dopo ogni turno, il giocatore non è più in difesa
-    }
-
-
-// gestione effetti speciali ARMOR
+    
+    // gestione effetti speciali ARMOR
     public boolean hasStealProtection() {
         return this.stealProtections >= 1;
     }
@@ -178,15 +166,15 @@ public class Player {
         this.stealProtections--;
         System.out.println(this.toString() + " blocca il furto! Protezioni rimaste: "+ this.stealProtections);
     }
-
+    
     public void addStealProtections(int value) {
         this.stealProtections = value;
     }
-
+    
     public boolean hasRerolls() {
         return this.rerolls >= 1;
     }
-
+    
     public void useReroll() {
         this.rerolls--;
         System.out.println(this.toString() + " usa un reroll! Reroll rimasti: "+ this.rerolls);
@@ -210,12 +198,12 @@ public class Player {
         this.positionModifiers = value;
     }
     
-// per SHOP    
+    // per SHOP    
     public boolean isVisitingShop() {
         return this.visitingShop;
     }
-
-//getter e setter
+    
+    //getter e setter
     public String getName() {
         return this.name;
     }
@@ -227,15 +215,24 @@ public class Player {
     public int getWinCounter(){
         return this.winCounter;
     }
-
+    
     public int getMoney(){
         return this.money;
     }
-
+    
     public int getMaxAtks(){
         return this.maxAtks;
     }
 
+    // quando subisce un furto
+    public Equipment getStolenEquipment() {
+        return this.inventory.removeRandomEquipment();
+    }
+
+    public int getCurrentHp(){
+        return this.currentHp;
+    }
+    
     public int getCurrentAtks(){
         return this.currentAtks;
     }
