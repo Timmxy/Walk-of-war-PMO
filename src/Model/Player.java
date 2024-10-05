@@ -73,13 +73,11 @@ public class Player {
 
     }
 
-    
     // da chiamare a fine scontro
     public void resetCurrentToMaxStats(){
         this.currentHp = this.maxHp;
         this.currentAtks = this.maxAtks;
         this.currentShields = this.maxShields;
-        this.defending = false;  // Dopo ogni turno, il giocatore non è più in difesa
     }
     
     // chiamato da computeStats() per partire dai valori default
@@ -91,17 +89,17 @@ public class Player {
     }
     
     // gestione statistiche EQUIPMENT
-    public void addOrRemoveHP(int value){
+    private void addOrRemoveHP(int value){
         this.maxHp += value;
         this.currentHp = this.maxHp;
     }
     
-    public void addOrRemoveAttacks(int value){
+    private void addOrRemoveAttacks(int value){
         this.maxAtks += value;
         this.currentAtks = this.maxAtks;
     }
     
-    public void addOrRemoveShields(int value){
+    private void addOrRemoveShields(int value){
         this.maxShields += value;
         this.currentShields = this.maxShields;
     }
@@ -155,6 +153,22 @@ public class Player {
     
     public void setDefending(boolean defending) {
         this.defending = defending;
+    }
+
+    public void takeDmg(){// funzione per prendere danno
+        this.currentHp--;
+    }
+
+    public void attackUsed(){
+        this.currentAtks--;
+    }
+
+    public void increaseStamina(){
+        this.currentAtks++;
+    }
+
+    public void shieldUsed(){
+        this.currentShields--;
     }
     
     // gestione effetti speciali ARMOR

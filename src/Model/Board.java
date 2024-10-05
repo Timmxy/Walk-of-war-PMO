@@ -1,8 +1,7 @@
 package Model;
 
-import java.util.*;
-
 import Board.TileVariant;
+import java.util.*;
 
 public class Board {
 
