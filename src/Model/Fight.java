@@ -55,15 +55,15 @@ public class Fight {
                     }
                     currentAtks -= 1;  // Decrementa le munizioni dell'attaccante
                 } else {
-                    result += "Ma non ha munizioni!";
+                    result += "Ma non ha più stamina!";
                 }
             }
             case "ricarica" -> {
                 if(currentAtks < player1.getMaxAtks()){
                     currentAtks += 1;  // Ricarica una munizione
-                    result += player1.getName() + " ha ricaricato una munizione.";
+                    result += player1.getName() + " ha ricaricato un po' la sua stamina.";
                 } else {
-                    System.out.println("Ma l'arma è già carica");
+                    System.out.println("Ma la sua stamina è già al massimo");
                 }
             }
             case "proteggiti" -> {
