@@ -45,7 +45,6 @@ public class MatchView {
         this.rootPane.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         
         
-        
         // Imposta la BoardView
         this.rootPane.setCenter(boardView);
         

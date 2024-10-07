@@ -17,9 +17,8 @@ public class BoardController {
     }
 
     // METODI
-    public void performActionOnTile(Player p, int position) {
-        //gpt qui si salva Tile temporaneamente
-        this.board.activateCorrespondingEffect(position, p);
+    public void performActionOnTile(Player player, int position) {
+        this.board.activateCorrespondingEffect(position, player);
     }
 
     public int getNumberOfTiles() {

@@ -64,7 +64,7 @@ public class MatchController {
 
 
     // da modificare: chiamare tipo handleTurnSystem() -> deve regolare lo svolgimento generale del gioco,
-    // implementare takeTurn() su player per cose specifiche al player (tirare dado, muoversi, scela shop, reroll, mod. posiz. -> differenziare tra real e cpu)
+    // implementare takeTurn() su player per cose specifiche al player (tirare dado, muoversi, scelta shop, reroll, mod. posiz. -> differenziare tra real e cpu)
     private void playTurn() {
         Player currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
 

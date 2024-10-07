@@ -63,7 +63,7 @@ public class Player {
 
     //DEFINIZIONE METODI
 
-// gestione sistema INVENTORY
+    //#region gestione sistema INVENTORY
     public void addItemToInventory(Equipment equipment){
         this.inventory.addEquipment(equipment);
     }
@@ -72,7 +72,7 @@ public class Player {
     public void removeItemFromInventory(Equipment equipment){
 
     }
-
+    
     // da chiamare a fine scontro
     public void resetCurrentToMaxStats(){
         this.currentHp = this.maxHp;
@@ -87,8 +87,14 @@ public class Player {
         this.maxShields = Player.DEFAULT_SHIELDS;
         resetCurrentToMaxStats();
     }
+
+    // quando subisce un furto
+    public Equipment getStolenEquipment() {
+        return this.inventory.removeRandomEquipment();
+    }
+    //#endregion
     
-    // gestione statistiche EQUIPMENT
+    //#region gestione statistiche EQUIPMENT
     private void addOrRemoveHP(int value){
         this.maxHp += value;
         this.currentHp = this.maxHp;
@@ -130,8 +136,9 @@ public class Player {
             }
         }
     }
+    //#endregion
     
-    // gestione effetti TILE
+    //#region gestione effetti TILE
     public void addMoney(int value) {
         this.money += value;
     }
@@ -145,8 +152,9 @@ public class Player {
     public void updatePosition(int value) {
         this.pawn.newPosition(value);
     }
+    //#endregion
     
-    //aggiungo funzioni per il fight
+    //#region aggiungo funzioni per il FIGHT
     public boolean isDefending() {
         return defending;
     }
@@ -170,8 +178,9 @@ public class Player {
     public void shieldUsed(){
         this.currentShields--;
     }
+    //#endregion
     
-    // gestione effetti speciali ARMOR
+    //#region gestione effetti speciali ARMOR
     public boolean hasStealProtection() {
         return this.stealProtections >= 1;
     }
@@ -211,13 +220,15 @@ public class Player {
     public void addPositionModifiers(int value) {
         this.positionModifiers = value;
     }
+    //#endregion
     
-    // per SHOP    
+    //#region per SHOP    
     public boolean isVisitingShop() {
         return this.visitingShop;
     }
+    //#endregion
     
-    //getter e setter
+    //#region getter e setter
     public String getName() {
         return this.name;
     }
@@ -236,11 +247,6 @@ public class Player {
     
     public int getMaxAtks(){
         return this.maxAtks;
-    }
-
-    // quando subisce un furto
-    public Equipment getStolenEquipment() {
-        return this.inventory.removeRandomEquipment();
     }
 
     public int getCurrentHp(){
@@ -262,6 +268,7 @@ public class Player {
     public int getPawnPosition() {
         return this.pawn.getPosition();    
     }
+    //#endregion
 
 // stampe utili
     public void printStats() {

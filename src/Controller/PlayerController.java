@@ -8,7 +8,7 @@ import Model.Player;
 import Model.TileEffectEvent;
 import Model.TileEffectListener;
 
-//Controller che regola le azioni dei Player in gioco
+// Controller che regola le azioni dei Player in gioco
 public class PlayerController implements TileEffectListener {
 
     private final static int SHOP_POSITION_MALUS = 2;
@@ -20,6 +20,7 @@ public class PlayerController implements TileEffectListener {
     //ES.: aumenta/diminuisce le statistiche quando occorre furto di armatura/arma/scudo oppure a fine scontro
     //ES.: chiama la funzione addItemToInventory()
 
+    // TODO: separare le entità Player in RealPlayer e CpuPlayer
 
     // COSTRUTTORE
     public PlayerController(List<Player> ps) {
@@ -58,7 +59,7 @@ public class PlayerController implements TileEffectListener {
 
         System.out.println(newPosition);
         player.updatePosition(newPosition);
-        //possiamo risolverlo in modo da non usare board controller?
+        // TODO: possiamo risolverlo in modo da non usare board controller?
         System.out.println(newPosition);
         boardController.performActionOnTile(player, newPosition);
 
@@ -150,6 +151,7 @@ public class PlayerController implements TileEffectListener {
 
     }
 
+    // fa parte della meccanica furto; sceglie un avversario casuale a cui tentare Steal
     private Player selectRandomPlayer(Player currentPlayer) {
        try{
             Player victim;
