@@ -1,8 +1,5 @@
 package Player;
 
-import java.util.Random;
-import java.util.List;
-import java.util.ArrayList;
 import Equipment.Chestplate;
 import Equipment.Equipment;
 import Equipment.Greaves;
@@ -10,6 +7,9 @@ import Equipment.Helmet;
 import Equipment.Shield;
 import Equipment.Weapon;
 import Model.Player;
+import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Inventory {
 
