@@ -9,8 +9,9 @@ import Equipment.Weapon;
 import Player.Inventory;
 import Player.Pawn;
 import java.util.List;
+import java.util.Random;
 
-public class Player {
+public abstract class Player {
 
     //DICHIARAZIONE VARIABILI
     private static final int DEFAULT_HP = 3;
@@ -33,12 +34,13 @@ public class Player {
     private int winCounter;
     private int turnsTaken;
     private boolean visitingShop;   // settato true dalla view a fine turno -> resettare false ogni turno
-
+    private Random rnd;             // simula il lancio del dado
+    
     // derivanti da effetti speciali armatura
     private int rerolls;
     private int stealProtections;
     private int positionModifiers;
-
+    
     // composizioni
     private Inventory inventory;
     private Pawn pawn;
@@ -51,7 +53,7 @@ public class Player {
         this.turnsTaken = 0;
         this.defending = false;
         this.visitingShop = false;
-
+        
         this.resetToDefaultStats();
         this.money = 0;
         this. winCounter = 0;
@@ -59,9 +61,22 @@ public class Player {
         this.inventory = new Inventory(this);
         this.pawn = new Pawn(0);
     }
-
-
+    
     //DEFINIZIONE METODI
+    
+    //metodi astratti per la gestione di RealPlayer e di CPUPlayer
+    public abstract boolean wantsToVisitShop();
+    
+    public abstract boolean wantsToRerollDice();
+    
+    public abstract boolean wantsToMovePosition();
+    
+    public abstract boolean hasWon();
+
+    // metodo per simulare il lancio del dado
+    public int rollDice() {
+        return this.rnd.nextInt(6) + 1; // Numero casuale tra 1 e 6
+    }
 
 // gestione sistema INVENTORY
     public void addItemToInventory(Equipment equipment){
@@ -238,6 +253,10 @@ public class Player {
         return this.maxAtks;
     }
 
+    public int getRollDice(){
+        return 
+    }
+
     // quando subisce un furto
     public Equipment getStolenEquipment() {
         return this.inventory.removeRandomEquipment();
@@ -284,5 +303,5 @@ public class Player {
     @Override
     public String toString() {
         return this.name;
-    }
+    }      
 }
