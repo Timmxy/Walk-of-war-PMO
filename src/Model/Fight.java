@@ -11,10 +11,7 @@ public class Fight {
 
     // Metodo per risolvere un turno di combattimento
     public void resolveRound(FightActions actionPlayer1, FightActions actionPlayer2) {
-        /*while (player1.getCurrentHp() > 0 && player2.getCurrentHp() > 0) { TODO ITERAZIONE DENTRO AL FIGHT CONTROLLER
-
-     */
-
+        
         //stampa le scelte di entrambi i giocatori
         System.out.println(player1.getName() + " ha scelto " + actionPlayer1 + ". "
         + player2.getName() + " ha scelto " + actionPlayer2);
@@ -45,7 +42,7 @@ public class Fight {
             if(player2.getcurrentShields() > 0){
                 System.out.println(player2.getName() + " si difende");
                 player2.shieldUsed();
-            }else   
+            }else
                 System.out.println(player2.getName() + " ha terminato gli utilizzi dello scudo");
         }
         //ricaricano entrambi
@@ -76,7 +73,7 @@ public class Fight {
         }
         //giocatore 1 si difende e giocatore 2 attacca
         else if (actionPlayer1 == FightActions.DEFEND && actionPlayer2 == FightActions.ATTACK){
-            if(player2.getCurrentAtks() > 0){   
+            if(player2.getCurrentAtks() > 0){
                 player2.attackUsed();
                 System.out.println(player2.getName() + " attacca");
             }else
@@ -95,13 +92,13 @@ public class Fight {
                 System.out.println(player1.getName() + " ha attaccato con successo!");
             }else
                 System.out.println(player1.getName() + " non ha abbastanza stamina per eseguire l'attacco");
-            if(player2.getCurrentAtks() < player2.getMaxAtks()){     
+            if(player2.getCurrentAtks() < player2.getMaxAtks()){
                 player2.increaseStamina();
                 System.out.println(player2.getName() + " recupera un po' di stamina");
             }else
                 System.out.println(player2.getName() + " ha la stamina al massimo");
         }
-        //giocatore 1 recupera stamina e giocatore 2 attacca 
+        //giocatore 1 recupera stamina e giocatore 2 attacca
         else if (actionPlayer1 == FightActions.RECHARGE && actionPlayer2 == FightActions.ATTACK) {
             if(player1.getCurrentAtks() < player1.getMaxAtks()){
                 player1.increaseStamina();
@@ -112,8 +109,8 @@ public class Fight {
                 player2.attackUsed();
                 player1.takeDmg();
                 System.out.println(player1.getName() + " ha attaccato con successo!");
-            }else   
+            }else
                 System.out.println(player1.getName() + " non ha abbastanza stamina per eseguire l'attacco");
         }
-    }    
+    }
 }
