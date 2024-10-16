@@ -45,7 +45,6 @@ public class Inventory {
     }
 
     private void checkAlreadyEquipped(Equipment e) {
-
         for (Equipment equipment : equipments) {
 
             if (equipment.getClass() == e.getClass()) {

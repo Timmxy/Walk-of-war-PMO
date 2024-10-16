@@ -2,6 +2,7 @@ package View;
 
 import Model.Tile;
 import javafx.geometry.Insets;
+import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
@@ -14,95 +15,106 @@ import javafx.scene.paint.Color;
 import javafx.scene.shape.Rectangle;
 import javafx.scene.text.Text;
 
+import java.util.ArrayList;
+import java.util.HashMap;
 import java.util.List;
+import java.util.Map;
 
 public class BoardView extends Pane {
 
-    private static final int TILE_SIZE = 50; // Dimensione di ogni tile
-    private static final int BOARD_PADDING = 30; // Padding attorno alla board
-    private static final int PANE_WIDTH = 1050    ;
-    private static final int PANE_HEIGTH = 450;
-
     // DICHIARAZIONE VARIABILI
+    private static final int TILE_SIZE = 50;    // dimensione di ogni tile
+    private static final int PANE_WIDTH = 1050; // larghezza pannello
+    private static final int PANE_HEIGTH = 450; // altezza pannello
+
+    //TODO: devo fare una arraylist di pair<tile, point2d> in modo da conservare le posizioni delle tile
+    //TODO: creare PAIR
+    private ArrayList<Pair<Tile, Point2D>> tilePositions = new ArrayList<Pair<Tile, Point2D>>(); // mappa per salvare le posizioni delle Tile
 
     // COSTRUTTORE
     public BoardView(List<Tile> tiles) {
-        // Imposta la larghezza e altezza del Pane
+        // imposta la larghezza e altezza del Pane
         this.setPrefSize(BoardView.PANE_WIDTH, BoardView.PANE_HEIGTH);
         this.setMaxSize(1050, 520);
 
-        // flag per determinare la direzione della riga
-        boolean isUpToDown = true;
-        boolean changingDirection = false;
-        int numOfColumns = 0;
-        int numOfRows = 0;
+        
+        boolean isUpToDown = true;          // flag per determinare la direzione della riga
+        boolean changingDirection = false;  // flag per indicare se è nel processo di cambiare direzione
+        int numOfColumns = 0;               // quante colonne sono momentaneamente renderizzate
+        int numOfRows = 0;                  // quante righe sono momentaneamente renderizzate
         int numOfLoops = 0;
 
 
         for (int i = 0; i < tiles.size(); i++) {
-            Tile tile = tiles.get(i);
+            Tile tile = tiles.get(i);   // casella corrente
+            double layoutX;             // posizione x nel pannello della view
+            double layoutY;             // posizione y nel pannello della view
 
-            // Crea una casella
+            // crea una casella
             Rectangle tileShape = new Rectangle(TILE_SIZE, TILE_SIZE);
             tileShape.setFill(getTileColor(tile));
             tileShape.setStroke(Color.WHITE);
 
-            // Crea un testo per la casella
+            // crea un testo per la casella
             Text tileLabel = new Text(getTileSymbol(tile)+" "+tile.getEffectValueString() + "\n" + (i));
             tileLabel.setFill(Color.BLACK); // Colore del testo
             tileLabel.setStyle("-fx-font-size: 12;"); // Dimensione del testo
 
-            // Crea uno StackPane per combinare Rectangle e Text
+            // crea uno StackPane per combinare Rectangle e Text
             StackPane tileStack = new StackPane(tileShape, tileLabel);
             tileStack.setPrefSize(TILE_SIZE, TILE_SIZE);
             tileStack.setAlignment(Pos.CENTER); // Centro il testo sopra la casella
 
             
-            
             // se non sono ancora state inserite 10 caselle dall'ultimo cambio direzione...
-            if ((i+1) % 10 != 0 && changingDirection == false) { 
+            if ((i+1) % 10 != 0 && !changingDirection) { 
                 
                 // continua con la direzione corrente
                 if (isUpToDown) {
-                    tileStack.setLayoutX(numOfColumns * BoardView.TILE_SIZE);
-                    tileStack.setLayoutY((++numOfRows * BoardView.TILE_SIZE));
-                    this.getChildren().add(tileStack);
+                    layoutX = numOfColumns * TILE_SIZE;
+                    layoutY = (++numOfRows * TILE_SIZE);
                 } 
                 // vado alla direzione opposta
                 else {
-                    tileStack.setLayoutX(numOfColumns * BoardView.TILE_SIZE);
-                    tileStack.setLayoutY((--numOfRows * BoardView.TILE_SIZE));
-                    this.getChildren().add(tileStack);
+                    layoutX = numOfColumns * TILE_SIZE;
+                    layoutY = (--numOfRows * TILE_SIZE);
                 }
             }
             // altrimenti cambio direzione
             else {
-                if (isUpToDown) {
-                    tileStack.setLayoutX(++numOfColumns * BoardView.TILE_SIZE);
-                    tileStack.setLayoutY((numOfRows * BoardView.TILE_SIZE));
-                    this.getChildren().add(tileStack);
-                } 
-                else {
-                    tileStack.setLayoutX(++numOfColumns * BoardView.TILE_SIZE);
-                    tileStack.setLayoutY((numOfRows * BoardView.TILE_SIZE));
-                    this.getChildren().add(tileStack);
-                }
-                // se ho già impilato due caselle in vertivale per il cambio direzione...
+                layoutX = (++numOfColumns * TILE_SIZE);
+                layoutY = numOfRows * TILE_SIZE;
+                // se ho già impilato due caselle in verticale per il cambio direzione...
                 if (++numOfLoops >= 2) {
                     // faccio sì che le prossime caselle continuino in verticale
                     changingDirection = false;
                     numOfLoops = 0;
                     isUpToDown = !isUpToDown;
-                    
-                } else 
+                } else {
                     //altrimenti aggiungo di nuovo in orizzontale
                     changingDirection = true;
+                }
             }
+
+            // imposta le coordinate del tile
+            tileStack.setLayoutX(layoutX);
+            tileStack.setLayoutY(layoutY);
+
+            // aggiungi il tile al pannello
+            this.getChildren().add(tileStack);
+
+            // memorizza la posizione della Tile nella mappa
+            tilePositions.put(tile, new Point2D(layoutX, layoutY));
         }
+    }
+
+    // metodo per ottenere la posizione di una Tile
+    public Point2D getTilePosition(Tile tile) {
+        return tilePositions.get(tile);
     }
     
     private Color getTileColor(Tile tile) {
-        // Definisci i colori per i vari tipi di tile
+        // definisce i colori per i vari tipi di tile
         switch (tile.getVariant()) {
             case BONUS_MONEY:
             return Color.GREEN;
@@ -120,7 +132,7 @@ public class BoardView extends Pane {
     }
     
     private String getTileSymbol(Tile tile) {
-        // Definisci i simboli per i vari tipi di tile
+        // definisce i simboli per i vari tipi di tile
         switch (tile.getVariant()) {
             case BONUS_MONEY:
                 return "+ $";
@@ -136,39 +148,5 @@ public class BoardView extends Pane {
                 return "";
             }
         }
-        
     }
     
-    /* setPrefSize(800, 600); // Imposta la dimensione preferita della BoardView
-    setPadding(new javafx.geometry.Insets(BOARD_PADDING));
-
-    // Creare il layout a S
-    VBox verticalBox = new VBox();
-    HBox horizontalBox = new HBox();
-
-    // Alterna tra verticalBox e horizontalBox per formare un percorso a S
-    for (int i = 0; i < tiles.size(); i++) {
-        Tile tile = tiles.get(i);
-        Rectangle tileShape = new Rectangle(TILE_SIZE, TILE_SIZE);
-        tileShape.setFill(getTileColor(tile));
-        tileShape.setStroke(Color.BLACK);
-        
-        Text tileLabel = new Text(getTileSymbol(tile));
-        
-        // Aggiungi un label alla tile
-        tileShape.setUserData(tile);
-        
-        VBox tileBox = new VBox(tileShape, tileLabel);
-        tileBox.setAlignment(javafx.geometry.Pos.CENTER);
-
-        if (i % 5 == 0) { // Supponiamo che ogni 5 tiles cambi la riga
-            horizontalBox.getChildren().add(tileBox);
-            verticalBox.getChildren().add(horizontalBox);
-            horizontalBox = new HBox();
-        } else {
-            horizontalBox.getChildren().add(tileBox);
-        }
-    }
-    verticalBox.getChildren().add(horizontalBox);
-
-    getChildren().add(verticalBox); */
