@@ -13,11 +13,7 @@ public class Fight {
     public void resolveRound(FightActions actionPlayer1, FightActions actionPlayer2) {
         /*while (player1.getCurrentHp() > 0 && player2.getCurrentHp() > 0) { TODO ITERAZIONE DENTRO AL FIGHT CONTROLLER
 
-        // Risolvi l'azione del giocatore 1 contro il giocatore 2
-        result += resolveAction(player1, player2, actionPlayer1);
-        
-        // Risolvi l'azione del giocatore 2 contro il giocatore 1
-        result += resolveAction(player2, player1, actionPlayer2);  */
+     */
 
         //stampa le scelte di entrambi i giocatori
         System.out.println(player1.getName() + " ha scelto " + actionPlayer1 + ". "
