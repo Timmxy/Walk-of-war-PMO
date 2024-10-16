@@ -47,7 +47,8 @@ public class MatchController {
         // later
         this.matchView = new MatchView(stage, this.boardController.getView(),
                                                 this.shopController.getView(),
-                                                this.fightController.getView());
+                                                this.fightController.getView(),
+                                                players);
     }
 
     public void startGame() {
@@ -85,6 +86,9 @@ public class MatchController {
 
         this.playerController.movePlayer(currentPlayer, diceRoll, this.boardController); // muove il giocatore tramite PlayerController
 
+        //TODO: chiamare metodo in MatchView per aggiornare la posiz. del player TODO: devo poter passare semplicemente la pos. del player
+        this.matchView.movePlayerToTile(currentPlayer, null);
+
         if (this.playerController.checkWinCondition(currentPlayer, this.boardController)) {
             System.out.println(currentPlayer.getName() + " ha vinto!");
             this.match.setGameOver(true);
@@ -93,7 +97,7 @@ public class MatchController {
 
         // DEBUG
         try {
-            TimeUnit.SECONDS.sleep(3);
+            TimeUnit.SECONDS.sleep(5);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

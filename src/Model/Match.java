@@ -44,7 +44,7 @@ public class Match {
         this.matchController = new MatchController(this, this.allPlayers, this.board, this.shop, this.fight, stage);
         
         // credo che dovrei avviare il gioco QUI
-        //this.matchController.startGame();
+        this.matchController.startGame();
     }
 
     private void initGameMode(GameMode g){
