@@ -265,12 +265,7 @@ public abstract class Player {
     }
 
     public int getRollDice(){
-        return 
-    }
-
-    // quando subisce un furto
-    public Equipment getStolenEquipment() {
-        return this.inventory.removeRandomEquipment();
+        return 0;
     }
 
     public int getCurrentHp(){

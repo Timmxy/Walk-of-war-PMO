@@ -102,7 +102,7 @@ public class MatchView {
 
         // Aggiungi un testo con il numero del giocatore sopra il triangolo
         Text playerNumberText = new Text(String.valueOf(playerNumber));
-        playerNumberText.setFill(Color.BLACK);
+        playerNumberText.setFill(Color.BLUE);
         playerNumberText.setX(5);  // Posiziona il testo
         playerNumberText.setY(15);
 
@@ -114,12 +114,12 @@ public class MatchView {
     }
 
     // Metodo per posizionare la pedina del giocatore su una Tile specifica
-    public void movePlayerToTile(Player player, Tile targetTile) {
+    public void movePlayerToTile(Player player) {
         Polygon playerPawn = playersPawns.get(player);  // Ottieni la pedina del giocatore
         if (playerPawn != null) {
             // Ottieni la posizione della Tile
-            double tileX = boardView.getTilePosition(targetTile).getX();
-            double tileY = boardView.getTilePosition(targetTile).getY();
+            double tileX = boardView.getTilePosition(player.getPawnPosition()).getX();
+            double tileY = boardView.getTilePosition(player.getPawnPosition()).getY();
 
             // Posiziona la pedina del giocatore sopra la Tile
             playerPawn.setLayoutX(tileX);  // Aggiusta posizione orizzontale

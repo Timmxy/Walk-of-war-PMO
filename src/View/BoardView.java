@@ -1,5 +1,6 @@
 package View;
 
+import Model.Pair;
 import Model.Tile;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
@@ -104,13 +105,19 @@ public class BoardView extends Pane {
             this.getChildren().add(tileStack);
 
             // memorizza la posizione della Tile nella mappa
-            tilePositions.put(tile, new Point2D(layoutX, layoutY));
+            tilePositions.add(new Pair<Tile,Point2D>(tile, new Point2D(layoutX, layoutY)));
         }
     }
 
     // metodo per ottenere la posizione di una Tile
-    public Point2D getTilePosition(Tile tile) {
-        return tilePositions.get(tile);
+    public Point2D getTilePosition(int position) {
+        for (Pair<Tile,Point2D> pair : tilePositions) {
+            if (pair.getFirst().getPosition() == position) {
+                return pair.getSecond();
+            }
+        }
+        // se sono qui significa che non esiste una casella con quella posizione
+        throw new IllegalArgumentException();
     }
     
     private Color getTileColor(Tile tile) {

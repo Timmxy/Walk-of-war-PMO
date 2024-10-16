@@ -11,7 +11,7 @@ public class FightView {
         System.out.println(status);
     }
 
-    public FightActions getPlayerChoice() {
+    public FightActions getPlayerChoice() throws Exception {
         //TODO:controlli input
         // Ottieni la scelta del giocatore reale (da console o GUI)
         // Questo potrebbe essere un input dall'utente
@@ -27,6 +27,8 @@ public class FightView {
                 return FightActions.DEFEND;
             case "ricarica":
                 return FightActions.RECHARGE;
+            default:
+                throw new Exception();
         }
     }
 }

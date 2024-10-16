@@ -78,12 +78,12 @@ public class Match {
     // creazione player reali e cpu
     private void playersSetup(int real, int cpu){
         for (int i = 0; i < real; i++) {
-            Player p = new Player(i, "Player " + i);
+            Player p = new RealPlayer(i, "Player " + i);
             this.allPlayers.add(p);
         }
         
         for (int i = 0; i < cpu; i++) {
-            Player p = new Player(i+real, "(CPU) Player " + (i+real));
+            Player p = new CPUPlayer(i+real, "(CPU) Player " + (i+real));
             this.allPlayers.add(p);
         }
     }

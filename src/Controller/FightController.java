@@ -75,7 +75,12 @@ public class FightController {
         if (isCpu) {
             return cpuDecision(player); // Logica CPU
         } else {
-            return view.getPlayerChoice(); // Logica giocatore reale
+            try {
+                return view.getPlayerChoice(); // Logica giocatore reale 
+            } catch (Exception e) {
+                // TODO: handle exception
+                return null;
+            }
         }
     }
 

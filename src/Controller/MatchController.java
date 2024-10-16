@@ -86,8 +86,7 @@ public class MatchController {
 
         this.playerController.movePlayer(currentPlayer, diceRoll, this.boardController); // muove il giocatore tramite PlayerController
 
-        //TODO: chiamare metodo in MatchView per aggiornare la posiz. del player TODO: devo poter passare semplicemente la pos. del player
-        this.matchView.movePlayerToTile(currentPlayer, null);
+        this.matchView.movePlayerToTile(currentPlayer);
 
         if (this.playerController.checkWinCondition(currentPlayer, this.boardController)) {
             System.out.println(currentPlayer.getName() + " ha vinto!");
