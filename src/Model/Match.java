@@ -100,7 +100,7 @@ public class Match {
     }
 
     private void fightSetup() {
-        this.fight = new Fight(null, null);
+        this.fight = new Fight();
     }
 
 
