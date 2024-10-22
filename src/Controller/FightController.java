@@ -16,7 +16,7 @@ public class FightController {
     private FightActions actionPlayer2;
 
     // view
-    private FightView view;
+    private final FightView view;
 
     // TODO: penso di passargli PlayerController per facilitare ls comunicazione tra i due
     // COSTRUTTORE

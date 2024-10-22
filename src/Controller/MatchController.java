@@ -3,9 +3,11 @@ package Controller;
 import java.util.concurrent.TimeUnit;
 
 import Model.Board;
+import Model.CPUPlayer;
 import Model.Fight;
 import Model.Match;
 import Model.Player;
+import Model.RealPlayer;
 import Model.Shop;
 import View.MatchView;
 import javafx.stage.Stage;
@@ -22,6 +24,8 @@ public class MatchController {
     private BoardController boardController;
     private ShopController shopController;
     private FightController fightController;
+    private RealPlayer realPlayer;
+    private CPUPlayer cpuPlayer;
 
     // later
     private MatchView matchView; // conterrà un'aggregazione di tutte le view
