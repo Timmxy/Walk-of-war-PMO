@@ -73,19 +73,15 @@ public abstract class Player {
     
     public abstract boolean hasWon();
 
-    // metodo per simulare il lancio del dado
-    public int rollDice() {
-        return this.rnd.nextInt(6) + 1; // Numero casuale tra 1 e 6
-    }
-
-    //#region gestione sistema INVENTORY
+    
+    // gestione sistema INVENTORY
     public void addItemToInventory(Equipment equipment){
         this.inventory.addEquipment(equipment);
     }
-
+    
     // potrebbe servire?
     public void removeItemFromInventory(Equipment equipment){
-
+        
     }
     
     // da chiamare a fine scontro
@@ -102,14 +98,8 @@ public abstract class Player {
         this.maxShields = Player.DEFAULT_SHIELDS;
         resetCurrentToMaxStats();
     }
-
-    // quando subisce un furto
-    public Equipment getStolenEquipment() {
-        return this.inventory.removeRandomEquipment();
-    }
-    //#endregion
     
-    //#region gestione statistiche EQUIPMENT
+    // gestione statistiche EQUIPMENT
     private void addOrRemoveHP(int value){
         this.maxHp += value;
         this.currentHp = this.maxHp;
@@ -151,9 +141,8 @@ public abstract class Player {
             }
         }
     }
-    //#endregion
     
-    //#region gestione effetti TILE
+    // gestione effetti TILE
     public void addMoney(int value) {
         this.money += value;
     }
@@ -167,9 +156,8 @@ public abstract class Player {
     public void updatePosition(int value) {
         this.pawn.newPosition(value);
     }
-    //#endregion
     
-    //#region aggiungo funzioni per il FIGHT
+    //aggiungo funzioni per il fight
     public boolean isDefending() {
         return defending;
     }
@@ -177,25 +165,24 @@ public abstract class Player {
     public void setDefending(boolean defending) {
         this.defending = defending;
     }
-
+    
     public void takeDmg(){// funzione per prendere danno
         this.currentHp--;
     }
-
+    
     public void attackUsed(){
         this.currentAtks--;
     }
-
+    
     public void increaseStamina(){
         this.currentAtks++;
     }
-
+    
     public void shieldUsed(){
         this.currentShields--;
     }
-    //#endregion
     
-    //#region gestione effetti speciali ARMOR
+    // gestione effetti speciali ARMOR
     public boolean hasStealProtection() {
         return this.stealProtections >= 1;
     }
@@ -209,6 +196,11 @@ public abstract class Player {
         this.stealProtections = value;
     }
     
+    // metodo per simulare il lancio del dado
+    public int rollDice() {
+        return this.rnd.nextInt(6) + 1; // Numero casuale tra 1 e 6
+    }
+
     public boolean hasRerolls() {
         return this.rerolls >= 1;
     }
@@ -216,6 +208,7 @@ public abstract class Player {
     public void useReroll() {
         this.rerolls--;
         System.out.println(this.toString() + " usa un reroll! Reroll rimasti: "+ this.rerolls);
+        rollDice();
     }
     
     public void addRerolls(int value) {
@@ -235,15 +228,13 @@ public abstract class Player {
     public void addPositionModifiers(int value) {
         this.positionModifiers = value;
     }
-    //#endregion
     
-    //#region per SHOP    
+    // per SHOP    
     public boolean isVisitingShop() {
         return this.visitingShop;
     }
-    //#endregion
     
-    //#region getter e setter
+    //getter e setter
     public String getName() {
         return this.name;
     }
@@ -264,8 +255,13 @@ public abstract class Player {
         return this.maxAtks;
     }
 
-    public int getRollDice(){
-        return 0;
+    // quando subisce un furto
+    public Equipment getStolenEquipment() {
+        return this.inventory.removeRandomEquipment();
+    }
+
+    public int getMaxHp(){
+        return this.maxHp;
     }
 
     public int getCurrentHp(){
@@ -285,9 +281,8 @@ public abstract class Player {
     }
 
     public int getPawnPosition() {
-        return this.pawn.getPosition();    
+        return this.pawn.getPosition();
     }
-    //#endregion
 
 // stampe utili
     public void printStats() {

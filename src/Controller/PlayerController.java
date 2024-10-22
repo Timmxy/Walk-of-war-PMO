@@ -1,14 +1,13 @@
 package Controller;
 
-import java.util.List;
-import java.util.Random;
-
 import Equipment.Equipment;
 import Model.Player;
 import Model.TileEffectEvent;
 import Model.TileEffectListener;
+import java.util.List;
+import java.util.Random;
 
-// Controller che regola le azioni dei Player in gioco
+//Controller che regola le azioni dei Player in gioco
 public class PlayerController implements TileEffectListener {
 
     private final static int SHOP_POSITION_MALUS = 2;
@@ -20,7 +19,6 @@ public class PlayerController implements TileEffectListener {
     //ES.: aumenta/diminuisce le statistiche quando occorre furto di armatura/arma/scudo oppure a fine scontro
     //ES.: chiama la funzione addItemToInventory()
 
-    // TODO: separare le entità Player in RealPlayer e CpuPlayer
 
     // COSTRUTTORE
     public PlayerController(List<Player> ps) {
@@ -59,7 +57,7 @@ public class PlayerController implements TileEffectListener {
 
         System.out.println(newPosition);
         player.updatePosition(newPosition);
-        // TODO: possiamo risolverlo in modo da non usare board controller?
+        //possiamo risolverlo in modo da non usare board controller?
         System.out.println(newPosition);
         boardController.performActionOnTile(player, newPosition);
 
@@ -71,7 +69,6 @@ public class PlayerController implements TileEffectListener {
         System.out.println("win condition? " + player.toString() +" pos: "+ player.getPawnPosition());
         return player.getPawnPosition() == boardController.getNumberOfTiles() - 1;
     }
-
 
     // metodo per simulare il lancio del dado
     public int rollDice() {
@@ -151,7 +148,6 @@ public class PlayerController implements TileEffectListener {
 
     }
 
-    // fa parte della meccanica furto; sceglie un avversario casuale a cui tentare Steal
     private Player selectRandomPlayer(Player currentPlayer) {
        try{
             Player victim;
