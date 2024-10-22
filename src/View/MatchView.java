@@ -10,6 +10,7 @@ import Model.Tile;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
 import javafx.geometry.Point2D;
+import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
 import javafx.scene.layout.Background;
@@ -18,6 +19,7 @@ import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
+import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -35,7 +37,7 @@ public class MatchView {
     private FightView fightView;
 
     private List<Player> players;  // La lista dei giocatori nel match
-    private Map<Player, Polygon> playersPawns;  // Mappa che associa un Player alla sua pedina grafica
+    private Map<Player, StackPane> playersPawns;  // Mappa che associa un Player alla sua pedina grafica
 
     
     // COSTRUTTORE
@@ -50,10 +52,10 @@ public class MatchView {
         // Inizializza la grafica delle pedine per ogni giocatore
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
-            Polygon playerPawn = createPlayerPawn(i + 1);
+            StackPane playerPawn = createPlayerPawn(i);
             this.playersPawns.put(player, playerPawn);
         }
-        
+
         try {
             this.initializePanel();
         } catch (Exception e) {
@@ -74,7 +76,7 @@ public class MatchView {
         
         
         // Aggiungi PlayerView o PawnView
-        for (Map.Entry<Player, Polygon> entry : playersPawns.entrySet()) {
+        for (Map.Entry<Player, StackPane> entry : playersPawns.entrySet()) {
             this.boardView.getChildren().add(entry.getValue());  // Aggiungi le pedine alla scena
         }
         // Aggiungi ShopView
@@ -88,7 +90,7 @@ public class MatchView {
     }
 
     // metodo per creare una pedina grafica (triangolo con numero all'interno)
-    private Polygon createPlayerPawn(int playerNumber) {
+    private StackPane createPlayerPawn(int playerNumber) {
         Polygon triangle = new Polygon();
         triangle.getPoints().addAll(
             0.0, 20.0,  // Punto in basso a sinistra
@@ -97,33 +99,37 @@ public class MatchView {
         );
         triangle.setRotate(90);
         triangle.setFill(Color.WHITE);  // Colore di riempimento bianco
-        triangle.setStroke(Color.RED);  // Contorno rosso
+        triangle.setStroke(Color.BLUEVIOLET);  // Contorno rosso
         triangle.setStrokeWidth(2);
 
         // Aggiungi un testo con il numero del giocatore sopra il triangolo
         Text playerNumberText = new Text(String.valueOf(playerNumber));
-        playerNumberText.setFill(Color.BLUE);
-        playerNumberText.setX(5);  // Posiziona il testo
-        playerNumberText.setY(15);
+        playerNumberText.setFill(Color.BLACK);
+        playerNumberText.setStyle("-fx-font-size: 12; -fx-font-weight: bold;");
+
 
         // Crea uno StackPane per posizionare il numero sopra la pedina
-        StackPane playerStack = new StackPane();
-        playerStack.getChildren().addAll(triangle, playerNumberText);
-
-        return triangle;
+        StackPane playerStack = new StackPane(triangle, playerNumberText);
+        playerStack.setPrefSize(30,30);
+        playerStack.setAlignment(Pos.CENTER);
+        playerStack.getChildren().getLast().setTranslateX(-4);
+        playerStack.setTranslateX(-50 + (playerNumber * 30));
+        playerStack.setLayoutY(playerNumber * 5);
+        return playerStack;
     }
 
     // Metodo per posizionare la pedina del giocatore su una Tile specifica
     public void movePlayerToTile(Player player) {
-        Polygon playerPawn = playersPawns.get(player);  // Ottieni la pedina del giocatore
+        StackPane playerPawn = playersPawns.get(player);  // Ottieni la pedina del giocatore
         if (playerPawn != null) {
             // Ottieni la posizione della Tile
             double tileX = boardView.getTilePosition(player.getPawnPosition()).getX();
             double tileY = boardView.getTilePosition(player.getPawnPosition()).getY();
 
             // Posiziona la pedina del giocatore sopra la Tile
-            playerPawn.setLayoutX(tileX);  // Aggiusta posizione orizzontale
-            playerPawn.setLayoutY(tileY);  // Aggiusta posizione verticale
+            playerPawn.setTranslateX(tileX-20);  // Aggiusta posizione orizzontale
+            playerPawn.setTranslateY(tileY);  // Aggiusta posizione verticale
         }
     }
+
 }

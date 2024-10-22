@@ -99,6 +99,10 @@ public class Match {
         this.shop = new Shop();
     }
 
+    private void fightSetup() {
+        this.fight = new Fight();
+    }
+
 
     // CHATGPT !!!!!!!!!
 
