@@ -8,6 +8,8 @@ import Model.Match;
 import Model.Player;
 import Model.Shop;
 import View.MatchView;
+import javafx.application.Platform;
+import javafx.concurrent.Task;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -55,10 +57,19 @@ public class MatchController {
         this.match.setGameOver(false);
         this.match.setCurrentPlayerIndex(0); // inizia con il primo giocatore
 
-        while (!this.match.isGameOver()) {
-            this.playTurn();
-        }
+        
+        
+        Task<Void> task = new Task<Void>() {
+            @Override
+            protected Void call() throws Exception {
+                // Logica di gioco che non coinvolge la GUI
+                playTurn();
+                return null;
+            }
+        };
 
+        new Thread(task).start();  // Esegui in un thread separato
+        
         System.out.println("Il gioco è finito!");
         // tornare al menu principale / rigioca
     }
@@ -67,52 +78,55 @@ public class MatchController {
     // da modificare: chiamare tipo handleTurnSystem() -> deve regolare lo svolgimento generale del gioco,
     // implementare takeTurn() su player per cose specifiche al player (tirare dado, muoversi, scelta shop, reroll, mod. posiz. -> differenziare tra real e cpu)
     private void playTurn() {
-        Player currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
+        while (!this.match.isGameOver()) {
+            Player currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
 
-        // se player reale...
-        /*  -> chiede al player se visitare lo shop
-         *  -> aspetta la view per rollare dado
-         *  -> (helmet)  reroll si/no
-         *  -> (greaves) spostarsi avanti/indietro di una posizione
-         *  -> effetto casella
-         *  -> entra shop -> torna indietro di k + rarità_oggetto_comprato caselle
-         *  -> finisce il turno con check win condition
-         */
+            // se player reale...
+            /*  -> chiede al player se visitare lo shop
+            *  -> aspetta la view per rollare dado
+            *  -> (helmet)  reroll si/no
+            *  -> (greaves) spostarsi avanti/indietro di una posizione
+            *  -> effetto casella
+            *  -> entra shop -> torna indietro di k + rarità_oggetto_comprato caselle
+            *  -> finisce il turno con check win condition
+            */
 
-        //se cpu
-        int diceRoll = this.playerController.rollDice(); // simula il lancio del dado tramite PlayerController
-        // aggiungere logica per reroll
-        System.out.println(currentPlayer.getName() + " ha tirato un " + diceRoll);
+            //se cpu
+            int diceRoll = this.playerController.rollDice(); // simula il lancio del dado tramite PlayerController
+            // aggiungere logica per reroll
+            System.out.println(currentPlayer.getName() + " ha tirato un " + diceRoll);
 
-        this.playerController.movePlayer(currentPlayer, diceRoll, this.boardController); // muove il giocatore tramite PlayerController
+            this.playerController.movePlayer(currentPlayer, diceRoll, this.boardController); // muove il giocatore tramite PlayerController
 
-        this.matchView.movePlayerToTile(currentPlayer);
+            this.matchView.movePlayerToTile(currentPlayer);
 
-        if (this.playerController.checkWinCondition(currentPlayer, this.boardController)) {
-            System.out.println(currentPlayer.getName() + " ha vinto!");
-            this.match.setGameOver(true);
-            return;
+            if (this.playerController.checkWinCondition(currentPlayer, this.boardController)) {
+                System.out.println(currentPlayer.getName() + " ha vinto!");
+                this.match.setGameOver(true);
+                return;
+            }
+
+            // DEBUG
+            
+            try {
+                TimeUnit.SECONDS.sleep(2);
+            } catch (InterruptedException e) {
+                // TODO Auto-generated catch block
+                e.printStackTrace();
+            }
+        
+            // gestione shop
+            if (currentPlayer.isVisitingShop()) {
+                // accedo allo Shop
+            }
+                                                            // fare funzione apposita per questi 2 step
+            // gestione fight
+            if (this.currentRoundNumber % 3 == 0) {
+                // avviare il Fight
+            }
+            System.out.println("\n ******************************************************************\n");
+            this.nextTurn(); // passa al turno successivo
         }
-
-        // DEBUG
-        try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-       
-        // gestione shop
-        if (currentPlayer.isVisitingShop()) {
-            // accedo allo Shop
-        }
-                                                        // fare funzione apposita per questi 2 step
-        // gestione fight
-        if (this.currentRoundNumber % 3 == 0) {
-            // avviare il Fight
-        }
-        System.out.println("\n ******************************************************************\n");
-        this.nextTurn(); // passa al turno successivo
     }
 
     private void nextTurn() {
