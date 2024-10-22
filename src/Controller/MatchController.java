@@ -47,8 +47,7 @@ public class MatchController {
         // later
         this.matchView = new MatchView(stage, this.boardController.getView(),
                                                 this.shopController.getView(),
-                                                this.fightController.getView(),
-                                                players);
+                                                this.fightController.getView());
     }
 
     public void startGame() {
@@ -63,9 +62,40 @@ public class MatchController {
         // tornare al menu principale / rigioca
     }
 
+    // Logica per far agire i giocatori
+    public void handlePlayerTurn() {
+        if (realPlayer.wantsToVisitShop()) {
+            // Logica per il negozio
+        }
+        if (realPlayer.wantsToRerollDice()) {
+            // Logica per rerollare i dadi
+        }
+        if (realPlayer.wantsToMovePosition()) {
+            // Logica per cambiare posizione
+        }
+        if (realPlayer.hasWon()) {
+            // Logica per vittoria del giocatore
+        }
+    }
 
+    public void handleCPUTurn() {
+        if (cpuPlayer.wantsToVisitShop()) {
+            // Logica per il negozio del CPUPlayer
+        }
+        if (cpuPlayer.wantsToRerollDice()) {
+            // Logica per rerollare i dadi del CPUPlayer
+        }
+        if (cpuPlayer.wantsToMovePosition()) {
+            // Logica per cambiare posizione del CPUPlayer
+        }
+        if (cpuPlayer.hasWon()) {
+            // Logica per vittoria del CPUPlayer
+        }
+    }
+
+    
     // da modificare: chiamare tipo handleTurnSystem() -> deve regolare lo svolgimento generale del gioco,
-    // implementare takeTurn() su player per cose specifiche al player (tirare dado, muoversi, scelta shop, reroll, mod. posiz. -> differenziare tra real e cpu)
+    // implementare takeTurn() su player per cose specifiche al player (tirare dado, muoversi, scela shop, reroll, mod. posiz. -> differenziare tra real e cpu)
     private void playTurn() {
         Player currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
 
@@ -86,8 +116,6 @@ public class MatchController {
 
         this.playerController.movePlayer(currentPlayer, diceRoll, this.boardController); // muove il giocatore tramite PlayerController
 
-        this.matchView.movePlayerToTile(currentPlayer);
-
         if (this.playerController.checkWinCondition(currentPlayer, this.boardController)) {
             System.out.println(currentPlayer.getName() + " ha vinto!");
             this.match.setGameOver(true);
@@ -96,7 +124,7 @@ public class MatchController {
 
         // DEBUG
         try {
-            TimeUnit.SECONDS.sleep(5);
+            TimeUnit.SECONDS.sleep(3);
         } catch (InterruptedException e) {
             // TODO Auto-generated catch block
             e.printStackTrace();

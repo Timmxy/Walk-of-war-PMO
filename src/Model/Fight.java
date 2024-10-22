@@ -1,10 +1,14 @@
 package Model;
 
 public class Fight {
-    private final Player player1;
-    private final Player player2;
+    private Player player1;
+    private Player player2;
 
-    public Fight(Player player1, Player player2) {
+    //scelta di progettazione: no costruttore
+    
+    //metodo che prende la funzione del di costruttore da passare a match controller
+    //così che non ci siano più fight in scena in base al numero di player
+    public void getFight(Player player1, Player player2) {
         this.player1 = player1;
         this.player2 = player2;
     }
@@ -112,5 +116,17 @@ public class Fight {
             }else
                 System.out.println(player1.getName() + " non ha abbastanza stamina per eseguire l'attacco");
         }
+    }
+
+    public String getCombatStatus(Player Player1, Player Player2){
+        return ("""
+                Stato combattimento.
+                 Player 1:\t[HP: """ + player1.getCurrentHp() + "/" + player1.getMaxHp() +
+                " ATKS: " + player1.getCurrentAtks() + "/" + player1.getMaxAtks() +
+                " SHIELD: " + player1.getcurrentShields() + "/" + player1.getMaxShields() + "]"+
+                "\nPlayer 2:\t" + 
+                "[HP: " + player2.getCurrentHp() + "/" + player2.getMaxHp() +
+                " ATKS: " + player2.getCurrentAtks() + "/" + player2.getMaxAtks() +
+                " SHIELD: " + player2.getcurrentShields() + "/" + player2.getMaxShields() + "]");
     }
 }

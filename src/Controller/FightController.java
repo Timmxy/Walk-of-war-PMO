@@ -15,10 +15,8 @@ public class FightController {
     private FightActions actionPlayer1;
     private FightActions actionPlayer2;
 
-
     // view
     private FightView view;
-
 
     // TODO: penso di passargli PlayerController per facilitare ls comunicazione tra i due
     // COSTRUTTORE
@@ -35,34 +33,36 @@ public class FightController {
         this.player2 = p2;
     }
 
-    
     // metodo per lo svolgimento della battaglia, va avanti finchè uno esaurisce hp
     public void resolveFight(boolean  isPlayer1CPU, boolean isPlayer2CPU){
+        //stampe con informazioni per il combattimento
+        System.out.println("Associazione tasti per combattimento");
+        System.out.println("player 1 [q: attacco, w: difesa, e: ricarica]");
+        System.out.println("player 2 [i: attacco, o: difesa, p: ricarica]");
         while (!isPlayerOut(player1) && !isPlayerOut(player2)) {
-            /* TODO: this.fight.resolveRound(//prendere in ingresso quello che sceglie l'utente: GESTIRE INPUT TASTIERA o cpu);*/
-            // TODO: l'input DEVE essere preso da PlayerController
-
-             // Turno del giocatore 1
+            //stato dei due giocatori prima di ogni turno
+            view.displayCombatStatus(fight.getCombatStatus(player1, player2));
+            // Turno del giocatore 1
             actionPlayer1 = getAction(isPlayer1CPU, player1);
             fight.resolveRound(actionPlayer1, actionPlayer2);
-            //TODO: aggiornare la view sullo stato attuale del combattimento tipo cosi:
-            //view.displayCombatStatus(fight.getCombatStatus());
 
             //se uno dei due muore fare break; (non mi garba perchè il 2 potrebbe difendersi dopo il break)
 
             // Turno del giocatore 2
             actionPlayer2 = getAction(isPlayer2CPU, player2);
             fight.resolveRound(actionPlayer2, actionPlayer1);
-            //view.displayCombatStatus(fight.getCombatStatus());
         }//fine ciclo
 
         //TODO: può finire in pareggio quindi riguardare queste condizioni
         // Verifica se il giocatore 1 è stato eliminato
-        if (isPlayerOut(player1)) {
+        if (isPlayerOut(player1) && isPlayerOut(player2)) {
+            System.out.println("PAREGGIO: i giocatori si sono sconfitti a vicenda");
+        }
+        else if (isPlayerOut(player1)) {
             System.out.println(player2.getName() + " ha VINTO lo scontro!");
         }
         // Verifica se il giocatore 2 è stato eliminato
-        if (isPlayerOut(player2)) {
+        else if (isPlayerOut(player2)) {
             System.out.println(player1.getName() + " ha VINTO lo scontro!");
         }
         // Resetto le statistiche dei giocatori che hanno partecipato allo scontro
@@ -76,7 +76,7 @@ public class FightController {
             return cpuDecision(player); // Logica CPU
         } else {
             try {
-                return view.getPlayerChoice(); // Logica giocatore reale 
+                return view.getPlayerChoice(); // Logica giocatore reale
             } catch (Exception e) {
                 // TODO: handle exception
                 return null;
@@ -106,7 +106,6 @@ public class FightController {
     public boolean isPlayerOut(Player player) {
         return  player.getCurrentHp() <= 0;
     }
-
 
     // metodo per ritornare la propria view al match controller
     public FightView getView() {
