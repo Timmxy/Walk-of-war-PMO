@@ -1,7 +1,5 @@
 package Model;
 
-import java.util.List;
-
 import Equipment.Chestplate;
 import Equipment.Equipment;
 import Equipment.Greaves;
@@ -9,10 +7,9 @@ import Equipment.Helmet;
 import Equipment.Rarity;
 import Equipment.Shield;
 import Equipment.Weapon;
-
-import java.util.Random;
-
 import java.util.ArrayList;
+import java.util.List;
+import java.util.Random;
 
 public class Shop {
 

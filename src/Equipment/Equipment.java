@@ -19,7 +19,6 @@ public abstract class Equipment {
         return this.value;
     }
 
-
     public Rarity getRarity(){
         return this.rarity;
     }
@@ -27,7 +26,6 @@ public abstract class Equipment {
     public int getCost() {
         return this.cost;
     }
-
 
     @Override
     public String toString() {

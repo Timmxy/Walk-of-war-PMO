@@ -78,14 +78,17 @@ public class MatchController {
         // tornare al menu principale / rigioca
     }
 
-    /*
-    // Logica per far agire i giocatori
-    public void handlePlayerTurn() {
-        if (realPlayer.wantsToVisitShop()) {
-            // Logica per il negozio
+   /*
+    // FUnzione da chiamare ad ogni inizio turno di un plaer che sia real o CPU
+    public void handlePlayerTurn(Player genericPlayer) {
+    //wait del click del giocatore
+        if (realPlayer.wantsToVisitShop()){ // diventa vera se clicca sul pulsante shop della view
+            // Logica per il negozio: chiama un  metodo nella view che si occuperà di far aprire il negozio
+            //una volta aperto lo shop viene gestito da shop controller
         }
-        if (realPlayer.wantsToRerollDice()) {
+        if (realPlayer.wantsToRerollDice()){ //diventa vera se clicca sul pulsante reroll della view
             // Logica per rerollare i dadi
+            genericPlayer.useReroll();
         }
         if (realPlayer.wantsToMovePosition()) {
             // Logica per cambiare posizione
@@ -93,7 +96,8 @@ public class MatchController {
         if (realPlayer.hasWon()) {
             // Logica per vittoria del giocatore
         }
-    }
+    }*/
+    
 
     public void handleCPUTurn() {
         if (cpuPlayer.wantsToVisitShop()) {

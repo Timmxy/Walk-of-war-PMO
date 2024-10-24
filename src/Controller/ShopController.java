@@ -18,4 +18,10 @@ public class ShopController {
     public ShopView getView() {
         return this.view;
     }
+
+    //metodo per la view
+    public void onClick(){
+        //se clicco un oggetto nello shop dalla view esso sparisce 
+        //e appare nel mio equipaggiamento
+    }
 }
