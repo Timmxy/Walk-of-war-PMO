@@ -67,7 +67,7 @@ public class MatchController {
             @Override
             protected Void call() throws Exception {
                 // Logica di gioco che non coinvolge la GUI
-                playTurn();
+                handleTurnSystem();
                 return null;
             }
         };
@@ -115,7 +115,7 @@ public class MatchController {
     
     // da modificare: chiamare tipo handleTurnSystem() -> deve regolare lo svolgimento generale del gioco,
     // implementare takeTurn() su player per cose specifiche al player (tirare dado, muoversi, scela shop, reroll, mod. posiz. -> differenziare tra real e cpu)
-    private void playTurn() {
+    private void handleTurnSystem() {
         while (!this.match.isGameOver()) {
             Player currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
 

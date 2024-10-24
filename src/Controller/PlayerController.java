@@ -65,9 +65,9 @@ public class PlayerController implements TileEffectListener {
     }
 
     // metodo per verificare la condizione di vittoria
-    public boolean checkWinCondition(Player player, BoardController boardController) {
+    public boolean checkWinCondition(Player player, int lastTile) {
         System.out.println("win condition? " + player.toString() +" pos: "+ player.getPawnPosition());
-        return player.getPawnPosition() == boardController.getNumberOfTiles() - 1;
+        return player.getPawnPosition() == lastTile;
     }
 
     // metodo per simulare il lancio del dado

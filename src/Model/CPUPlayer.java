@@ -64,7 +64,7 @@ public class CPUPlayer extends Player {
     }
 
     public Equipment getRandomItem(int i){
-        return  ;
+        return  null;
     }
 }
 
