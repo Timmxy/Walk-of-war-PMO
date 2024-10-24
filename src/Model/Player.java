@@ -73,6 +73,8 @@ public abstract class Player {
     
     public abstract boolean hasWon();
 
+    public abstract void playTurn();
+
     
     // gestione sistema INVENTORY
     public void addItemToInventory(Equipment equipment){
@@ -207,8 +209,8 @@ public abstract class Player {
     
     public void useReroll() {
         this.rerolls--;
-        System.out.println(this.toString() + " usa un reroll! Reroll rimasti: "+ this.rerolls);
         rollDice();
+        System.out.println(this.toString() + " usa un reroll! Reroll rimasti: "+ this.rerolls);
     }
     
     public void addRerolls(int value) {
@@ -229,7 +231,7 @@ public abstract class Player {
         this.positionModifiers = value;
     }
     
-    // per SHOP    
+    // per SHOP
     public boolean isVisitingShop() {
         return this.visitingShop;
     }

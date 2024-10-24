@@ -45,9 +45,15 @@ public class RealPlayer extends Player {
     }
 
     @Override
+    public void playTurn() {
+        // TODO logica del tunro del player reale 
+    }
+
+    @Override
     public boolean hasWon() {
         return this.hasWon;
     }
+
 }
 
  

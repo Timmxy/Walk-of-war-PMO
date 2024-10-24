@@ -78,27 +78,26 @@ public class MatchController {
         // tornare al menu principale / rigioca
     }
 
-   /*
     // FUnzione da chiamare ad ogni inizio turno di un plaer che sia real o CPU
     public void handlePlayerTurn(Player genericPlayer) {
     //wait del click del giocatore
-        if (realPlayer.wantsToVisitShop()){ // diventa vera se clicca sul pulsante shop della view
+        if (genericPlayer.wantsToVisitShop()) { // diventa vera se clicca sul pulsante shop della view
             // Logica per il negozio: chiama un  metodo nella view che si occuperà di far aprire il negozio
             //una volta aperto lo shop viene gestito da shop controller
         }
-        if (realPlayer.wantsToRerollDice()){ //diventa vera se clicca sul pulsante reroll della view
+        if (genericPlayer.wantsToRerollDice()) { //diventa vera se clicca sul pulsante reroll della view
             // Logica per rerollare i dadi
             genericPlayer.useReroll();
         }
-        if (realPlayer.wantsToMovePosition()) {
+        if (genericPlayer.wantsToMovePosition()) { //diventa vera se clicca sul pulsante movePosition della view
             // Logica per cambiare posizione
+            genericPlayer.usePositionModifiers();
         }
-        if (realPlayer.hasWon()) {
+        if (genericPlayer.hasWon()) {
             // Logica per vittoria del giocatore
         }
-    }*/
+    }
     
-
     public void handleCPUTurn() {
         if (cpuPlayer.wantsToVisitShop()) {
             // Logica per il negozio del CPUPlayer
@@ -113,7 +112,6 @@ public class MatchController {
             // Logica per vittoria del CPUPlayer
         }
     }
-    */
     
     // da modificare: chiamare tipo handleTurnSystem() -> deve regolare lo svolgimento generale del gioco,
     // implementare takeTurn() su player per cose specifiche al player (tirare dado, muoversi, scela shop, reroll, mod. posiz. -> differenziare tra real e cpu)
@@ -121,6 +119,7 @@ public class MatchController {
         while (!this.match.isGameOver()) {
             Player currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
 
+            currentPlayer.playTurn();
             // se player reale...
             /*  -> chiede al player se visitare lo shop
             *  -> aspetta la view per rollare dado
@@ -132,39 +131,37 @@ public class MatchController {
             */
 
             //se cpu
-            int diceRoll = this.playerController.rollDice(); // simula il lancio del dado tramite PlayerController
-            // aggiungere logica per reroll
-            System.out.println(currentPlayer.getName() + " ha tirato un " + diceRoll);
+            /*TODO. QUESTE NEL MATCH
+        this.movePlayer(this, diceRoll, boardController); // muove il giocatore tramite PlayerController
+        this.matchView.movePlayerToTile(currentPlayer);
 
-            this.playerController.movePlayer(currentPlayer, diceRoll, this.boardController); // muove il giocatore tramite PlayerController
+        if (this.playerController.checkWinCondition(currentPlayer, this.boardController)) {
+            System.out.println(currentPlayer.getName() + " ha vinto!");
+            this.match.setGameOver(true);
+            return;
+        }
 
-            this.matchView.movePlayerToTile(currentPlayer);
-
-            if (this.playerController.checkWinCondition(currentPlayer, this.boardController)) {
-                System.out.println(currentPlayer.getName() + " ha vinto!");
-                this.match.setGameOver(true);
-                return;
-            }
-
-            // DEBUG
-            try {
-                TimeUnit.SECONDS.sleep(5);
-            } catch (InterruptedException e) {
-                // TODO Auto-generated catch block
-                e.printStackTrace();
-            }
+        // DEBUG
+        try {
+            TimeUnit.SECONDS.sleep(5);
+        } catch (InterruptedException e) {
+            // TODO Auto-generated catch block
+            e.printStackTrace();
+        }
         
-            // gestione shop
-            if (currentPlayer.isVisitingShop()) {
-                // accedo allo Shop
-            }
-                                                            // fare funzione apposita per questi 2 step
-            // gestione fight
-            if (this.currentRoundNumber % 3 == 0) {
-                // avviare il Fight
-            }
-            System.out.println("\n ******************************************************************\n");
-            this.nextTurn(); // passa al turno successivo
+
+        // gestione shop
+        if (this.isVisitingShop()) {
+            // accedo allo Shop
+        }
+                                                        // fare funzione apposita per questi 2 step
+        // gestione fight
+        if (this.currentRoundNumber % 3 == 0) {
+            // avviare il Fight
+        }
+        System.out.println("\n ******************************************************************\n");
+        this.nextTurn(); // passa al turno successivo
+        */
         }
     }
 
