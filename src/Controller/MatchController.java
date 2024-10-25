@@ -25,6 +25,7 @@ public class MatchController {
     private PlayerController playerController;
     private BoardController boardController;
     private ShopController shopController;
+    private Shop shop;
     private FightController fightController;
     private RealPlayer realPlayer;
     private CPUPlayer cpuPlayer;
@@ -120,6 +121,9 @@ public class MatchController {
             Player currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
 
             currentPlayer.playTurn();
+            if(currentPlayer.wantsToVisitShop()){
+                shop
+            }
             // se player reale...
             /*  -> chiede al player se visitare lo shop
             *  -> aspetta la view per rollare dado
@@ -131,7 +135,7 @@ public class MatchController {
             */
 
             //se cpu
-            /*TODO. QUESTE NEL MATCH
+            /*
         this.movePlayer(this, diceRoll, boardController); // muove il giocatore tramite PlayerController
         this.matchView.movePlayerToTile(currentPlayer);
 

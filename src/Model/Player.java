@@ -8,6 +8,7 @@ import Equipment.Shield;
 import Equipment.Weapon;
 import Player.Inventory;
 import Player.Pawn;
+import java.lang.classfile.instruction.ThrowInstruction;
 import java.util.List;
 import java.util.Random;
 
@@ -232,8 +233,8 @@ public abstract class Player {
     }
     
     // per SHOP
-    public boolean isVisitingShop() {
-        return this.visitingShop;
+    public boolean setVisitingShop(boolean bool) {
+        return this.visitingShop = bool;
     }
     
     //getter e setter
@@ -307,5 +308,5 @@ public abstract class Player {
     @Override
     public String toString() {
         return this.name;
-    }      
+    }
 }

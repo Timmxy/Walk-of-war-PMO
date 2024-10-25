@@ -6,7 +6,7 @@ import java.util.Random;
 
 public class CPUPlayer extends Player {
     private Random random = new Random();
-    private boolean hasWon;
+    //private boolean visitingShop;
     private BoardController boardController;
     private static final int MIN_NUM_FOR_REROLL = 3;
     
@@ -22,20 +22,24 @@ public class CPUPlayer extends Player {
     public boolean wantsToVisitShop() {
         if(this.getMoney() >= MONEY_COUNTER){ //se ha 5 o più monete alzo la probabilità di entrare nello shop
             int probability = random.nextInt(101);
-            return probability < 70; // Visita lo shop il 70% dei casi
+            return  probability < 70; // Visita lo shop il 70% dei casi
         }
         return random.nextBoolean(); // Visita lo shop il 50% dei casi
     }
 
-    // Il CPUPlayer decide se fare reroll dei dadi
+    // logica per il reroll dei dadi
     @Override
     public boolean wantsToRerollDice() {
+        //se ha reroll disponibili e se fa 3 o meno col dado decide di ritirare
         return this.hasRerolls() && this.rollDice() <= MIN_NUM_FOR_REROLL;
     }
 
+    // logica per il riposizionamento
     @Override
     public boolean wantsToMovePosition() {
-        return random.nextBoolean(); // Il CPUPlayer decide casualmente se muoversi avanti o indietro
+        if(this.hasPositionModifiers()) //se ha modificatori di possizione disponibili
+            return random.nextBoolean(); // Il CPUPlayer decide casualmente se usare il riposizionamento
+        return false;
     }
 
     @Override
@@ -44,17 +48,28 @@ public class CPUPlayer extends Player {
         return this.hasWon;
     }
 
+    //TODO: dopo ogni azione deve aspettare?
     @Override
     public void playTurn() {
-        //TODO: gestire logica del turno del cpuPlayer
-        int diceRoll = this.rollDice(); // simula il lancio del dado tramite PlayerController
+        //logica del turno del cpuPlayer
+        // azione1: [simula il lancio del dado]
+        int diceRoll = this.rollDice();
         System.out.println(this.getName() + " ha tirato un " + diceRoll);
-        // logica pseudo casuale per reroll
+
+        // azione 2 [reroll]: decisione di ritirare il dado
         if(this.wantsToRerollDice()){
             this.useReroll();
         }
-        if(this.wantsToVisitShop()){
-            
+        // azione 3 [visita shop]: decisione di visitare lo shop
+        //TODO: capire questa come gestirla, se qui o nel matchController
+        /*if(this.wantsToVisitShop()){
+            System.out.println(this.getName() + " ha visitato lo shop");
+            this.setVisitingShop(true); //setti a true la variabile nel player vistingShop
+        }*/
+        // azione 4 [riposizionamento]: decisione di muoversi ulteriormente
+        if(this.wantsToMovePosition()){
+            this.usePositionModifiers();
+            //TODO:di quanto si muove?
         }
     }
 
