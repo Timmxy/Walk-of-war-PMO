@@ -15,6 +15,7 @@ import javafx.concurrent.Task;
 import javafx.stage.Stage;
 
 import java.util.List;
+import java.util.Random;
 
 
 // FATTO DA CHATGPT !!!!
@@ -30,11 +31,12 @@ public class MatchController {
     private RealPlayer realPlayer;
     private CPUPlayer cpuPlayer;
 
-    // later
+    // View
     private MatchView matchView; // conterrà un'aggregazione di tutte le view
 
     // INFO UTILI
     private int currentRoundNumber;
+    private Random rnd;
 
 
     // GPT ha detto che avrebbe più senso crearli direttamente qui i vari altri controller
@@ -79,50 +81,76 @@ public class MatchController {
         // tornare al menu principale / rigioca
     }
 
-    // FUnzione da chiamare ad ogni inizio turno di un plaer che sia real o CPU
+    // metodo gestire le scelte dei Player Reali durante il turno (effettuate tramite interazione utente con la View)
     public void handlePlayerTurn(Player genericPlayer) {
-    //wait del click del giocatore
-        if (genericPlayer.wantsToVisitShop()) { // diventa vera se clicca sul pulsante shop della view
-            // Logica per il negozio: chiama un  metodo nella view che si occuperà di far aprire il negozio
-            //una volta aperto lo shop viene gestito da shop controller
-        }
-        if (genericPlayer.wantsToRerollDice()) { //diventa vera se clicca sul pulsante reroll della view
-            // Logica per rerollare i dadi
-            genericPlayer.useReroll();
-        }
-        if (genericPlayer.wantsToMovePosition()) { //diventa vera se clicca sul pulsante movePosition della view
-            // Logica per cambiare posizione
-            genericPlayer.usePositionModifiers();
-        }
-        if (genericPlayer.hasWon()) {
-            // Logica per vittoria del giocatore
-        }
+        //wait del click del giocatore
+        // TODO
     }
     
+    // metodo per gestire l'algoritmo di tutte le scelte che deve compiere CPU Player durante il suo turno
     public void handleCPUTurn() {
-        if (cpuPlayer.wantsToVisitShop()) {
-            // Logica per il negozio del CPUPlayer
-        }
-        if (cpuPlayer.wantsToRerollDice()) {
-            // Logica per rerollare i dadi del CPUPlayer
-        }
-        if (cpuPlayer.wantsToMovePosition()) {
-            // Logica per cambiare posizione del CPUPlayer
-        }
-        if (cpuPlayer.hasWon()) {
-            // Logica per vittoria del CPUPlayer
-        }
+        // TODO
     }
     
+
+    // NUOVO GAMELOOP: non ci sarà più un while, ma si gestisce uno alla volta i Player e si passa al prossimo con un endTurn()
+    private void handleTurnSystem() {
+        // passo al prossimo Player
+        Player currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
+        boolean visitingShop;
+        int diceResult;
+        int currentPlayerPosition;
+        // se è il turno di un CPU
+        // TODO: mettere tutto il contenuto dell'if dentro il metodo handleCpuTurn()
+        if (currentPlayer instanceof CPUPlayer) {
+            // gestisco le sue azioni:
+            // [azione 1] -> scegliere se visitare lo Shop a fine turno
+            visitingShop = this.playerController.getDecisionOnShopVisit((CPUPlayer)currentPlayer);
+
+            // [azione 2] -> rollare il dado
+            diceResult = this.rollDice(); // l'ho spostato su MatchController perchè non serviva necessariamente su PlayerController
+
+            // [azione 3] -> scegliere se rirollare (abilità elmo)
+            // devo passare sempre per playerController
+            if (this.playerController.getDecisionOnReroll((CPUPlayer)currentPlayer))
+            {
+                diceResult = this.rollDice();
+            }
+
+            // [azione 4] -> muovere il giocatore
+            currentPlayerPosition = this.playerController.movePlayer(currentPlayer, diceResult, this.boardController.getNumberOfTiles());
+
+            // [azione 5] -> scegliere se spostarsi leggermente (abilità gambali)
+            currentPlayerPosition = this.playerController.movePlayer(currentPlayer,
+                                                                     this.playerController.getDecisionOnPositionModifier((CPUPlayer) currentPlayer), // scelta se muoversi o no e in che direzione
+                                                                     this.boardController.getNumberOfTiles());
+            // quando ha finito di muoversi... si attiva l'effetto della casella
+            this.boardController.performActionOnTile(currentPlayer, currentPlayerPosition);
+
+            // se ha deciso di visitare lo Shop
+            if (visitingShop) {
+                // [azione 6] -> scegliere cosa fare nello Shop
+                // TODO
+                // metodo: shop mi ritorna la lista dei contenuti, la passo a CPU player che sceglie cosa fare e mi ritorna cosa ha comprato, chiamo playercontroller e gli dico di equipaggiare
+            }
+        }
+
+        // se sono passati tre turni dall'ultimo Fight
+        if (currentRoundNumber % 3 == 0) {
+            // inizializzare e far partire il Fight
+            // TODO
+        }
+    }
+
+
     // da modificare: chiamare tipo handleTurnSystem() -> deve regolare lo svolgimento generale del gioco,
     // implementare takeTurn() su player per cose specifiche al player (tirare dado, muoversi, scela shop, reroll, mod. posiz. -> differenziare tra real e cpu)
-    private void handleTurnSystem() {
+    private void handleTurnSyyystem() {
         while (!this.match.isGameOver()) {
             Player currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
 
             currentPlayer.playTurn();
             if(currentPlayer.wantsToVisitShop()){
-                shop
             }
             // se player reale...
             /*  -> chiede al player se visitare lo shop
@@ -172,5 +200,10 @@ public class MatchController {
     private void nextTurn() {
         int nextPlayerIndex = (match.getCurrentPlayerIndex() + 1) % match.getPlayers().size();
         this.match.setCurrentPlayerIndex(nextPlayerIndex);
+    }
+
+    // metodo per simulare il lancio del dado
+    public int rollDice() {
+        return this.rnd.nextInt(6) + 1; // Numero casuale tra 1 e 6
     }
 }

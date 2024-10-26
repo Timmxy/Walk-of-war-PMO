@@ -8,7 +8,6 @@ import Equipment.Shield;
 import Equipment.Weapon;
 import Player.Inventory;
 import Player.Pawn;
-import java.lang.classfile.instruction.ThrowInstruction;
 import java.util.List;
 import java.util.Random;
 
@@ -70,7 +69,7 @@ public abstract class Player {
     
     public abstract boolean wantsToRerollDice();
     
-    public abstract boolean wantsToMovePosition();
+    public abstract int wantsToMovePosition();
     
     public abstract boolean hasWon();
 
@@ -210,7 +209,7 @@ public abstract class Player {
     
     public void useReroll() {
         this.rerolls--;
-        rollDice();
+        this.rollDice();
         System.out.println(this.toString() + " usa un reroll! Reroll rimasti: "+ this.rerolls);
     }
     

@@ -1,6 +1,7 @@
 package Controller;
 
 import Equipment.Equipment;
+import Model.CPUPlayer;
 import Model.Player;
 import Model.TileEffectEvent;
 import Model.TileEffectListener;
@@ -34,7 +35,7 @@ public class PlayerController implements TileEffectListener {
         if (e != null) {
             this.equipmentBought(p, e);
         }
-        // SHIT NON HO BOARDCONTROLLER !!!
+        // TODO fixare la call a questo metodo
         this.movePlayer(p, -k, null);
     }
 
@@ -48,20 +49,20 @@ public class PlayerController implements TileEffectListener {
     // muove la pedina del giocatore sulla Board
     // ha bisogno di BoardController per controllare che non superi il numero max di caselle della board
     // non vorrei passare alcun controller in giro, quindi potrei usare la costante Board.MAX_TILES spostandola in una classe archivio "Util"
-    public void movePlayer(Player player, int diceRoll, BoardController boardController) {
+    public int movePlayer(Player player, int diceRoll, int lastTile) {
         int newPosition = player.getPawnPosition() + diceRoll;
 
-        if (newPosition >= boardController.getNumberOfTiles()) {
-            newPosition = boardController.getNumberOfTiles() - 1;
+        if (newPosition >= lastTile) {
+            newPosition = lastTile - 1;
         }
 
         System.out.println(newPosition);
         player.updatePosition(newPosition);
         //possiamo risolverlo in modo da non usare board controller?
         System.out.println(newPosition);
-        boardController.performActionOnTile(player, newPosition);
-
-        System.out.println(player.getName() + " finisce il turno alla casella " + player.getPawnPosition());
+        
+        System.out.println(player.getName() + " si muove alla casella " + player.getPawnPosition());
+        return player.getPawnPosition();
     }
 
     // metodo per verificare la condizione di vittoria
@@ -70,10 +71,7 @@ public class PlayerController implements TileEffectListener {
         return player.getPawnPosition() == lastTile;
     }
 
-    // metodo per simulare il lancio del dado
-    public int rollDice() {
-        return this.rnd.nextInt(6) + 1; // Numero casuale tra 1 e 6
-    }
+    
 
     // metodo che modifica lo stato del player quando occorre l'evento delle tile
     public void onTileEffectActivated(TileEffectEvent event) {
@@ -160,5 +158,20 @@ public class PlayerController implements TileEffectListener {
             System.out.println("Nessun altro giocatore in gara.");
             return null;
         }
+    }
+
+    // contatta il CPU Player per risolvere l'algoritmo: rirollare oppure no
+    public boolean getDecisionOnReroll(CPUPlayer player) {
+        return player.wantsToRerollDice();
+    }
+
+    // contatta il CPU Player per risolvere l'algoritmo: usare position modifier o no
+    // ritorna 0 se non vuole muoversi, 1 se andare avanti di uno, -1 se tornare indietro di 1
+    public int getDecisionOnPositionModifier(CPUPlayer player) {
+        return player.wantsToMovePosition();
+    }
+
+    public boolean getDecisionOnShopVisit(CPUPlayer player) {
+        return player.wantsToVisitShop();
     }
 }

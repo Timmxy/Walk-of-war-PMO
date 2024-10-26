@@ -36,10 +36,10 @@ public class CPUPlayer extends Player {
 
     // logica per il riposizionamento
     @Override
-    public boolean wantsToMovePosition() {
-        if(this.hasPositionModifiers()) //se ha modificatori di possizione disponibili
-            return random.nextBoolean(); // Il CPUPlayer decide casualmente se usare il riposizionamento
-        return false;
+    public int wantsToMovePosition() {
+        if(this.hasPositionModifiers()) // se ha modificatori di posizione disponibili
+            return random.nextInt(2) - 1; // il CPUPlayer decide casualmente see come usare il riposizionamento
+        return 0;
     }
 
     @Override
