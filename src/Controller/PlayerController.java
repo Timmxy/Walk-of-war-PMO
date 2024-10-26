@@ -36,7 +36,7 @@ public class PlayerController implements TileEffectListener {
             this.equipmentBought(p, e);
         }
         // TODO fixare la call a questo metodo
-        this.movePlayer(p, -k, null);
+        //this.movePlayer(p, -k, null);
     }
 
     // quando un Player compra (e quindi equipaggia) un Equipment. Chiamato dal bottone della view (SHOP)

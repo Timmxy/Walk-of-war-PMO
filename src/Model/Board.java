@@ -21,8 +21,8 @@ public class Board {
         return this.tilePath.get(index);
     }
 
-    public void activateCorrespondingEffect(int index, Player p) {
-        this.getTileAt(index).activateEffect(p);
+    public void activateCorrespondingEffect(Player p) {
+        this.getTileAt(p.getPawnPosition()).activateEffect(p);
     }
     
     public int getNumberOfTiles() {

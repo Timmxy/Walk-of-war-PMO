@@ -10,7 +10,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MatchController">
    <bottom>
       <GridPane alignment="CENTER" prefHeight="160.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -25,17 +25,17 @@
         </rowConstraints>
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#616161" height="160.0" layoutX="200.0" stroke="WHITE" strokeType="INSIDE" translateX="480.0" translateY="40.0" width="1280.0" />
-            <Button mnemonicParsing="false" prefHeight="43.0" prefWidth="218.0" text="Roll Dice" textAlignment="CENTER" GridPane.rowIndex="1">
+            <Button fx:id="rollDiceButton" mnemonicParsing="false" onAction="#rollDiceButtonClicked" prefHeight="43.0" prefWidth="218.0" text="Roll Dice" textAlignment="CENTER" GridPane.rowIndex="1">
                <font>
                   <Font size="25.0" />
                </font>
             </Button>
-            <Button layoutX="541.0" layoutY="15.0" mnemonicParsing="false" prefHeight="43.0" prefWidth="218.0" text="Visit Shop " textAlignment="CENTER" GridPane.columnIndex="3">
+            <Button layoutX="541.0" layoutY="15.0" mnemonicParsing="false" onAction="#visitShopButtonClicked" prefHeight="43.0" prefWidth="218.0" text="Visit Shop " textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="LEFT">
                <font>
                   <Font size="25.0" />
                </font>
             </Button>
-            <Button layoutX="541.0" layoutY="15.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="263.0" text="Use Greaves Ability" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
+            <Button layoutX="541.0" layoutY="15.0" mnemonicParsing="false" onAction="#greavesAbilityButtonClicked" prefHeight="52.0" prefWidth="263.0" text="Use Greaves Ability" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
                <font>
                   <Font size="25.0" />
                </font>
@@ -45,24 +45,32 @@
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label layoutX="117.0" layoutY="27.0" style="-fx-font-weight: bold;" text="Stats &amp; Inventory:" textFill="WHITE" GridPane.columnIndex="2">
+            <Label style="-fx-font-weight: bold;" text="Money: XXX" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT">
                <font>
-                  <Font size="24.0" />
+                  <Font size="15.0" />
                </font>
+               <padding>
+                  <Insets right="10.0" />
+               </padding>
             </Label>
-            <Label text="Money: XXX" textFill="WHITE" GridPane.columnIndex="3" GridPane.rowIndex="1">
-               <font>
-                  <Font size="16.0" />
-               </font>
-            </Label>
-            <Button layoutX="359.0" layoutY="75.0" mnemonicParsing="false" prefHeight="52.0" prefWidth="263.0" text="Use Helmet Ability" textAlignment="CENTER" GridPane.columnIndex="1">
+            <Button layoutX="359.0" layoutY="75.0" mnemonicParsing="false" onAction="#helmetAbilityButtonClicked" prefHeight="52.0" prefWidth="263.0" text="Use Helmet Ability" textAlignment="CENTER" GridPane.columnIndex="1">
                <font>
                   <Font size="25.0" />
                </font>
             </Button>
-            <Label text="Inventory contents ..." textAlignment="CENTER" textFill="WHITE" GridPane.columnIndex="2" GridPane.rowIndex="1">
+            <Button layoutX="701.0" layoutY="104.0" mnemonicParsing="false" onAction="#endTurnButtonClicked" prefHeight="43.0" prefWidth="218.0" text="End Turn" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                <font>
-                  <Font size="16.0" />
+                  <Font size="25.0" />
+               </font>
+            </Button>
+            <Label layoutX="93.0" layoutY="33.0" style="-fx-font-weight: bold;" text="Number of Rerolls: " textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT">
+               <font>
+                  <Font size="15.0" />
+               </font>
+            </Label>
+            <Label layoutX="733.0" layoutY="33.0" style="-fx-font-weight: bold;" text="Number of Position Modifiers:" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+               <font>
+                  <Font size="15.0" />
                </font>
             </Label>
          </children>

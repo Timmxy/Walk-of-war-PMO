@@ -17,8 +17,8 @@ public class BoardController {
     }
 
     // METODI
-    public void performActionOnTile(Player player, int position) {
-        this.board.activateCorrespondingEffect(position, player);
+    public void performActionOnTile(Player player) {
+        this.board.activateCorrespondingEffect(player);
     }
 
     public int getNumberOfTiles() {
@@ -28,4 +28,5 @@ public class BoardController {
     public BoardView getView() {
         return this.view;
     }
+
 }

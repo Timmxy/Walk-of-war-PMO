@@ -11,7 +11,7 @@ import Player.Pawn;
 import java.util.List;
 import java.util.Random;
 
-public abstract class Player {
+public class Player {
 
     //DICHIARAZIONE VARIABILI
     private static final int DEFAULT_HP = 3;
@@ -33,7 +33,7 @@ public abstract class Player {
     private int id;
     private int winCounter;
     private int turnsTaken;
-    private boolean visitingShop;   // settato true dalla view a fine turno -> resettare false ogni turno
+    private boolean wantsToVisitShop;
     private Random rnd;             // simula il lancio del dado
     
     // derivanti da effetti speciali armatura
@@ -52,7 +52,6 @@ public abstract class Player {
         this.winCounter = 0;
         this.turnsTaken = 0;
         this.defending = false;
-        this.visitingShop = false;
         
         this.resetToDefaultStats();
         this.money = 0;
@@ -63,18 +62,6 @@ public abstract class Player {
     }
     
     //DEFINIZIONE METODI
-    
-    //metodi astratti per la gestione di RealPlayer e di CPUPlayer
-    public abstract boolean wantsToVisitShop();
-    
-    public abstract boolean wantsToRerollDice();
-    
-    public abstract int wantsToMovePosition();
-    
-    public abstract boolean hasWon();
-
-    public abstract void playTurn();
-
     
     // gestione sistema INVENTORY
     public void addItemToInventory(Equipment equipment){
@@ -232,8 +219,8 @@ public abstract class Player {
     }
     
     // per SHOP
-    public boolean setVisitingShop(boolean bool) {
-        return this.visitingShop = bool;
+    public boolean setVisitingShop(boolean b) {
+        return this.wantsToVisitShop = b;
     }
     
     //getter e setter

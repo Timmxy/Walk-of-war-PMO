@@ -28,38 +28,6 @@ public class RealPlayer extends Player {
         this.hasWon = hasWon;
     }
 
-    // Implementazioni dei metodi astratti del Player
-    @Override
-    public boolean wantsToVisitShop() {
-        //se clicco nella view (quindi forse va fatto in player controller)
-        //setti la variabile vistingShop
-        boolean cond = false; //variabile a caso per ora, dovrà essere l'esito della view
-        //clicco bottone setto a true la condizione e fa l'if, se non clicco resta a false
-        if(cond)
-            return this.setVisitingShop(true);
-        else
-            return false;
-    }
-
-    @Override
-    public boolean wantsToRerollDice() {
-        return this.wantsToRerollDice;
-    }
-
-    @Override
-    public boolean wantsToMovePosition() {
-        return this.wantsToMovePosition;
-    }
-
-    @Override
-    public void playTurn() {
-        // TODO logica del tunro del player reale
-    }
-
-    @Override
-    public boolean hasWon() {
-        return this.hasWon;
-    }
 
 }
 

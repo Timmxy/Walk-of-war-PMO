@@ -13,6 +13,7 @@ import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
 import javafx.scene.Node;
 import javafx.scene.Scene;
+import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
@@ -30,6 +31,11 @@ public class MatchView {
     
     private Stage stage;
     private BorderPane rootPane;
+    private Button rollDiceButton;
+    private Button rerollDiceButton;
+    private Button greavesAbilityButton;
+    private Button visitShopButton;
+    private Button endTurnButton;
     
     // Viste principali
     private BoardView boardView;
@@ -131,5 +137,48 @@ public class MatchView {
             playerPawn.setTranslateY(tileY);  // Aggiusta posizione verticale
         }
     }
+
+    public void displayDiceResult(int diceResult) {
+        // TODO Auto-generated method stub
+        throw new UnsupportedOperationException("Unimplemented method 'disableAllButtons'");
+    }
+    
+    public void disableAllButtons() {
+        disableRollDiceButton();
+        disableRerollDiceButton();
+        disableGreavesAbilityButton();
+        disableVisitShopButton();
+    }
+
+    
+    public void disableRollDiceButton() {
+        this.rollDiceButton.setDisable(true);
+    }
+    
+    public void disableRerollDiceButton() {
+        this.rerollDiceButton.setDisable(true);
+    }
+    
+    private void disableGreavesAbilityButton() {
+        this.greavesAbilityButton.setDisable(true);
+    }
+
+    public void disableVisitShopButton() {
+        this.visitShopButton.setDisable(true);
+    }
+
+    public void disableEndTurnButton() {
+        this.endTurnButton.setDisable(true);
+    }
+
+    // ENABLERS
+    public void enableRerollDiceButton() {
+        this.rerollDiceButton.setDisable(false); 
+    }
+
+    public void enableGreavesAbilityButton() {
+        this.greavesAbilityButton.setDisable(false);
+    }
+
 
 }
