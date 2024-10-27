@@ -31,11 +31,6 @@ public class MatchView {
     
     private Stage stage;
     private BorderPane rootPane;
-    private Button rollDiceButton;
-    private Button rerollDiceButton;
-    private Button greavesAbilityButton;
-    private Button visitShopButton;
-    private Button endTurnButton;
     
     // Viste principali
     private BoardView boardView;
@@ -55,37 +50,30 @@ public class MatchView {
         this.players = players;
         this.playersPawns = new HashMap<>();
 
-        // Inizializza la grafica delle pedine per ogni giocatore
+        // inizializza la grafica delle pedine per ogni giocatore
         for (int i = 0; i < players.size(); i++) {
             Player player = players.get(i);
             StackPane playerPawn = createPlayerPawn(i);
             this.playersPawns.put(player, playerPawn);
         }
-
-        try {
-            this.initializePanel();
-        } catch (Exception e) {
-            e.printStackTrace();
-        }
-        
     }
     
-    private void initializePanel() throws Exception {
-        this.rootPane = FXMLLoader.load(getClass().getResource("/Controller/MatchScene.fxml"));
+    public void initializePanel(FXMLLoader loader) throws Exception {
+        this.rootPane = loader.load();
         this.rootPane.setMaxSize(1280, 720);
         this.rootPane.setMinSize(1280, 720);
         this.rootPane.setBackground(new Background(new BackgroundFill(Color.BLACK, CornerRadii.EMPTY, Insets.EMPTY)));
         
         
-        // Imposta la BoardView
+        // imposta la BoardView
         this.rootPane.setCenter(boardView);
         
         
-        // Aggiungi PlayerView o PawnView
+        // aggiungiìe rappresentazione grafica delle pedine
         for (Map.Entry<Player, StackPane> entry : playersPawns.entrySet()) {
             this.boardView.getChildren().add(entry.getValue());  // Aggiungi le pedine alla scena
         }
-        // Aggiungi ShopView
+        // aggiunge ShopView
         
         // Crea e mostra la scena
         Scene scene = new Scene(rootPane);
@@ -108,13 +96,13 @@ public class MatchView {
         triangle.setStroke(Color.BLUEVIOLET);  // Contorno rosso
         triangle.setStrokeWidth(2);
 
-        // Aggiungi un testo con il numero del giocatore sopra il triangolo
+        // aggiunge un testo con il numero del giocatore sopra il triangolo
         Text playerNumberText = new Text(String.valueOf(playerNumber));
         playerNumberText.setFill(Color.BLACK);
         playerNumberText.setStyle("-fx-font-size: 12; -fx-font-weight: bold;");
 
 
-        // Crea uno StackPane per posizionare il numero sopra la pedina
+        // crea uno StackPane per posizionare il numero sopra la pedina
         StackPane playerStack = new StackPane(triangle, playerNumberText);
         playerStack.setPrefSize(30,30);
         playerStack.setAlignment(Pos.CENTER);
@@ -124,7 +112,7 @@ public class MatchView {
         return playerStack;
     }
 
-    // Metodo per posizionare la pedina del giocatore su una Tile specifica
+    // metodo per posizionare la pedina del giocatore su una Tile specifica
     public void movePlayerToTile(Player player) {
         StackPane playerPawn = playersPawns.get(player);  // Ottieni la pedina del giocatore
         if (playerPawn != null) {
@@ -137,48 +125,4 @@ public class MatchView {
             playerPawn.setTranslateY(tileY);  // Aggiusta posizione verticale
         }
     }
-
-    public void displayDiceResult(int diceResult) {
-        // TODO Auto-generated method stub
-        throw new UnsupportedOperationException("Unimplemented method 'disableAllButtons'");
-    }
-    
-    public void disableAllButtons() {
-        disableRollDiceButton();
-        disableRerollDiceButton();
-        disableGreavesAbilityButton();
-        disableVisitShopButton();
-    }
-
-    
-    public void disableRollDiceButton() {
-        this.rollDiceButton.setDisable(true);
-    }
-    
-    public void disableRerollDiceButton() {
-        this.rerollDiceButton.setDisable(true);
-    }
-    
-    private void disableGreavesAbilityButton() {
-        this.greavesAbilityButton.setDisable(true);
-    }
-
-    public void disableVisitShopButton() {
-        this.visitShopButton.setDisable(true);
-    }
-
-    public void disableEndTurnButton() {
-        this.endTurnButton.setDisable(true);
-    }
-
-    // ENABLERS
-    public void enableRerollDiceButton() {
-        this.rerollDiceButton.setDisable(false); 
-    }
-
-    public void enableGreavesAbilityButton() {
-        this.greavesAbilityButton.setDisable(false);
-    }
-
-
 }

@@ -2,7 +2,10 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
+<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
+<?import javafx.scene.control.MenuItem?>
+<?import javafx.scene.control.SplitMenuButton?>
 <?import javafx.scene.layout.BorderPane?>
 <?import javafx.scene.layout.ColumnConstraints?>
 <?import javafx.scene.layout.GridPane?>
@@ -10,7 +13,7 @@
 <?import javafx.scene.shape.Rectangle?>
 <?import javafx.scene.text.Font?>
 
-<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1" fx:controller="Controller.MatchController">
+<BorderPane maxHeight="-Infinity" maxWidth="-Infinity" minHeight="720.0" minWidth="1280.0" prefHeight="720.0" prefWidth="1280.0" xmlns="http://javafx.com/javafx/22" xmlns:fx="http://javafx.com/fxml/1">
    <bottom>
       <GridPane alignment="CENTER" prefHeight="160.0" prefWidth="1280.0" BorderPane.alignment="CENTER">
         <columnConstraints>
@@ -30,22 +33,17 @@
                   <Font size="25.0" />
                </font>
             </Button>
-            <Button layoutX="541.0" layoutY="15.0" mnemonicParsing="false" onAction="#visitShopButtonClicked" prefHeight="43.0" prefWidth="218.0" text="Visit Shop " textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="LEFT">
+            <Button fx:id="visitShopButton" layoutX="541.0" layoutY="15.0" mnemonicParsing="false" onAction="#visitShopButtonClicked" prefHeight="43.0" prefWidth="218.0" text="Visit Shop " textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="LEFT">
                <font>
                   <Font size="25.0" />
                </font>
             </Button>
-            <Button layoutX="541.0" layoutY="15.0" mnemonicParsing="false" onAction="#greavesAbilityButtonClicked" prefHeight="52.0" prefWidth="263.0" text="Use Greaves Ability" textAlignment="CENTER" GridPane.columnIndex="1" GridPane.rowIndex="1">
-               <font>
-                  <Font size="25.0" />
-               </font>
-            </Button>
-            <Label style="-fx-font-weight: bold;" text="Player X turn!" textFill="WHITE">
+            <Label fx:id="currentPlayerTurn" style="-fx-font-weight: bold;" text="Player X turn!" textFill="WHITE">
                <font>
                   <Font size="24.0" />
                </font>
             </Label>
-            <Label style="-fx-font-weight: bold;" text="Money: XXX" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT">
+            <Label fx:id="currentPlayerMoney" style="-fx-font-weight: bold;" text="Money: XXX" textFill="WHITE" GridPane.columnIndex="3" GridPane.halignment="RIGHT">
                <font>
                   <Font size="15.0" />
                </font>
@@ -53,26 +51,36 @@
                   <Insets right="10.0" />
                </padding>
             </Label>
-            <Button layoutX="359.0" layoutY="75.0" mnemonicParsing="false" onAction="#helmetAbilityButtonClicked" prefHeight="52.0" prefWidth="263.0" text="Use Helmet Ability" textAlignment="CENTER" GridPane.columnIndex="1">
+            <Button fx:id="rerollDiceButton" layoutX="359.0" layoutY="75.0" mnemonicParsing="false" onAction="#helmetAbilityButtonClicked" prefHeight="52.0" prefWidth="263.0" text="Use Helmet Ability" textAlignment="CENTER" GridPane.columnIndex="1">
                <font>
                   <Font size="25.0" />
                </font>
             </Button>
-            <Button layoutX="701.0" layoutY="104.0" mnemonicParsing="false" onAction="#endTurnButtonClicked" prefHeight="43.0" prefWidth="218.0" text="End Turn" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+            <Button fx:id="endTurnButton" layoutX="701.0" layoutY="104.0" mnemonicParsing="false" onAction="#endTurnButtonClicked" prefHeight="43.0" prefWidth="218.0" text="End Turn" textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                <font>
                   <Font size="25.0" />
                </font>
             </Button>
-            <Label layoutX="93.0" layoutY="33.0" style="-fx-font-weight: bold;" text="Number of Rerolls: " textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT">
+            <Label fx:id="currentPlayerRerolls" layoutX="93.0" layoutY="33.0" style="-fx-font-weight: bold;" text="Number of Rerolls: " textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
-            <Label layoutX="733.0" layoutY="33.0" style="-fx-font-weight: bold;" text="Number of Position Modifiers:" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
+            <Label fx:id="currentPlayerPosModifiers" layoutX="733.0" layoutY="33.0" style="-fx-font-weight: bold;" text="Number of Position Modifiers:" textFill="WHITE" GridPane.columnIndex="2" GridPane.halignment="LEFT" GridPane.rowIndex="1">
                <font>
                   <Font size="15.0" />
                </font>
             </Label>
+            <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" />
+            <SplitMenuButton fx:id="greavesAbilityButton" mnemonicParsing="false" text="Use Greaves Ability" GridPane.columnIndex="1" GridPane.rowIndex="1">
+              <items>
+                <MenuItem mnemonicParsing="false" onAction="#greavesAbilityActionForward" text="Move Forward 1" />
+                <MenuItem mnemonicParsing="false" onAction="#greavesAbilityActionBack" text="Move Back 1" />
+              </items>
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </SplitMenuButton>
          </children>
       </GridPane>
    </bottom>

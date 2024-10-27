@@ -12,6 +12,11 @@ import Model.Shop;
 import View.MatchView;
 import javafx.application.Platform;
 import javafx.concurrent.Task;
+import javafx.fxml.FXML;
+import javafx.fxml.FXMLLoader;
+import javafx.scene.control.Button;
+import javafx.scene.control.Label;
+import javafx.scene.control.SplitMenuButton;
 import javafx.stage.Stage;
 
 import java.util.List;
@@ -33,13 +38,30 @@ public class MatchController {
   
     // View
     private MatchView matchView; // conterrà un'aggregazione di tutte le view
+    @FXML
+    private Button rollDiceButton;
+    @FXML
+    private Button rerollDiceButton;
+    @FXML
+    private SplitMenuButton greavesAbilityButton;
+    @FXML
+    private Button visitShopButton;
+    @FXML
+    private Button endTurnButton;
+    @FXML
+    private Label currentPlayerTurn;
+    @FXML
+    private Label currentPlayerRerolls;
+    @FXML
+    private Label currentPlayerPosModifiers;
+    @FXML
+    private Label currentPlayerMoney;
 
     // INFO UTILI
     private int currentRoundNumber;
     private Random rnd;
 
 
-    // GPT ha detto che avrebbe più senso crearli direttamente qui i vari altri controller
     public MatchController(Match match, List<Player> players, Board board, Shop shop, Fight fight, Stage stage) {
         this.match = match;
         this.playerController = new PlayerController(players);
@@ -47,17 +69,23 @@ public class MatchController {
         this.shopController = new ShopController(shop);
         this.fightController = new FightController(fight);
 
+        this.rnd = new Random();
+
 
         // da spostare su matchController
         for (int i = 0; i < board.getNumberOfTiles(); i++) {
             board.getTileAt(i).addTileEffectListener(playerController);
         }
 
-        // later
+        // creo la View
         this.matchView = new MatchView(stage, this.boardController.getView(),
                                                 this.shopController.getView(),
                                                 this.fightController.getView(),
                                                 players);
+
+        
+        // per inizializzare il pannello dela View                                       
+        this.setControllerForView();
     }
 
     public void startGame() {
@@ -108,17 +136,7 @@ public class MatchController {
             // inizializzare e far partire il Fight
             // TODO
         }
-        
-        // DEBUG
-        try {
-            TimeUnit.SECONDS.sleep(5);
-        } catch (InterruptedException e) {
-            // TODO Auto-generated catch block
-            e.printStackTrace();
-        }
-        
         System.out.println("\n ******************************************************************\n");
-        this.nextTurn(); // passa al turno successivo
     }
     
     // metodo per gestire l'algoritmo di tutte le scelte che deve compiere CPU Player durante il suo turno
@@ -128,6 +146,12 @@ public class MatchController {
         int diceResult;
         
         // CORPO
+        // aspetto un po'
+        try {
+            TimeUnit.SECONDS.sleep(3);
+        } catch (InterruptedException e) {
+            e.printStackTrace();
+        }
         // [azione 1] -> scegliere se visitare lo Shop a fine turno
         visitingShop = this.playerController.getDecisionOnShopVisit((CPUPlayer)this.currentPlayer);
 
@@ -143,6 +167,8 @@ public class MatchController {
 
         // [azione 4] -> muovere il giocatore
         this.playerController.movePlayer(this.currentPlayer, diceResult, this.boardController.getNumberOfTiles());
+        // aggiorno posizione sulla View
+        this.matchView.movePlayerToTile(this.currentPlayer);
 
         // [azione 5] -> scegliere se spostarsi leggermente (abilità gambali)
         this.playerController.movePlayer(this.currentPlayer,
@@ -150,6 +176,8 @@ public class MatchController {
                                             this.boardController.getNumberOfTiles());
         // quando ha finito di muoversi... si attiva l'effetto della casella
         this.boardController.performActionOnTile(this.currentPlayer);
+        // aggiorno posizione sulla View
+        this.matchView.movePlayerToTile(this.currentPlayer);
 
         // se ha deciso di visitare lo Shop
         if (visitingShop) {
@@ -157,6 +185,9 @@ public class MatchController {
             // TODO
             // metodo: shop mi ritorna la lista dei contenuti, la passo a CPU player che sceglie cosa fare e mi ritorna cosa ha comprato, chiamo playercontroller e gli dico di equipaggiare
         }
+
+        // passa al turno successivo
+        this.nextTurn(); // passa al turno successivo
     }
 
     // metodo per simulare il lancio del dado
@@ -170,20 +201,22 @@ public class MatchController {
     public void rollDiceButtonClicked() {
         this.currentDiceResult = this.rollDice();
         // chiedo alla View di visualizzare l'esito
-        this.matchView.displayDiceResult(this.currentDiceResult);
+        this.displayDiceResult(this.currentDiceResult);
         
         // disattivo questo bottone
-        this.matchView.disableRollDiceButton();
+        this.disableRollDiceButton();
         
         // se non ha rerolls
         if (!this.currentPlayer.hasRerolls()) {
             this.playerController.movePlayer(this.currentPlayer, this.currentDiceResult, this.boardController.getNumberOfTiles());
             // controllo se  ha position modifiers, se sì attivo il bottone corrispondente, altrimenti procedo con attivare effetto casella
             this.checkPositionModifiers();
+            // aggiorno posizione sulla View
+            this.matchView.movePlayerToTile(this.currentPlayer);
         }
         else {
             // attivo bottone reroll (se ha i reroll)
-            this.matchView.enableRerollDiceButton();
+            this.enableRerollDiceButton();
         }
     }
     
@@ -193,16 +226,18 @@ public class MatchController {
         this.currentDiceResult = this.rollDice();
         
         // chiedo alla View di visualizzare l'esito
-        this.matchView.displayDiceResult(this.currentDiceResult);
+        this.displayDiceResult(this.currentDiceResult);
         
         // se non ha più reroll passo direttamente al movimento
         if (!this.currentPlayer.hasRerolls()) {
             // disattivo bottone Reroll Dice
-            this.matchView.disableRerollDiceButton();
+            this.disableRerollDiceButton();
             // muovo la pedina
             this.playerController.movePlayer(this.currentPlayer, this.currentDiceResult, this.boardController.getNumberOfTiles());
             // controllo se  ha position modifiers, se sì attivo il bottone corrispondente, altrimenti procedo con attivare effetto casella
             this.checkPositionModifiers();
+            // aggiorno posizione sulla View
+            this.matchView.movePlayerToTile(this.currentPlayer);
         }
     }
     
@@ -212,13 +247,25 @@ public class MatchController {
         this.playerController.movePlayer(this.currentPlayer, this.currentDiceResult, this.boardController.getNumberOfTiles());
         // controllo se  ha position modifiers, se sì attivo il bottone corrispondente, altrimenti procedo con attivare effetto casella
         this.checkPositionModifiers();
+        // aggiorno posizione sulla View
+        this.matchView.movePlayerToTile(this.currentPlayer);
     }
     
-    public void greavesAbilityButtonClicked(int howToMove) {
+    private void greavesAbilityButtonClicked(int howToMove) {
         // muovere player secondo param scelto
         this.playerController.movePlayer(this.currentPlayer, howToMove, this.boardController.getNumberOfTiles());
         // attivare effetto casella
         this.boardController.performActionOnTile(this.currentPlayer);
+        // aggiorno posizione sulla View
+        this.matchView.movePlayerToTile(this.currentPlayer);
+    }
+
+    public void greavesAbilityActionForward() {
+        this.greavesAbilityButtonClicked(1);
+    }
+
+    public void greavesAbilityActionBack() {
+        this.greavesAbilityButtonClicked(-1);
     }
     
     public void visitShopButtonClicked() {
@@ -239,7 +286,80 @@ public class MatchController {
         }
         else {
             // attivo bottone "Use Greaves Ability"
-            this.matchView.enableGreavesAbilityButton();
+            this.enableGreavesAbilityButton();
+        }
+    }
+
+    public void displayDiceResult(int diceResult) {
+        switch (diceResult) {
+            case 1:
+                
+                break;
+            case 2:
+                
+                break;
+            case 3:
+                
+                break;
+            case 4:
+                
+                break;
+            case 5:
+                
+                break;
+            case 6:
+                
+                break;
+            default:
+                break;
+        }
+    }
+    // TODO: abilitare e disabilitare in modo corretto i bottoni per utente reale
+    // DISABLERS
+    public void disableAllButtons() {
+        disableRollDiceButton();
+        disableRerollDiceButton();
+        disableGreavesAbilityButton();
+        disableVisitShopButton();
+    }
+
+    
+    private void disableRollDiceButton() {
+        this.rollDiceButton.setDisable(true);
+    }
+    
+    private void disableRerollDiceButton() {
+        this.rerollDiceButton.setDisable(true);
+    }
+    
+    private void disableGreavesAbilityButton() {
+        this.greavesAbilityButton.setDisable(true);
+    }
+
+    private void disableVisitShopButton() {
+        this.visitShopButton.setDisable(true);
+    }
+
+    private void disableEndTurnButton() {
+        this.endTurnButton.setDisable(true);
+    }
+
+    // ENABLERS
+    private void enableRerollDiceButton() {
+        this.rerollDiceButton.setDisable(false); 
+    }
+
+    private void enableGreavesAbilityButton() {
+        this.greavesAbilityButton.setDisable(false);
+    }
+
+    private void setControllerForView() {
+        FXMLLoader loader = new FXMLLoader(getClass().getResource("MatchScene.fxml"));
+        loader.setController(this);
+        try {
+            this.matchView.initializePanel(loader);   
+        } catch (Exception e) {
+            throw new IllegalArgumentException();
         }
     }
     
@@ -254,7 +374,7 @@ public class MatchController {
 
         if (this.currentPlayer instanceof CPUPlayer) {
             // disattivo la ui
-            this.matchView.disableAllButtons();
+            this.disableAllButtons();
         }
         // imposto indice del Player successivo
         int nextPlayerIndex = (match.getCurrentPlayerIndex() + 1) % match.getPlayers().size();

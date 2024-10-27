@@ -57,7 +57,7 @@ public class Tile {
     public void activateEffect(Player p) {
         TileEffectEvent event = new TileEffectEvent(p, this.variant, this.effectValue);
         System.out.println(p.toString() + " finisce sulla " +this.toString() +" val: "+ this.effectValue);
-        notifyListeners(event);
+        this.notifyListeners(event);
     }
 
 
