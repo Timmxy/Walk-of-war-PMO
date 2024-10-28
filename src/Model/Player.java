@@ -196,7 +196,6 @@ public class Player {
     
     public void useReroll() {
         this.rerolls--;
-        this.rollDice();
         System.out.println(this.toString() + " usa un reroll! Reroll rimasti: "+ this.rerolls);
     }
     
@@ -260,13 +259,21 @@ public class Player {
     public int getCurrentAtks(){
         return this.currentAtks;
     }
-
+    
     public int getMaxShields(){
         return this.maxShields;
     }
-
+    
     public int getcurrentShields(){
         return this.currentShields;
+    }
+
+    public int getNumberOfRerolls() {
+        return this.rerolls;
+    }
+
+    public int getNumberOfPosModifiers() {
+        return this.positionModifiers;
     }
 
     public int getPawnPosition() {
@@ -295,4 +302,6 @@ public class Player {
     public String toString() {
         return this.name;
     }
+
+
 }

@@ -28,9 +28,8 @@ public class BoardView extends Pane {
     private static final int PANE_WIDTH = 1050; // larghezza pannello
     private static final int PANE_HEIGTH = 450; // altezza pannello
 
-    //TODO: devo fare una arraylist di pair<tile, point2d> in modo da conservare le posizioni delle tile
-    //TODO: creare PAIR
-    private ArrayList<Pair<Tile, Point2D>> tilePositions = new ArrayList<Pair<Tile, Point2D>>(); // mappa per salvare le posizioni delle Tile
+    // mappa per salvare le posizioni delle Tile
+    private ArrayList<Pair<Tile, Point2D>> tilePositions = new ArrayList<Pair<Tile, Point2D>>(); 
 
     // COSTRUTTORE
     public BoardView(List<Tile> tiles) {

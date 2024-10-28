@@ -174,4 +174,8 @@ public class PlayerController implements TileEffectListener {
     public boolean getDecisionOnShopVisit(CPUPlayer player) {
         return player.wantsToVisitShop();
     }
+
+    public void updateRerollsCount(Player player) {
+        player.useReroll();
+    }
 }

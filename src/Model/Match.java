@@ -40,7 +40,6 @@ public class Match {
     public Match(GameMode gameMode, Stage stage){   
         this.initGameMode(gameMode);
         // a questo punto tutti i Model di gioco dovrebbero essere stati creati, li passo al Controller
-
         this.matchController = new MatchController(this, this.allPlayers, this.board, this.shop, this.fight, stage);
         
         // credo che dovrei avviare il gioco QUI
@@ -71,7 +70,7 @@ public class Match {
     private void gameSetup(int realPlayers, int cpuPlayers){
         
         this.playersSetup(realPlayers, cpuPlayers);
-        this.boardSetup(realPlayers + cpuPlayers);
+        this.boardSetup();
         this.shopSetup();
     }
     
@@ -89,8 +88,7 @@ public class Match {
     }
 
     // creazione e disposizione della Board di gioco
-    private void boardSetup(int numPlayers){
-        //renderla più grande per più giocatori??? NO
+    private void boardSetup(){
         this.board = new Board();
     }
 
@@ -102,9 +100,6 @@ public class Match {
     private void fightSetup() {
         this.fight = new Fight();
     }
-
-
-    // CHATGPT !!!!!!!!!
 
     
     public boolean isGameOver() {

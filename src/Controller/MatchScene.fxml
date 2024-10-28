@@ -2,7 +2,6 @@
 
 <?import javafx.geometry.Insets?>
 <?import javafx.scene.control.Button?>
-<?import javafx.scene.control.ButtonBar?>
 <?import javafx.scene.control.Label?>
 <?import javafx.scene.control.MenuItem?>
 <?import javafx.scene.control.SplitMenuButton?>
@@ -28,10 +27,13 @@
         </rowConstraints>
          <children>
             <Rectangle arcHeight="5.0" arcWidth="5.0" fill="#616161" height="160.0" layoutX="200.0" stroke="WHITE" strokeType="INSIDE" translateX="480.0" translateY="40.0" width="1280.0" />
-            <Button fx:id="rollDiceButton" mnemonicParsing="false" onAction="#rollDiceButtonClicked" prefHeight="43.0" prefWidth="218.0" text="Roll Dice" textAlignment="CENTER" GridPane.rowIndex="1">
+            <Button fx:id="rollDiceButton" alignment="CENTER" mnemonicParsing="false" onAction="#rollDiceButtonClicked" prefHeight="43.0" prefWidth="150.0" text="Roll Dice" translateX="-70.0" GridPane.halignment="CENTER" GridPane.rowIndex="1" GridPane.valignment="CENTER">
                <font>
                   <Font size="25.0" />
                </font>
+               <GridPane.margin>
+                  <Insets />
+               </GridPane.margin>
             </Button>
             <Button fx:id="visitShopButton" layoutX="541.0" layoutY="15.0" mnemonicParsing="false" onAction="#visitShopButtonClicked" prefHeight="43.0" prefWidth="218.0" text="Visit Shop " textAlignment="CENTER" GridPane.columnIndex="3" GridPane.halignment="LEFT">
                <font>
@@ -51,7 +53,7 @@
                   <Insets right="10.0" />
                </padding>
             </Label>
-            <Button fx:id="rerollDiceButton" layoutX="359.0" layoutY="75.0" mnemonicParsing="false" onAction="#helmetAbilityButtonClicked" prefHeight="52.0" prefWidth="263.0" text="Use Helmet Ability" textAlignment="CENTER" GridPane.columnIndex="1">
+            <Button fx:id="rerollDiceButton" layoutX="359.0" layoutY="75.0" mnemonicParsing="false" onAction="#helmetAbilityButtonClicked" prefHeight="52.0" prefWidth="150.0" text="Use Reroll" GridPane.columnIndex="1" GridPane.halignment="LEFT">
                <font>
                   <Font size="25.0" />
                </font>
@@ -71,7 +73,6 @@
                   <Font size="15.0" />
                </font>
             </Label>
-            <ButtonBar prefHeight="40.0" prefWidth="200.0" GridPane.columnIndex="1" />
             <SplitMenuButton fx:id="greavesAbilityButton" mnemonicParsing="false" text="Use Greaves Ability" GridPane.columnIndex="1" GridPane.rowIndex="1">
               <items>
                 <MenuItem mnemonicParsing="false" onAction="#greavesAbilityActionForward" text="Move Forward 1" />
@@ -81,6 +82,16 @@
                   <Font size="25.0" />
                </font>
             </SplitMenuButton>
+            <Label fx:id="diceResultText" prefHeight="30.0" prefWidth="165.0" text="You rolled a: " textFill="WHITE" translateX="25.0" GridPane.halignment="RIGHT" GridPane.rowIndex="1">
+               <font>
+                  <Font size="20.0" />
+               </font>
+            </Label>
+            <Button fx:id="acceptRerollButton" layoutX="330.0" layoutY="24.0" mnemonicParsing="false" onAction="#helmetAbilityButtonClicked" prefHeight="52.0" prefWidth="160.0" text="Accept Roll" translateX="75.0" GridPane.columnIndex="1">
+               <font>
+                  <Font size="25.0" />
+               </font>
+            </Button>
          </children>
       </GridPane>
    </bottom>

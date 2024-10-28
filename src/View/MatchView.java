@@ -37,8 +37,8 @@ public class MatchView {
     private ShopView shopView;
     private FightView fightView;
 
-    private List<Player> players;  // La lista dei giocatori nel match
-    private Map<Player, StackPane> playersPawns;  // Mappa che associa un Player alla sua pedina grafica
+    private List<Player> players;  // la lista dei giocatori nel match
+    private Map<Player, StackPane> playersPawns;  // mappa che associa un Player alla sua pedina grafica
 
     
     // COSTRUTTORE

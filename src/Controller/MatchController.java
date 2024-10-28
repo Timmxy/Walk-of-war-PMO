@@ -19,6 +19,7 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SplitMenuButton;
 import javafx.stage.Stage;
 
+import java.nio.channels.Pipe.SourceChannel;
 import java.util.List;
 import java.util.Random;
 
@@ -43,6 +44,8 @@ public class MatchController {
     @FXML
     private Button rerollDiceButton;
     @FXML
+    private Button acceptRerollButton;
+    @FXML
     private SplitMenuButton greavesAbilityButton;
     @FXML
     private Button visitShopButton;
@@ -50,6 +53,8 @@ public class MatchController {
     private Button endTurnButton;
     @FXML
     private Label currentPlayerTurn;
+    @FXML
+    private Label diceResultText;
     @FXML
     private Label currentPlayerRerolls;
     @FXML
@@ -91,64 +96,50 @@ public class MatchController {
     public void startGame() {
         this.match.setGameOver(false);
         this.match.setCurrentPlayerIndex(0); // inizia con il primo giocatore
+        
+        this.nextTurn();
 
-        
-        
-        Task<Void> task = new Task<Void>() {
-            @Override
-            protected Void call() throws Exception {
-                // Logica di gioco che non coinvolge la GUI
-                nextTurn();
-                return null;
-            }
-        };
-
-        new Thread(task).start();  // Esegui in un thread separato
-        
-        System.out.println("Il gioco è finito!");
+        System.out.println("Il gioco è cominciato!");
         // tornare al menu principale / rigioca
     }
-
-    // metodo gestire le scelte dei Player Reali durante il turno (effettuate tramite interazione utente con la View)
-    public void handlePlayerTurn(Player genericPlayer) {
-        //wait del click del giocatore
-        // TODO
-        // attivo solo pulsanti "Roll Dice" e "Visit Shop"
-    }
-    
-    
     
     // NUOVO GAMELOOP: non ci sarà più un while, ma si gestisce uno alla volta i Player e si passa al prossimo con un endTurn()
     private void handleCurrentTurn() {
+        // debug
+        System.out.println("Turno di: "+this.currentPlayer.toString());
+
         // se è il turno di un CPU
-        // TODO: mettere tutto il contenuto dell'if dentro il metodo handleCpuTurn()
         if (this.currentPlayer instanceof CPUPlayer) {
             // disattivo i pulsanti sulla MatchView
             // gestisco le sue azioni:
             this.handleCPUTurn();
         }
-        else if (this.currentPlayer instanceof RealPlayer) {
-            // TODO: gestire utente reale
-        }
         
         // se sono passati tre turni dall'ultimo Fight
         if (currentRoundNumber % 3 == 0) {
+            // debug
+            System.out.println("Sta cominciando il Fight");
             // inizializzare e far partire il Fight
-            // TODO
+
+            // TODO: gestire evento fight
         }
         System.out.println("\n ******************************************************************\n");
     }
     
     // metodo per gestire l'algoritmo di tutte le scelte che deve compiere CPU Player durante il suo turno
     public void handleCPUTurn() {
+
+        // TODO: fixare aggiornamento view nei turni della cpu -> ora si freeza, bisognerebbe tornare a separare le cose con due thread
         // VARIABILI LOCALI
         boolean visitingShop;
         int diceResult;
         
         // CORPO
+        // aggiorno labels
+        this.refreshInfoLabels();
         // aspetto un po'
         try {
-            TimeUnit.SECONDS.sleep(3);
+            TimeUnit.SECONDS.sleep(2);
         } catch (InterruptedException e) {
             e.printStackTrace();
         }
@@ -157,12 +148,14 @@ public class MatchController {
 
         // [azione 2] -> rollare il dado
         diceResult = this.rollDice(); // l'ho spostato su MatchController perchè non serviva necessariamente su PlayerController
+        this.diceResultText.setText("You rolled a: "+diceResult);
 
         // [azione 3] -> scegliere se rirollare (abilità elmo)
         // devo passare sempre per playerController
         if (this.playerController.getDecisionOnReroll((CPUPlayer)this.currentPlayer))
         {
             diceResult = this.rollDice();
+            this.diceResultText.setText("You rolled a: "+diceResult);
         }
 
         // [azione 4] -> muovere il giocatore
@@ -181,8 +174,12 @@ public class MatchController {
 
         // se ha deciso di visitare lo Shop
         if (visitingShop) {
+            // debug
+            System.out.println("Sto accedendo allo Shop...");
             // [azione 6] -> scegliere cosa fare nello Shop
-            // TODO
+
+            // TODO: gestire scelta azioni shop (CPU)
+
             // metodo: shop mi ritorna la lista dei contenuti, la passo a CPU player che sceglie cosa fare e mi ritorna cosa ha comprato, chiamo playercontroller e gli dico di equipaggiare
         }
 
@@ -199,12 +196,16 @@ public class MatchController {
     
     // quando clicco il bottone Roll Dice nella View
     public void rollDiceButtonClicked() {
-        this.currentDiceResult = this.rollDice();
-        // chiedo alla View di visualizzare l'esito
-        this.displayDiceResult(this.currentDiceResult);
-        
         // disattivo questo bottone
         this.disableRollDiceButton();
+        // disattivo bottone Shop
+        this.disableVisitShopButton();
+        this.currentDiceResult = this.rollDice();
+        // chiedo alla View di visualizzare l'esito
+        this.displayDiceResult();
+        
+        // attivo tasto per finire turno
+        this.enableEndTurnButton();
         
         // se non ha rerolls
         if (!this.currentPlayer.hasRerolls()) {
@@ -219,19 +220,21 @@ public class MatchController {
             this.enableRerollDiceButton();
         }
     }
-    
+
     // quando clicco il bottone Reroll Dice nella View
     public void helmetAbilityButtonClicked() {
+        // disattivo bottone Reroll Dice
+        this.disableRerollDiceButton();
+        // aggiornare stats
+        this.playerController.updateRerollsCount(this.currentPlayer);
         // rirollo il dado
         this.currentDiceResult = this.rollDice();
         
         // chiedo alla View di visualizzare l'esito
-        this.displayDiceResult(this.currentDiceResult);
+        this.displayDiceResult();
         
         // se non ha più reroll passo direttamente al movimento
         if (!this.currentPlayer.hasRerolls()) {
-            // disattivo bottone Reroll Dice
-            this.disableRerollDiceButton();
             // muovo la pedina
             this.playerController.movePlayer(this.currentPlayer, this.currentDiceResult, this.boardController.getNumberOfTiles());
             // controllo se  ha position modifiers, se sì attivo il bottone corrispondente, altrimenti procedo con attivare effetto casella
@@ -239,10 +242,16 @@ public class MatchController {
             // aggiorno posizione sulla View
             this.matchView.movePlayerToTile(this.currentPlayer);
         }
+        else {
+            this.enableAcceptRerollButton();
+            this.enableRerollDiceButton();
+        }
     }
-    
+
     // attivato da un bottone che deve spawnare solo dopo reroll
     public void confirmReroll() {
+        // disattivo il bottone
+        this.disableAcceptRollButton();
         // bottone di conferma per poter muovere la pedina dopo reroll (solo se ha altri reroll rimanenti)
         this.playerController.movePlayer(this.currentPlayer, this.currentDiceResult, this.boardController.getNumberOfTiles());
         // controllo se  ha position modifiers, se sì attivo il bottone corrispondente, altrimenti procedo con attivare effetto casella
@@ -261,19 +270,31 @@ public class MatchController {
     }
 
     public void greavesAbilityActionForward() {
+        // disattivo il bottone
+        this.disableGreavesAbilityButton();
         this.greavesAbilityButtonClicked(1);
     }
 
     public void greavesAbilityActionBack() {
+        // disattivo il bottone
+        this.disableGreavesAbilityButton();
         this.greavesAbilityButtonClicked(-1);
     }
     
     public void visitShopButtonClicked() {
-        // TODO 
+        // disattivo il bottone
+        this.disableVisitShopButton();
+
+        // TODO: gestire logica shop
+
         this.currentPlayer.setVisitingShop(true);
     }
     
     public void endTurnButtonClicked() {
+        // disattivo il bottone
+        this.disableEndTurnButton();
+        // resetto flag per shop
+        this.currentPlayer.setVisitingShop(false);
         // passo al prossimo turno
         this.nextTurn();
     }
@@ -290,40 +311,23 @@ public class MatchController {
         }
     }
 
-    public void displayDiceResult(int diceResult) {
-        switch (diceResult) {
-            case 1:
-                
-                break;
-            case 2:
-                
-                break;
-            case 3:
-                
-                break;
-            case 4:
-                
-                break;
-            case 5:
-                
-                break;
-            case 6:
-                
-                break;
-            default:
-                break;
-        }
+    public void displayDiceResult() {
+        this.diceResultText.setText("You rolled a: "+this.currentDiceResult);
     }
-    // TODO: abilitare e disabilitare in modo corretto i bottoni per utente reale
     // DISABLERS
-    public void disableAllButtons() {
-        disableRollDiceButton();
-        disableRerollDiceButton();
-        disableGreavesAbilityButton();
-        disableVisitShopButton();
+    private void disableAllButtons() {
+        this.disableRollDiceButton();
+        this.disableRerollDiceButton();
+        this.disableGreavesAbilityButton();
+        this.disableVisitShopButton();
+        this.disableAcceptRollButton();
+        this.disableEndTurnButton();
+    }
+    
+    private void disableAcceptRollButton() {
+        this.acceptRerollButton.setDisable(true);
     }
 
-    
     private void disableRollDiceButton() {
         this.rollDiceButton.setDisable(true);
     }
@@ -345,12 +349,28 @@ public class MatchController {
     }
 
     // ENABLERS
+    private void enableVisitShopButton() {
+        this.visitShopButton.setDisable(false);
+    }
+
+    private void enableRollDiceButton() {
+        this.rollDiceButton.setDisable(false);
+    }
+
+    private void enableAcceptRerollButton() {
+        this.acceptRerollButton.setDisable(false);
+    }
+
     private void enableRerollDiceButton() {
         this.rerollDiceButton.setDisable(false); 
     }
 
     private void enableGreavesAbilityButton() {
         this.greavesAbilityButton.setDisable(false);
+    }
+
+    private void enableEndTurnButton() {
+        this.endTurnButton.setDisable(false);
     }
 
     private void setControllerForView() {
@@ -362,24 +382,58 @@ public class MatchController {
             throw new IllegalArgumentException();
         }
     }
-    
-    //#endregion
 
-    private void nextTurn() {
-        // aggiorno i parametri del turno corrente
-        // resetto diceResult a 0
-        this.currentDiceResult = 0;
-        // passo al prossimo Player
-        this.currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
-
+    private void setupViewForNextTurn() {
         if (this.currentPlayer instanceof CPUPlayer) {
             // disattivo la ui
             this.disableAllButtons();
         }
-        // imposto indice del Player successivo
-        int nextPlayerIndex = (match.getCurrentPlayerIndex() + 1) % match.getPlayers().size();
-        this.match.setCurrentPlayerIndex(nextPlayerIndex);
-        // gestisco il turno successivo
-        this.handleCurrentTurn();
+        else {
+            this.disableAllButtons();
+            this.enableVisitShopButton();
+            this.enableRollDiceButton();
+            // aggiornare informazioni contestuali nei label
+            this.refreshInfoLabels();
+            
+        }
+    }
+    
+    private void refreshInfoLabels() {
+        this.currentPlayerTurn.setText(this.currentPlayer.getName()+ " Turn");
+        this.diceResultText.setText("You rolled a: ");
+        this.currentPlayerRerolls.setText("Number of Rerolls: "+this.currentPlayer.getNumberOfRerolls());
+        this.currentPlayerPosModifiers.setText("Number of Position Modifiers: "+this.currentPlayer.getNumberOfPosModifiers());
+        this.currentPlayerMoney.setText("Money: "+this.currentPlayer.getMoney());
+    }
+    //#endregion
+
+
+    private void nextTurn() {
+        // TODO: penso si possa togliere campo isGameOver in Match
+        // se il giocatore corrente non ha vinto, si passa al prossimo turno
+        if (!this.playerController.checkWinCondition(this.currentPlayer, this.boardController.getNumberOfTiles())) {
+            // aggiorno i parametri del turno corrente
+            // resetto diceResult a 0
+            this.currentDiceResult = 0;
+            // passo al prossimo Player
+            this.currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
+    
+            // gestisco bottoni e label della view
+            this.setupViewForNextTurn();
+            // imposto indice del Player successivo
+            int nextPlayerIndex = (match.getCurrentPlayerIndex() + 1) % match.getPlayers().size();
+            this.match.setCurrentPlayerIndex(nextPlayerIndex);
+            // se sono tornato al player 0
+            if (nextPlayerIndex == 0) {
+                // ho finito un round, quindi incremento il contatore
+                this.currentRoundNumber++;
+                // TODO: questo campo potrebbe stare in Match
+            }
+            // gestisco il turno successivo
+            this.handleCurrentTurn();
+        }
+        else {
+            System.out.println("Il gioco è finito! Vince il giocatore: "+this.currentPlayer.getName());
+        }
     }
 }
