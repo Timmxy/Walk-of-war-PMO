@@ -13,6 +13,7 @@ import java.util.Random;
 
 public class Shop {
 
+    public final static int SHOP_POSITION_MALUS = 2;
     private final static int SHOP_CAPACITY = 4;
 
     // DICHIARAZIONE VARIABILI
@@ -28,14 +29,20 @@ public class Shop {
         this.equipmentArchive = new ArrayList<>();
         this.initArchive();
     }
-
+    
     // METODI
-    public void visitShop(Player p, int moneyToSpend) {
-        this.rerollShop();
-        // contattare la view
-
-        // quando esco invoco l'evento per: -> equipaggiare, -> far muovere indietro di k + rarity
-        
+    public List<Equipment> rerollShop() {
+        if (!this.contents.isEmpty()) {
+            this.contents = new ArrayList<>();
+        }
+        // rollare degli equipaggiamenti random
+        Equipment e;
+        for (int i = 0; i < Shop.SHOP_CAPACITY; i++) {
+            // sorteggio un equip. dall'archivio di possibili equip.
+            e = this.equipmentArchive.get(this.rnd.nextInt(this.equipmentArchive.size()));
+            this.contents.add(e);
+        }
+        return this.contents;
     }
 
     // attivato dal bottone della view
@@ -84,15 +91,6 @@ public class Shop {
         this.equipmentArchive.add(new Shield("Scudo dell'Eroe", Rarity.LEGENDARY));
     }
 
-    private void rerollShop() {
-        // rollare degli equipaggiamenti random
-        Equipment e;
-        for (int i = 0; i < Shop.SHOP_CAPACITY; i++) {
-            // sorteggio un equip. dall'archivio di possibili equip.
-            e = this.equipmentArchive.get(this.rnd.nextInt(this.equipmentArchive.size()));
-            this.contents.add(e);
-        }
-    }
 
 
 }

@@ -11,8 +11,6 @@ import java.util.Random;
 //Controller che regola le azioni dei Player in gioco
 public class PlayerController implements TileEffectListener {
 
-    private final static int SHOP_POSITION_MALUS = 2;
-
     // DICHIARAZIONE VARIABILI
     private Random rnd;
     private List<Player> players;
@@ -27,28 +25,14 @@ public class PlayerController implements TileEffectListener {
         this.rnd = new Random();
     }
 
-    // *****************************************************************************************
-    // quando finisce la visita allo shop
-    public void exitShop(Player p, Equipment e) {
-        // calcola quante pos. arretrare dopo la visita allo shop
-        int k = PlayerController.SHOP_POSITION_MALUS;
-        if (e != null) {
-            this.equipmentBought(p, e);
-        }
-        // TODO fixare la call a questo metodo
-        //this.movePlayer(p, -k, null);
-    }
 
-    // quando un Player compra (e quindi equipaggia) un Equipment. Chiamato dal bottone della view (SHOP)
+    // quando un Player compra (e quindi equipaggia) un Equipment
     public void equipmentBought(Player p, Equipment e) {
         p.addItemToInventory(e);
     }
-    // *******************************************************************************************
     
 
     // muove la pedina del giocatore sulla Board
-    // ha bisogno di BoardController per controllare che non superi il numero max di caselle della board
-    // non vorrei passare alcun controller in giro, quindi potrei usare la costante Board.MAX_TILES spostandola in una classe archivio "Util"
     public int movePlayer(Player player, int diceRoll, int lastTile) {
         int newPosition = player.getPawnPosition() + diceRoll;
 
@@ -56,18 +40,19 @@ public class PlayerController implements TileEffectListener {
             newPosition = lastTile - 1;
         }
 
-        System.out.println(newPosition);
+        if (newPosition <= 0) {
+            newPosition = 0;
+        }
+
         player.updatePosition(newPosition);
-        //possiamo risolverlo in modo da non usare board controller?
-        System.out.println(newPosition);
         
-        System.out.println(player.getName() + " si muove alla casella " + player.getPawnPosition());
+        System.out.println("-> "+player.getName() + " si muove alla casella " + player.getPawnPosition());
         return player.getPawnPosition();
     }
 
     // metodo per verificare la condizione di vittoria
     public boolean checkWinCondition(Player player, int lastTile) {
-        System.out.println("win condition? " + player.toString() +" pos: "+ player.getPawnPosition());
+        System.out.println("Win Condition? " + (player.getPawnPosition() == lastTile));
         return player.getPawnPosition() == lastTile;
     }
 
@@ -83,7 +68,7 @@ public class PlayerController implements TileEffectListener {
         switch (event.getVariant()) {
             case BONUS_MONEY:
                 player.addMoney(event.getEffectValue());
-                System.out.println(player.getName() + " ha guadagna " + event.getEffectValue() + " monete.");
+                System.out.println(player.getName() + " ha guadagnato " + event.getEffectValue() + " monete.");
                 break;
 
             case MALUS_MONEY:
@@ -177,5 +162,10 @@ public class PlayerController implements TileEffectListener {
 
     public void updateRerollsCount(Player player) {
         player.useReroll();
+    }
+
+
+    public void updatePosModifiersCount(Player player) {
+        player.usePositionModifiers();
     }
 }

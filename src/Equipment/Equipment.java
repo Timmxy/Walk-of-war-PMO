@@ -11,7 +11,7 @@ public abstract class Equipment {
         this.name = name;
         this.rarity = rarity;
         this.value = this.rarity.getValue();
-        this.cost = this.rarity.getValue() + 3;
+        this.cost = this.rarity.getValue() + 1;
     }
     
     // METODI

@@ -14,8 +14,6 @@ public class Pawn {
     }
 
     public void newPosition(int p) {
-        System.out.println("cane"+this.position);
         this.position = p;
-        System.out.println("cane"+this.position);
     }
 }

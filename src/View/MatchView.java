@@ -66,7 +66,7 @@ public class MatchView {
         
         
         // imposta la BoardView
-        this.rootPane.setCenter(boardView);
+        this.displayBoardPanel();
         
         
         // aggiungiìe rappresentazione grafica delle pedine
@@ -124,5 +124,13 @@ public class MatchView {
             playerPawn.setTranslateX(tileX-20);  // Aggiusta posizione orizzontale
             playerPawn.setTranslateY(tileY);  // Aggiusta posizione verticale
         }
+    }
+
+    public void displayShopPanel() {
+        this.rootPane.setCenter(this.shopView);
+    }
+
+    public void displayBoardPanel() {
+        this.rootPane.setCenter(this.boardView);
     }
 }
