@@ -4,8 +4,6 @@ public class Fight {
     private Player player1;
     private Player player2;
 
-    
-
     //scelta di progettazione: no costruttore
     
     //metodo che prende la funzione del di costruttore da passare a match controller
