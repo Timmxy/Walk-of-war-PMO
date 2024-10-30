@@ -1,132 +1,43 @@
 package Model;
 
+import java.util.List;
+import java.util.Optional;
+
+import javafx.scene.input.KeyCode;
+
 public class Fight {
     private Player player1;
     private Player player2;
+
+    
 
     //scelta di progettazione: no costruttore
     
     //metodo che prende la funzione del di costruttore da passare a match controller
     //così che non ci siano più fight in scena in base al numero di player
-    public void getFight(Player player1, Player player2) {
-        this.player1 = player1;
-        this.player2 = player2;
-    }
-
-    // Metodo per risolvere un turno di combattimento
-    public void resolveRound(FightActions actionPlayer1, FightActions actionPlayer2) {
-        
-        //stampa le scelte di entrambi i giocatori
-        System.out.println(player1.getName() + " ha scelto " + actionPlayer1 + ". "
-        + player2.getName() + " ha scelto " + actionPlayer2);
-        
-        //COMBINAZIONI POSSIBILI PER LO SCONTRO
-        //attaccano entrambi
-        if (actionPlayer1 == FightActions.ATTACK && actionPlayer2 == FightActions.ATTACK){
-            if(player1.getCurrentAtks() > 0){ //controlla se ha abbastanza stamina per attaccare
-                player1.attackUsed(); //decrememnta la stamina
-                player2.takeDmg(); //giocatore 2 prende danno
-                System.out.println(player1.getName() + " ha attaccato con successo!");
-            }else
-                System.out.println(player1.getName() + " non ha abbastanza stamina per eseguire l'attacco");
-            if(player2.getCurrentAtks() > 0){
-                player2.attackUsed();
-                player1.takeDmg();
-                System.out.println(player2.getName() + " ha attaccato con successo!");
-            }else
-                System.out.println(player2.getName() + " non ha abbastanza stamina per eseguire l'attacco");
-        }
-        //difendono entrambi
-        else if(actionPlayer1 == FightActions.DEFEND && actionPlayer2 == FightActions.DEFEND){
-            if(player1.getcurrentShields() > 0){ //controlla se può difendere
-                player1.shieldUsed(); //decrementa di 1 gli scudi a disposizione
-                System.out.println(player1.getName() + " si difende");
-            }else
-                System.out.println(player1.getName() + " ha terminato gli utilizzi dello scudo");
-            if(player2.getcurrentShields() > 0){
-                System.out.println(player2.getName() + " si difende");
-                player2.shieldUsed();
-            }else
-                System.out.println(player2.getName() + " ha terminato gli utilizzi dello scudo");
-        }
-        //ricaricano entrambi
-        else if(actionPlayer1 == FightActions.RECHARGE && actionPlayer2 == FightActions.RECHARGE){
-            if(player1.getCurrentAtks() < player1.getMaxAtks()){ //controlla se la stamina è già al massimo
-                player1.increaseStamina(); //incrementa di 1 la stamina
-                System.out.println(player1.getName() + " recupera un po' di stamina");
-            }else //non può ricaricare più stamina di quella massima
-                System.out.println(player1.getName() + " ha la stamina al massimo");
-            if(player2.getCurrentAtks() < player2.getMaxAtks()){
-                System.out.println(player2.getName() + " recupera un po' di stamina");
-                player2.increaseStamina();
-            }else
-                System.out.println(player2.getName() + " ha la stamina al massimo");
-        }
-        //giocatore 1 attacca e giocatore 2 si difende
-        else if (actionPlayer1 == FightActions.ATTACK && actionPlayer2 == FightActions.DEFEND){
-            if(player1.getCurrentAtks() > 0){
-                player1.attackUsed();
-                System.out.println(player1.getName() + " attacca");
-            }else
-                System.out.println(player1.getName() + " non ha abbastanza stamina per eseguire l'attacco");
-            if(player2.getcurrentShields() > 0){
-                player2.shieldUsed();
-                System.out.println(player2.getName() + " si difende con successo!");
-            }else
-                System.out.println(player2.getName() + " ha terminato gli utilizzi dello scudo");
-        }
-        //giocatore 1 si difende e giocatore 2 attacca
-        else if (actionPlayer1 == FightActions.DEFEND && actionPlayer2 == FightActions.ATTACK){
-            if(player2.getCurrentAtks() > 0){
-                player2.attackUsed();
-                System.out.println(player2.getName() + " attacca");
-            }else
-                System.out.println(player2.getName() + " non ha abbastanza stamina per eseguire l'attacco");
-            if(player1.getcurrentShields() > 0){
-                player1.shieldUsed();
-                System.out.println(player1.getName() + " si difende con successo!");
-            }else
-                System.out.println(player1.getName() + " ha terminato gli utilizzi dello scudo");
-        }
-        //giocatore 1 attacca e giocatore 2 recupera stamina
-        else if (actionPlayer1 == FightActions.ATTACK && actionPlayer2 == FightActions.RECHARGE) {
-            if(player1.getCurrentAtks() > 0){
-                player1.attackUsed();
-                player2.takeDmg();
-                System.out.println(player1.getName() + " ha attaccato con successo!");
-            }else
-                System.out.println(player1.getName() + " non ha abbastanza stamina per eseguire l'attacco");
-            if(player2.getCurrentAtks() < player2.getMaxAtks()){
-                player2.increaseStamina();
-                System.out.println(player2.getName() + " recupera un po' di stamina");
-            }else
-                System.out.println(player2.getName() + " ha la stamina al massimo");
-        }
-        //giocatore 1 recupera stamina e giocatore 2 attacca
-        else if (actionPlayer1 == FightActions.RECHARGE && actionPlayer2 == FightActions.ATTACK) {
-            if(player1.getCurrentAtks() < player1.getMaxAtks()){
-                player1.increaseStamina();
-                System.out.println(player1.getName() + " recupera un po' di stamina");
-            }else
-                System.out.println(player1.getName() + " ha la stamina al massimo");
-            if(player2.getCurrentAtks() > 0){
-                player2.attackUsed();
-                player1.takeDmg();
-                System.out.println(player1.getName() + " ha attaccato con successo!");
-            }else
-                System.out.println(player1.getName() + " non ha abbastanza stamina per eseguire l'attacco");
-        }
+    // gestisce l'accoppiamento dei giocatori nello scontro
+    public void setPlayersFighting(Player p1, Player p2) {
+        this.player1 = p1;
+        this.player2 = p2;
     }
 
     public String getCombatStatus(Player Player1, Player Player2){
         return ("""
                 Stato combattimento.
                  Player 1:\t[HP: """ + player1.getCurrentHp() + "/" + player1.getMaxHp() +
-                " ATKS: " + player1.getCurrentAtks() + "/" + player1.getMaxAtks() +
+                " ATKS: " + this.player1.getCurrentAtks() + "/" + player1.getMaxAtks() +
                 " SHIELD: " + player1.getcurrentShields() + "/" + player1.getMaxShields() + "]"+
                 "\nPlayer 2:\t" + 
                 "[HP: " + player2.getCurrentHp() + "/" + player2.getMaxHp() +
                 " ATKS: " + player2.getCurrentAtks() + "/" + player2.getMaxAtks() +
                 " SHIELD: " + player2.getcurrentShields() + "/" + player2.getMaxShields() + "]");
+    }
+
+    public Player getPlayer1() {
+        return this.player1;
+    }
+
+    public Player getPlayer2() {
+        return this.player2;
     }
 }

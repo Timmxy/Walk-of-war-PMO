@@ -37,7 +37,11 @@ public class BoardView extends Pane {
         this.setPrefSize(BoardView.PANE_WIDTH, BoardView.PANE_HEIGTH);
         this.setMaxSize(1050, 520);
 
-        
+        this.setupPane(tiles);
+    }
+
+    // impostare elementi UI
+    private void setupPane(List<Tile> tiles) {
         boolean isUpToDown = true;          // flag per determinare la direzione della riga
         boolean changingDirection = false;  // flag per indicare se è nel processo di cambiare direzione
         int numOfColumns = 0;               // quante colonne sono momentaneamente renderizzate

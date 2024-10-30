@@ -64,7 +64,7 @@ public class MatchController {
     private Label currentPlayerMoney;
     
     // INFO UTILI
-    private int currentRoundNumber;
+    private int currentRoundNumber = 1;
     private Player currentPlayer;
     private int currentDiceResult;
 
@@ -103,28 +103,50 @@ public class MatchController {
         this.match.setCurrentPlayerIndex(0); // inizia con il primo giocatore
         System.out.println("Il gioco è cominciato!");
         
-        this.nextTurn();
+        this.currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
+        this.handleCurrentTurn();
     }
     
+    // sceglie quali player dare al Fight
+    private void chooseFightPairing() {
+        List<Player> allPlayers = this.match.getPlayers();
+        // se ci sono solo 2 giocatori in gioco
+        if (allPlayers.size() == 2) {
+            this.fightController.addPlayersToFight(allPlayers.getFirst(), allPlayers.getLast());
+        } else {
+            // ci sono 4 player
+            Player p1 = allPlayers.remove(this.rnd.nextInt(allPlayers.size()));
+            Player p2 = allPlayers.remove(this.rnd.nextInt(allPlayers.size()));
+            
+            this.fightController.addPlayersToFight(p1, p2);
+        }
+        // TODO capire come salvare gli altri per farli poi combattere dopo
+    }
+
     // NUOVO GAMELOOP: non ci sarà più un while, ma si gestisce uno alla volta i Player e si passa al prossimo con un endTurn()
     private void handleCurrentTurn() {
+        this.setupViewForNextTurn();
         // debug
         System.out.println("++ Turno di: "+this.currentPlayer.toString()+ " alla casella: " +this.currentPlayer.getPawnPosition());
-        this.currentPlayer.addMoney(2); // TODO: da togliere 
         // se è il turno di un CPU
         if (this.currentPlayer instanceof CPUPlayer) {
             // disattivo i pulsanti sulla MatchView
             // gestisco le sue azioni:
             this.handleCPUTurn();
         }
-        
-        // se sono passati tre turni dall'ultimo Fight TODO: non va qui perchè senno parte all'inizio turno real player, lo farei in endTurn()
+
+        // se sono passati tre turni dall'ultimo Fight
         if (currentRoundNumber % 3 == 0) {
+            this.disableAllButtons();
             // debug
-            //  System.out.println("Sta cominciando il Fight");
+            System.out.println("Sta cominciando il Fight");
             // inizializzare e far partire il Fight
 
+            // mostro fight view
+            this.matchView.displayFightPanel();
             // TODO: gestire evento fight
+            this.chooseFightPairing();
+            // TODO RIATTIVARE BOTTONI e settare boardview e togliere focus
         }
     }
     
@@ -139,12 +161,14 @@ public class MatchController {
         // CORPO
         // aggiorno labels
         this.refreshInfoLabels();
-        // aspetto un po'
-        try {
-            TimeUnit.SECONDS.sleep(2);
-        } catch (InterruptedException e) {
-            e.printStackTrace();
-        }
+
+        // // aspetto un po'
+        // try {
+        //     TimeUnit.SECONDS.sleep(2);
+        // } catch (InterruptedException e) {
+        //     e.printStackTrace();
+        // }
+
         // [azione 1] -> scegliere se visitare lo Shop a fine turno
         visitingShop = this.playerController.getDecisionOnShopVisit((CPUPlayer)this.currentPlayer);
         
@@ -457,30 +481,34 @@ public class MatchController {
 
     // gestisce la fine di questo turno e imposta il prossimo
     private void nextTurn() {
-        // passo al prossimo Player
-        this.currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
         this.refreshInfoLabels();
+        
         // TODO: penso si possa togliere campo isGameOver in Match
         // se il giocatore corrente non ha vinto, si passa al prossimo turno
+        System.out.println("NUMERO MAX DI CASELLE: "+this.boardController.getNumberOfTiles());
+        System.out.println("posizione giocatore corrente: "+ this.currentPlayer.getPawnPosition());
         if (!this.playerController.checkWinCondition(this.currentPlayer, this.boardController.getNumberOfTiles())) {
-            // se sono tornato al player 0
-            if (this.match.getCurrentPlayerIndex() == 0) {
-                // ho finito un round, quindi incremento il contatore
-                this.currentRoundNumber++;
-                System.out.println("***************** Inizia il Round "+this.currentRoundNumber+" *****************");
-                // TODO: questo campo potrebbe stare in Match
-            }
-
+            
             // aggiorno i parametri del turno corrente
             // resetto diceResult a 0
             this.currentDiceResult = 0;
-    
-            // gestisco bottoni e label della view
-            this.setupViewForNextTurn();
+            
 
             // imposto indice del Player successivo
             int nextPlayerIndex = (match.getCurrentPlayerIndex() + 1) % match.getPlayers().size();
             this.match.setCurrentPlayerIndex(nextPlayerIndex);
+            // imposto prossimo player
+            this.currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
+            
+
+            // se sono tornato al player 0
+            if (this.match.getCurrentPlayerIndex() == 0) {
+                // divisore turni
+                System.out.println("-------------------------------------------------");
+                // ho finito un round, quindi incremento il contatore
+                this.currentRoundNumber++;
+                System.out.println("***************** Inizia il Round "+this.currentRoundNumber+" *****************");
+            }
 
             // divisore turni
             System.out.println("-------------------------------------------------");

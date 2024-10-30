@@ -15,8 +15,8 @@ public class Player {
 
     //DICHIARAZIONE VARIABILI
     private static final int DEFAULT_HP = 3;
-    private static final int DEFAULT_ATKS = 1;
-    private static final int DEFAULT_SHIELDS = 1;
+    private static final int DEFAULT_ATKS = 2;
+    private static final int DEFAULT_SHIELDS = 2;
 
     // statistiche base
     private int money;
@@ -33,7 +33,6 @@ public class Player {
     final private int id;
     private int winCounter;
     private int turnsTaken;     // per Leaderboards
-    private Random rnd;         // simula il lancio del dado
     
     // derivanti da effetti speciali armatura
     private int rerolls;
@@ -294,6 +293,10 @@ public class Player {
     @Override
     public String toString() {
         return this.name;
+    }
+
+    public FightActions chooseFightAction() {
+        return FightActions.ATTACK;
     }
 
 

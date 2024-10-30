@@ -133,4 +133,9 @@ public class MatchView {
     public void displayBoardPanel() {
         this.rootPane.setCenter(this.boardView);
     }
+
+    public void displayFightPanel() {
+        this.rootPane.setCenter(this.fightView);
+        this.fightView.setFocusOnThis();
+    }
 }

@@ -38,7 +38,8 @@ public class PlayerController implements TileEffectListener {
         int newPosition = player.getPawnPosition() + diceRoll;
 
         if (newPosition >= lastTile) {
-            newPosition = lastTile - 1;
+            // tolgo 1 perchè passa 109
+            newPosition = lastTile-1;
         }
 
         if (newPosition <= 0) {
@@ -53,7 +54,7 @@ public class PlayerController implements TileEffectListener {
 
     // metodo per verificare la condizione di vittoria
     public boolean checkWinCondition(Player player, int lastTile) {
-        System.out.println("Win Condition? " + (player.getPawnPosition() == lastTile));
+        System.out.println("Win Condition? " + (player.getPawnPosition() == lastTile-1));
         return player.getPawnPosition() == lastTile;
     }
 
