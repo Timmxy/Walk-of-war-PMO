@@ -1,26 +1,20 @@
 package View;
 
-import java.security.KeyStore.Entry;
 import java.util.HashMap;
 import java.util.List;
 import java.util.Map;
 
 import Model.Player;
-import Model.Tile;
 import javafx.fxml.FXMLLoader;
 import javafx.geometry.Insets;
-import javafx.geometry.Point2D;
 import javafx.geometry.Pos;
-import javafx.scene.Node;
 import javafx.scene.Scene;
-import javafx.scene.control.Button;
 import javafx.scene.layout.Background;
 import javafx.scene.layout.BackgroundFill;
 import javafx.scene.layout.BorderPane;
 import javafx.scene.layout.CornerRadii;
 import javafx.scene.layout.StackPane;
 import javafx.scene.paint.Color;
-import javafx.scene.shape.Circle;
 import javafx.scene.shape.Polygon;
 import javafx.scene.text.Text;
 import javafx.stage.Stage;
@@ -37,7 +31,6 @@ public class MatchView {
     private ShopView shopView;
     private FightView fightView;
 
-    private List<Player> players;  // la lista dei giocatori nel match
     private Map<Player, StackPane> playersPawns;  // mappa che associa un Player alla sua pedina grafica
 
     
@@ -47,7 +40,6 @@ public class MatchView {
         this.boardView = bView;
         this.shopView = sView;
         this.fightView = fView;
-        this.players = players;
         this.playersPawns = new HashMap<>();
 
         // inizializza la grafica delle pedine per ogni giocatore

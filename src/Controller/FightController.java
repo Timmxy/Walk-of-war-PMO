@@ -14,6 +14,7 @@ public class FightController {
 
     // DICHIARAZIONE CAMPI
     private Fight fight;
+    private MatchController matchController;
     Optional<FightActions> actionPlayer1 = Optional.empty();
     Optional<FightActions> actionPlayer2 = Optional.empty();
 
@@ -21,8 +22,9 @@ public class FightController {
     private FightView view;
     
     // COSTRUTTORE
-    public FightController(Fight f) {
+    public FightController(Fight f, MatchController mc) {
         this.fight = f;
+        this.matchController = mc;
         this.view = new FightView(this);
     }
 
@@ -218,18 +220,31 @@ public class FightController {
             }else
                 System.out.println(this.fight.getPlayer1().toString() + " non ha abbastanza stamina per eseguire l'attacco");
         }
+
+        this.view.refreshStatsTexts(this.fight.getPlayer1(), this.fight.getPlayer2());
         // se nessuno è ancora morto continua la battaglia
         if (this.fight.getPlayer1().getCurrentHp() > 0 && this.fight.getPlayer2().getCurrentHp() > 0) {
             this.actionPlayer1 = Optional.empty();
             this.actionPlayer2 = Optional.empty();
             this.handleFightTurn();
         } else if (this.fight.getPlayer1().getCurrentHp() == 0) {
-            // ha perso player 1, lo rimando a matchController
+            this.actionPlayer1 = Optional.empty();
+            this.actionPlayer2 = Optional.empty();
+            // resetto stats dei giocatori
+            this.fight.getPlayer1().resetCurrentToMaxStats();
+            this.fight.getPlayer2().resetCurrentToMaxStats();
 
-            System.out.println("\n"+this.fight.getPlayer1().toString()+" ha perso lo scontro!!!");
+            // ha perso player 1, lo rimando a matchController
+            this.matchController.fightEnded(this.fight.getPlayer1());
         } else {
+            this.actionPlayer1 = Optional.empty();
+            this.actionPlayer2 = Optional.empty();
+            // resetto stats dei giocatori
+            this.fight.getPlayer1().resetCurrentToMaxStats();
+            this.fight.getPlayer2().resetCurrentToMaxStats();
+            
             // ha perso player 2
-            System.out.println("\n"+this.fight.getPlayer2().toString()+" ha perso lo scontro!!!");
+            this.matchController.fightEnded(this.fight.getPlayer2());
         }
     }
 

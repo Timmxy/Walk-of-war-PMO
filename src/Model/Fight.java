@@ -1,10 +1,5 @@
 package Model;
 
-import java.util.List;
-import java.util.Optional;
-
-import javafx.scene.input.KeyCode;
-
 public class Fight {
     private Player player1;
     private Player player2;

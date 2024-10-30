@@ -13,7 +13,7 @@ import java.util.Random;
 
 public class Shop {
 
-    public final static int SHOP_POSITION_MALUS = 2;
+    public final static int SHOP_POSITION_MALUS = 1;
     private final static int SHOP_CAPACITY = 4;
 
     // DICHIARAZIONE VARIABILI

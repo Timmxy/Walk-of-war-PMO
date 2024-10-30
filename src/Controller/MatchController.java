@@ -1,6 +1,5 @@
 package Controller;
 
-import java.util.concurrent.TimeUnit;
 
 import Equipment.Equipment;
 import Model.Board;
@@ -8,11 +7,8 @@ import Model.CPUPlayer;
 import Model.Fight;
 import Model.Match;
 import Model.Player;
-import Model.RealPlayer;
 import Model.Shop;
 import View.MatchView;
-import javafx.application.Platform;
-import javafx.concurrent.Task;
 import javafx.fxml.FXML;
 import javafx.fxml.FXMLLoader;
 import javafx.scene.control.Button;
@@ -20,15 +16,15 @@ import javafx.scene.control.Label;
 import javafx.scene.control.SplitMenuButton;
 import javafx.stage.Stage;
 
-import java.nio.channels.Pipe.SourceChannel;
+import java.util.ArrayList;
 import java.util.List;
 import java.util.Optional;
 import java.util.Random;
 
 
-// FATTO DA CHATGPT !!!!
-
 public class MatchController {
+    private static final int MALUS_FIGHT = 2;
+
     // COMPONENTI
     private Match match;
     private PlayerController playerController;
@@ -67,8 +63,10 @@ public class MatchController {
     private int currentRoundNumber = 1;
     private Player currentPlayer;
     private int currentDiceResult;
-
+    
     private Random rnd;
+    private List<Player> nextOpponents;
+    
 
 
     // COSTRUTTORE
@@ -77,7 +75,7 @@ public class MatchController {
         this.playerController = new PlayerController(players);
         this.boardController = new BoardController(board);
         this.shopController = new ShopController(shop, this);
-        this.fightController = new FightController(fight);
+        this.fightController = new FightController(fight, this);
 
         this.rnd = new Random();
 
@@ -109,18 +107,18 @@ public class MatchController {
     
     // sceglie quali player dare al Fight
     private void chooseFightPairing() {
-        List<Player> allPlayers = this.match.getPlayers();
+        List<Player> fightPlayers = new ArrayList<>(this.match.getPlayers());
         // se ci sono solo 2 giocatori in gioco
-        if (allPlayers.size() == 2) {
-            this.fightController.addPlayersToFight(allPlayers.getFirst(), allPlayers.getLast());
+        if (fightPlayers.size() == 2) {
+            this.fightController.addPlayersToFight(fightPlayers.getFirst(), fightPlayers.getLast());
         } else {
             // ci sono 4 player
-            Player p1 = allPlayers.remove(this.rnd.nextInt(allPlayers.size()));
-            Player p2 = allPlayers.remove(this.rnd.nextInt(allPlayers.size()));
+            Player p1 = fightPlayers.remove(this.rnd.nextInt(fightPlayers.size()));
+            Player p2 = fightPlayers.remove(this.rnd.nextInt(fightPlayers.size()));
             
+            this.nextOpponents = new ArrayList<Player>(fightPlayers);
             this.fightController.addPlayersToFight(p1, p2);
         }
-        // TODO capire come salvare gli altri per farli poi combattere dopo
     }
 
     // NUOVO GAMELOOP: non ci sarà più un while, ma si gestisce uno alla volta i Player e si passa al prossimo con un endTurn()
@@ -144,9 +142,8 @@ public class MatchController {
 
             // mostro fight view
             this.matchView.displayFightPanel();
-            // TODO: gestire evento fight
+            // scelgo coppia di sfidanti per Fight
             this.chooseFightPairing();
-            // TODO RIATTIVARE BOTTONI e settare boardview e togliere focus
         }
     }
     
@@ -329,7 +326,6 @@ public class MatchController {
         // disattivo i bottoni
         this.disableAllButtons();
         
-        // TODO: gestire logica shop
         this.shopController.visitShop(this.currentPlayer);
         this.matchView.displayShopPanel();
     }
@@ -482,8 +478,6 @@ public class MatchController {
     // gestisce la fine di questo turno e imposta il prossimo
     private void nextTurn() {
         this.refreshInfoLabels();
-        
-        // TODO: penso si possa togliere campo isGameOver in Match
         // se il giocatore corrente non ha vinto, si passa al prossimo turno
         System.out.println("NUMERO MAX DI CASELLE: "+this.boardController.getNumberOfTiles());
         System.out.println("posizione giocatore corrente: "+ this.currentPlayer.getPawnPosition());
@@ -520,4 +514,17 @@ public class MatchController {
         }
     }
 
+    public void fightEnded(Player player) {
+        System.out.println(player.toString()+" ha perso il Fight! Arretra di 5 caselle.");
+        this.playerController.movePlayer(player, -MatchController.MALUS_FIGHT, this.boardController.getNumberOfTiles());
+        this.matchView.movePlayerToTile(player);
+        if (this.nextOpponents != null && !this.nextOpponents.isEmpty()) {
+            // faccio partire l'altro fight
+            this.fightController.addPlayersToFight(this.nextOpponents.removeFirst(), this.nextOpponents.removeLast());
+        } else {
+            // riprendo il gioco dalla Board
+            this.matchView.displayBoardPanel();
+            this.setupViewForNextTurn();
+        }
+    }
 }

@@ -9,7 +9,6 @@ import Equipment.Weapon;
 import Player.Inventory;
 import Player.Pawn;
 import java.util.List;
-import java.util.Random;
 
 public class Player {
 
@@ -296,6 +295,9 @@ public class Player {
     }
 
     public FightActions chooseFightAction() {
+        if (this.currentAtks == 0) {
+            return FightActions.RECHARGE;
+        }
         return FightActions.ATTACK;
     }
 
