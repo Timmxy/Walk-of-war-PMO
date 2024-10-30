@@ -27,7 +27,7 @@ public class CPUPlayer extends Player {
             int probability = rnd.nextInt(101);
             return  probability < 70; // visita lo shop il 70% dei casi
         }
-        return rnd.nextBoolean(); // visita lo shop il 50% dei casi
+        return this.rnd.nextInt(10) > 2 ? false : true;
     }
 
     public Optional<Equipment> wantsToBuySomething(List<Equipment> availableEquipments) {

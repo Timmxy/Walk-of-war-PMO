@@ -9,6 +9,7 @@ import Equipment.Weapon;
 import Player.Inventory;
 import Player.Pawn;
 import java.util.List;
+import java.util.Random;
 
 public class Player {
 
@@ -41,6 +42,9 @@ public class Player {
     // composizioni
     private Inventory inventory;
     private Pawn pawn;
+
+    // utility
+    private Random rnd;
     
     // COSTRUTTORE
     public Player(final int id, final String name){
@@ -56,6 +60,8 @@ public class Player {
         
         this.inventory = new Inventory(this);
         this.pawn = new Pawn(0);
+
+        this.rnd = new Random();
     }
     
     //DEFINIZIONE METODI
@@ -298,8 +304,7 @@ public class Player {
         if (this.currentAtks == 0) {
             return FightActions.RECHARGE;
         }
-        return FightActions.ATTACK;
+        return this.rnd.nextInt(1) == 0 ? FightActions.ATTACK : FightActions.DEFEND; 
     }
-
 
 }
