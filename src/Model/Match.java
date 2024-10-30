@@ -31,8 +31,6 @@ public class Match {
     // Controller
     private MatchController matchController;
 
-    // View va dentro i controller
-
     private int currentPlayerIndex;
     private boolean isGameOver;
 
@@ -42,19 +40,13 @@ public class Match {
         // a questo punto tutti i Model di gioco dovrebbero essere stati creati, li passo al Controller
         this.matchController = new MatchController(this, this.allPlayers, this.board, this.shop, this.fight, stage);
         
-        // credo che dovrei avviare il gioco QUI
+        // avviare il gioco QUI
         this.matchController.startGame();
     }
 
     private void initGameMode(GameMode g){
-
-        //creo i player con le pedine
-        //creo la board
-        //creo lo shop 
-        //creo "Fight"?
-
-        //controllo quale GameMode e' stata scelta,
-        //agisco di conseguenza
+        // controllo quale GameMode e' stata scelta,
+        // agisco di conseguenza
         switch (g) {
             case GameMode.P2    -> this.gameSetup(2, 0);
             case GameMode.P1_C1 -> this.gameSetup(1, 1);
@@ -72,6 +64,7 @@ public class Match {
         this.playersSetup(realPlayers, cpuPlayers);
         this.boardSetup();
         this.shopSetup();
+        this.fightSetup();
     }
     
     // creazione player reali e cpu
@@ -97,23 +90,16 @@ public class Match {
         this.shop = new Shop();
     }
 
+    // creazione del Fight
     private void fightSetup() {
         this.fight = new Fight();
     }
-
     
-    public boolean isGameOver() {
-        return this.isGameOver;
-    }
-
-    public void setGameOver(boolean b) {
-        this.isGameOver = b;
-    }
-    
+    // GETTERS e SETTERS
     public List<Player> getPlayers() {
         return this.allPlayers;
     }
-    
+
     public int getCurrentPlayerIndex() {
         return this.currentPlayerIndex;
     }
@@ -121,5 +107,14 @@ public class Match {
     public void setCurrentPlayerIndex(int i) {
         this.currentPlayerIndex = i;
     }
-    
+
+
+    // TODO: non so se queste servono
+    public boolean isGameOver() {
+        return this.isGameOver;
+    }
+
+    public void setGameOver(boolean b) {
+        this.isGameOver = b;
+    }
 }

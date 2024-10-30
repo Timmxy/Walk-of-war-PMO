@@ -2,45 +2,35 @@ package Model;
 
 public final class Pair<X, Y> {
 
+    // DICHIARAZIONE VARIABILI
     private X x;
     private Y y;
 
-    /**
-     * @param x
-     *            the first value
-     * @param y
-     *            the second value
-     */
+    // COSTRUTTORE
     public Pair(final X x, final Y y) {
         super();
         this.x = x;
         this.y = y;
     }
 
-    /**
-     * @return first value
-     */
+    // METODI
+    // ritorna il primo valore nella coppia
     public X getFirst(){
         return x;
     }
 
-    /**
-     * @return second value
-     */
+    // ritorna il secondo valore nella coppia
     public Y getSecond() {
         return y;
     }
     
-    /**
-     * changes first value
-     */
+    
+    // imposta il primo valore
     public void setX(X x) {
         this.x = x;
     }
 
-    /**
-     * changes second value
-     */
+    // imposta il secondo valore
     public void setY(Y y) {
         this.y = y;
     }

@@ -29,12 +29,11 @@ public class Player {
     private boolean defending;  //booleano per gestire la difesa nello scontro
     
     // info gioco
-    private String name;
-    private int id;
+    final private String name;
+    final private int id;
     private int winCounter;
-    private int turnsTaken;
-    private boolean wantsToVisitShop;
-    private Random rnd;             // simula il lancio del dado
+    private int turnsTaken;     // per Leaderboards
+    private Random rnd;         // simula il lancio del dado
     
     // derivanti da effetti speciali armatura
     private int rerolls;
@@ -46,7 +45,7 @@ public class Player {
     private Pawn pawn;
     
     // COSTRUTTORE
-    public Player(int id, String name){
+    public Player(final int id, final String name){
         this.id = id;
         this.name = name;
         this.winCounter = 0;
@@ -68,7 +67,7 @@ public class Player {
         this.inventory.addEquipment(equipment);
     }
     
-    // potrebbe servire?
+    // potrebbe servire? // TODO
     public void removeItemFromInventory(Equipment equipment){
         
     }
@@ -94,16 +93,19 @@ public class Player {
         this.currentHp = this.maxHp;
     }
     
+    // aggiorna stat attacchi
     private void addOrRemoveAttacks(int value){
         this.maxAtks += value;
         this.currentAtks = this.maxAtks;
     }
     
+    // aggiorna stat difese
     private void addOrRemoveShields(int value){
         this.maxShields += value;
         this.currentShields = this.maxShields;
     }
     
+    // calcola le stats in base agli equipaggiamenti
     public void computeStats(List<Equipment> list) {
         // resetto al default per ricalcolare tutto
         this.resetToDefaultStats();
@@ -146,6 +148,11 @@ public class Player {
         this.pawn.newPosition(value);
     }
     
+    // quando subisce un furto
+    public Equipment getStolenEquipment() {
+        return this.inventory.removeRandomEquipment();
+    }
+    
     //aggiungo funzioni per il fight
     public boolean isDefending() {
         return defending;
@@ -184,11 +191,6 @@ public class Player {
     public void addStealProtections(int value) {
         this.stealProtections = value;
     }
-    
-    // metodo per simulare il lancio del dado
-    public int rollDice() {
-        return this.rnd.nextInt(6) + 1; // Numero casuale tra 1 e 6
-    }
 
     public boolean hasRerolls() {
         return this.rerolls >= 1;
@@ -217,12 +219,7 @@ public class Player {
         this.positionModifiers = value;
     }
     
-    // per SHOP
-    public boolean setVisitingShop(boolean b) {
-        return this.wantsToVisitShop = b;
-    }
-    
-    //getter e setter
+    // getter e setter
     public String getName() {
         return this.name;
     }
@@ -243,10 +240,6 @@ public class Player {
         return this.maxAtks;
     }
 
-    // quando subisce un furto
-    public Equipment getStolenEquipment() {
-        return this.inventory.removeRandomEquipment();
-    }
 
     public int getMaxHp(){
         return this.maxHp;

@@ -26,12 +26,6 @@ public class ShopController {
         return this.view;
     }
 
-    //metodo per la view
-    public void onClick(){
-        //se clicco un oggetto nello shop dalla view esso sparisce 
-        //e appare nel mio equipaggiamento
-    }
-
     public void visitShop(Player player) {
         System.out.println("-> "+player.toString()+" visita lo Shop!");
         // inizializza lo shop
@@ -40,10 +34,12 @@ public class ShopController {
         this.view.displayShopContents(this.shop.getShopContents(), player.getMoney());
     }
 
+    // ritorna gli oggetti presenti nello shop in questo momento
     public List<Equipment> getAvailableEquipments() {
         return this.shop.getShopContents();
     }
 
+    // avvisa MatchController che il player è uscito dallo Shop, passandogli un optional di quello che ha comprato (può essere vuoto)
     public void handleExitShop(Optional<Equipment> equipment) {
         // dare a MatchController equipment se comprato -> disattiverà il pannello dello shop
         this.matchController.shopVisitEnded(equipment);

@@ -8,7 +8,6 @@ public class Board {
     //DEFINIZIONE VARIABILI
     private final static int MAX_NUM_TILES = 109;
 
-    // forse la faremo variare in base al num di Player?
     private ArrayList<Tile> tilePath = new ArrayList<>(Board.MAX_NUM_TILES);
 
     //COSTRUTTORE
@@ -17,14 +16,17 @@ public class Board {
     }
 
     // METODI
+    // ritorna la casella desiderata
     public Tile getTileAt(int index) {
         return this.tilePath.get(index);
     }
 
+    // chiede alla tile corrispondente di attivare il suo effetto
     public void activateCorrespondingEffect(Player p) {
         this.getTileAt(p.getPawnPosition()).activateEffect(p);
     }
     
+    // ritorna il numero di Caselle nella board
     public int getNumberOfTiles() {
         return this.tilePath.size();
     }
@@ -34,19 +36,14 @@ public class Board {
     }
 
     // algoritmo per generare la board e disporre le caselle
-    // N.B. ancora non so come collegarle alla View per disporle anche graficamente
-    // suppongo che il Controller accederà direttamente alla lista delle caselle..
-    // ..una volta che è già stata popolata
     private void tileDisposition() {
-        // variabili locali
-
         // TODO: rimuovere magic numbers
 
         // ultima occorrenza della casella furto, quando raggiunge 0 (o inf) si può posizionare una casella furto..
         //..inizializzata a 15 perchè non ha senso metterla vicino all'inizio
         int lastStealTile = 15;
 
-        // corpo
+        // CORPO
         // aggiungo la prima Tile che DEVE essere empty
         this.tilePath.addFirst(new Tile(0, TileVariant.EMPTY));
         for (int i = 1; i < Board.MAX_NUM_TILES - 1; i++) {
@@ -70,7 +67,7 @@ public class Board {
         // aggiungo l'ultima Tile che DEVE essere empty
         this.tilePath.addLast(new Tile(Board.MAX_NUM_TILES - 1, TileVariant.EMPTY));
 
-        // stampo mappa completa
+        // DEBUG stampo mappa completa
         for (Tile tile : tilePath) {
             System.out.println(tile.toString());
         }

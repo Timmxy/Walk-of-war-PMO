@@ -1,4 +1,6 @@
 package Board;
+
+// elenco varianti possibili di casella
 public enum TileVariant {
     EMPTY,
     BONUS_POSITION,

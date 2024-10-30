@@ -34,13 +34,12 @@ public class MatchController {
     private PlayerController playerController;
     private BoardController boardController;
     private ShopController shopController;
-    private Shop shop;
     private FightController fightController;
-    private Player currentPlayer;
-    private int currentDiceResult;
-  
+    
     // View
     private MatchView matchView; // conterrà un'aggregazione di tutte le view
+    
+    // riferimenti a componenti della UI: da modificare per corretto MVC
     @FXML
     private Button rollDiceButton;
     @FXML
@@ -63,12 +62,16 @@ public class MatchController {
     private Label currentPlayerPosModifiers;
     @FXML
     private Label currentPlayerMoney;
-
+    
     // INFO UTILI
     private int currentRoundNumber;
+    private Player currentPlayer;
+    private int currentDiceResult;
+
     private Random rnd;
 
 
+    // COSTRUTTORE
     public MatchController(Match match, List<Player> players, Board board, Shop shop, Fight fight, Stage stage) {
         this.match = match;
         this.playerController = new PlayerController(players);
@@ -78,8 +81,7 @@ public class MatchController {
 
         this.rnd = new Random();
 
-
-        // da spostare su matchController
+        // imposto Listener per l'evento di attivazione casella
         for (int i = 0; i < board.getNumberOfTiles(); i++) {
             board.getTileAt(i).addTileEffectListener(playerController);
         }
@@ -95,6 +97,7 @@ public class MatchController {
         this.setControllerForView();
     }
 
+    // fa partire il primo turno di gioco
     public void startGame() {
         this.match.setGameOver(false);
         this.match.setCurrentPlayerIndex(0); // inizia con il primo giocatore
@@ -106,8 +109,8 @@ public class MatchController {
     // NUOVO GAMELOOP: non ci sarà più un while, ma si gestisce uno alla volta i Player e si passa al prossimo con un endTurn()
     private void handleCurrentTurn() {
         // debug
-        System.out.println("Turno di: "+this.currentPlayer.toString());
-        this.currentPlayer.addMoney(2);
+        System.out.println("++ Turno di: "+this.currentPlayer.toString()+ " alla casella: " +this.currentPlayer.getPawnPosition());
+        this.currentPlayer.addMoney(2); // TODO: da togliere 
         // se è il turno di un CPU
         if (this.currentPlayer instanceof CPUPlayer) {
             // disattivo i pulsanti sulla MatchView
@@ -115,7 +118,7 @@ public class MatchController {
             this.handleCPUTurn();
         }
         
-        // se sono passati tre turni dall'ultimo Fight
+        // se sono passati tre turni dall'ultimo Fight TODO: non va qui perchè senno parte all'inizio turno real player, lo farei in endTurn()
         if (currentRoundNumber % 3 == 0) {
             // debug
             //  System.out.println("Sta cominciando il Fight");
@@ -144,25 +147,46 @@ public class MatchController {
         }
         // [azione 1] -> scegliere se visitare lo Shop a fine turno
         visitingShop = this.playerController.getDecisionOnShopVisit((CPUPlayer)this.currentPlayer);
+        
+        // [azione 2] -> scegliere cosa fare nello Shop
+        if (visitingShop) {
+            // imposto lo shop
+            this.shopController.visitShop(this.currentPlayer);
+            // in base alla decisione dell'algoritmo assegno un valore alla variabile
+            Optional<Equipment> toEquip = this.playerController.getDecisionOnShopPurchase((CPUPlayer)this.currentPlayer, this.shopController.getAvailableEquipments());
 
-        // [azione 2] -> rollare il dado
+            // se ha comprato qualcosa
+            if (!toEquip.isEmpty()) {
+                this.playerController.equipmentBought(this.currentPlayer, toEquip.get());
+                System.out.println(this.currentPlayer.toString()+ " ha comprato: "+toEquip.get().toString());
+                System.out.println(this.currentPlayer.toString()+ " subisce il malus extra dello Shop: torna indietro di " +(Shop.SHOP_POSITION_MALUS+toEquip.get().getValue())+ " caselle!");
+                this.playerController.movePlayer(currentPlayer, -(Shop.SHOP_POSITION_MALUS+toEquip.get().getValue()), this.boardController.getNumberOfTiles());
+            } else {
+                // non ha comprato
+                System.out.println(this.currentPlayer.toString()+ " non ha comprato nulla");
+                System.out.println(this.currentPlayer.toString()+ " subisce il malus base dello Shop: torna indietro di " +Shop.SHOP_POSITION_MALUS+ " caselle!");
+                this.playerController.movePlayer(currentPlayer, -Shop.SHOP_POSITION_MALUS, this.boardController.getNumberOfTiles());
+            }
+        }
+
+        // [azione 3] -> rollare il dado
         diceResult = this.rollDice(); // l'ho spostato su MatchController perchè non serviva necessariamente su PlayerController
         this.refreshInfoLabels();
 
-        // [azione 3] -> scegliere se rirollare (abilità elmo)
+        // [azione 4] -> scegliere se rirollare (abilità elmo)
         // devo passare sempre per playerController
-        if (this.playerController.getDecisionOnReroll((CPUPlayer)this.currentPlayer))
+        if (this.playerController.getDecisionOnReroll((CPUPlayer)this.currentPlayer, this.currentDiceResult))
         {
             diceResult = this.rollDice();
             this.refreshInfoLabels();
         }
 
-        // [azione 4] -> muovere il giocatore
+        // [azione 5] -> muovere il giocatore
         this.playerController.movePlayer(this.currentPlayer, diceResult, this.boardController.getNumberOfTiles());
         // aggiorno posizione sulla View
         this.matchView.movePlayerToTile(this.currentPlayer);
 
-        // [azione 5] -> scegliere se spostarsi leggermente (abilità gambali)
+        // [azione 6] -> scegliere se spostarsi leggermente (abilità gambali)
         this.playerController.movePlayer(this.currentPlayer,
                                             this.playerController.getDecisionOnPositionModifier((CPUPlayer) currentPlayer), // scelta se muoversi o no e in che direzione
                                             this.boardController.getNumberOfTiles());
@@ -171,18 +195,8 @@ public class MatchController {
         // aggiorno posizione sulla View
         this.matchView.movePlayerToTile(this.currentPlayer);
 
-        // se ha deciso di visitare lo Shop
-        if (visitingShop) {
-            // [azione 6] -> scegliere cosa fare nello Shop
-
-            // TODO: gestire scelta azioni shop (CPU)
-            
-
-            // metodo: shop mi ritorna la lista dei contenuti, la passo a CPU player che sceglie cosa fare e mi ritorna cosa ha comprato, chiamo playercontroller e gli dico di equipaggiare
-        }
-
         // passa al turno successivo
-        this.nextTurn(); // passa al turno successivo
+        this.nextTurn();
     }
 
     // metodo per simulare il lancio del dado
@@ -192,7 +206,7 @@ public class MatchController {
         return result;
     }
     
-    //#region METODI PER COMUNICAZIONE VIEW (interazione utente)
+    //#region METODI PER AZIONI DEI BOTTONI (interazione utente)
     
     // quando clicco il bottone Roll Dice nella View
     public void rollDiceButtonClicked() {
@@ -303,7 +317,7 @@ public class MatchController {
         if (!equipment.isEmpty()) {
             this.playerController.equipmentBought(currentPlayer, equipment.get());
             System.out.println(this.currentPlayer.toString()+ " ha comprato: "+equipment.get().toString());
-            System.out.println(this.currentPlayer.toString()+ " subisce il malus extra dello Shop: torna indietro di " +Shop.SHOP_POSITION_MALUS+equipment.get().getValue()+ " caselle!");
+            System.out.println(this.currentPlayer.toString()+ " subisce il malus extra dello Shop: torna indietro di " +(Shop.SHOP_POSITION_MALUS+equipment.get().getValue())+ " caselle!");
             this.playerController.movePlayer(currentPlayer, -(Shop.SHOP_POSITION_MALUS+equipment.get().getValue()), this.boardController.getNumberOfTiles());
         } else {
             System.out.println(this.currentPlayer.toString()+ " non ha comprato nulla");
@@ -320,8 +334,6 @@ public class MatchController {
     public void endTurnButtonClicked() {
         // disattivo il bottone
         this.disableEndTurnButton();
-        // resetto flag per shop
-        this.currentPlayer.setVisitingShop(false);
         // passo al prossimo turno
         this.nextTurn();
     }
@@ -338,12 +350,9 @@ public class MatchController {
             this.enableGreavesAbilityButton();
         }
     }
+    //#endregion
 
-    public void displayDiceResult() {
-        this.diceResultText.setText("You rolled a: "+this.currentDiceResult);
-    }
-
-    // DISABLERS
+    //#region DISABLERS
     private void disableAllButtons() {
         this.disableRollDiceButton();
         this.disableRerollDiceButton();
@@ -376,8 +385,9 @@ public class MatchController {
     private void disableEndTurnButton() {
         this.endTurnButton.setDisable(true);
     }
+    //#endregion
 
-    // ENABLERS
+    //#region ENABLERS
     private void enableVisitShopButton() {
         this.visitShopButton.setDisable(false);
     }
@@ -401,7 +411,9 @@ public class MatchController {
     private void enableEndTurnButton() {
         this.endTurnButton.setDisable(false);
     }
+    //#endregion
 
+    //#region gestione componenti UI
     // permette di passare un controller già creato alla view del Match
     private void setControllerForView() {
         FXMLLoader loader = new FXMLLoader(getClass().getResource("MatchScene.fxml"));
@@ -427,6 +439,12 @@ public class MatchController {
         }
     }
     
+    // mostra il risultato del lancio corrente
+    public void displayDiceResult() {
+        this.diceResultText.setText("You rolled a: "+this.currentDiceResult);
+    }
+
+    // aggiorna tutti i Label
     private void refreshInfoLabels() {
         this.displayDiceResult();
         this.currentPlayerTurn.setText(this.currentPlayer.getName()+ " Turn");
@@ -437,6 +455,7 @@ public class MatchController {
     //#endregion
 
 
+    // gestisce la fine di questo turno e imposta il prossimo
     private void nextTurn() {
         // passo al prossimo Player
         this.currentPlayer = this.match.getPlayers().get(this.match.getCurrentPlayerIndex());
