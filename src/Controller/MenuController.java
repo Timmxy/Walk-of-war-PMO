@@ -75,7 +75,7 @@ public class MenuController {
             this.stage.setScene(scene);
             this.stage.show();
         } catch (IOException ex) {
-            // TODO: handle exception
+            System.out.println("Errore: ritorno al menu principale non riuscito " + ex);
         }
     }
 
@@ -88,7 +88,7 @@ public class MenuController {
             this.stage.setScene(scene);
             this.stage.show();
         } catch (IOException ex) {
-            // TODO: handle exception
+            System.out.println("Errore: caricamento file modalita di gioco non riuscito " + ex);
         }
     }
 }

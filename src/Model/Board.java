@@ -73,7 +73,6 @@ public class Board {
         }
     }
 
-     
     // sorteggia una casella random con queste percentuali:
     // 32% EMPTY, 20% bonus, 14% malus
     private Tile randomTile(int index) {
@@ -125,7 +124,5 @@ public class Board {
             tile = new Tile(index, TileVariant.STEAL);
         }
         return tile;
-    }
-
-    
+    } 
 }

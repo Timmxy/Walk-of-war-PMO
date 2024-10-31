@@ -6,8 +6,6 @@ import java.util.Random;
 
 import Board.TileVariant;
 
-// N.B. NON SO ANCORA COME E' MEGLIO GESTIRE LE TILES, SE COSI' oppure CON CLASSE TILE ASTRATTA
-// E UNA CLASSE SPECIFICA PER OGNI VARIANTE che vanno a specializzare il metodo astratto activateEffect()
 public class Tile {
     
     //DICHIARAZIONE VARIABILI

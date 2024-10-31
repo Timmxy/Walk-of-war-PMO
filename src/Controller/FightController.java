@@ -58,15 +58,7 @@ public class FightController {
     // però prima controllo se uno dei due è morto NB ricordarsi di risettare ad empty gli oprional delle azioni -> a fine turno refreshare anche la view
 
     public void interpretUserInput(KeyCode buttonPressed){
-        //TODO:controlli input
         // Ottieni la scelta del giocatore reale (da console o GUI)
-        // Questo potrebbe essere un input dall'utente
-        
-        
-        // Restituisci la mossa corrispondente
-        // player 1 [q: attack, w: defend, e: recharge]
-        // player 2 [i: attack, o: defend, p: recharge]
-
         // ho già i risultati non posso più premere input
         if (!this.actionPlayer1.isPresent() || !this.actionPlayer2.isPresent()) {
             
@@ -247,57 +239,6 @@ public class FightController {
             this.matchController.fightEnded(this.fight.getPlayer2());
         }
     }
-
-    // // metodo per lo svolgimento della battaglia, va avanti finchè uno esaurisce hp
-    // public void resolveFight(boolean  isPlayer1CPU, boolean isPlayer2CPU){
-    //     //stampe con informazioni per il combattimento
-    //     System.out.println("Associazione tasti per combattimento");
-    //     System.out.println("player 1 [q: attacco, w: difesa, e: ricarica]");
-    //     System.out.println("player 2 [i: attacco, o: difesa, p: ricarica]");
-    //     while (!isPlayerOut(this.fight.getPlayer1()) && !isPlayerOut(this.fight.getPlayer2())) {
-    //         //stato dei due giocatori prima di ogni turno
-    //         view.displayCombatStatus(fight.getCombatStatus(this.fight.getPlayer1(), this.fight.getPlayer2()));
-    //         // Turno del giocatore 1
-    //         actionPlayer1 = getAction(isPlayer1CPU, this.fight.getPlayer1());
-    //         fight.resolveRound(actionPlayer1, actionPlayer2);
-
-    //         //se uno dei due muore fare break; (non mi garba perchè il 2 potrebbe difendersi dopo il break)
-
-    //         // Turno del giocatore 2
-    //         actionPlayer2 = getAction(isPlayer2CPU, this.fight.getPlayer2());
-    //         fight.resolveRound(actionPlayer2, actionPlayer1);
-    //     }//fine ciclo
-
-    //     //TODO: può finire in pareggio quindi riguardare queste condizioni
-    //     // Verifica se il giocatore 1 è stato eliminato
-    //     if (isPlayerOut(this.fight.getPlayer1()) && isPlayerOut(this.fight.getPlayer2())) {
-    //         System.out.println("PAREGGIO: i giocatori si sono sconfitti a vicenda");
-    //     }
-    //     else if (isPlayerOut(this.fight.getPlayer1())) {
-    //         System.out.println(this.fight.getPlayer2().getName() + " ha VINTO lo scontro!");
-    //     }
-    //     // Verifica se il giocatore 2 è stato eliminato
-    //     else if (isPlayerOut(this.fight.getPlayer2())) {
-    //         System.out.println(this.fight.getPlayer1().getName() + " ha VINTO lo scontro!");
-    //     }
-    //     // Resetto le statistiche dei giocatori che hanno partecipato allo scontro
-    //     this.fight.getPlayer1().resetCurrentToMaxStats();
-    //     this.fight.getPlayer2().resetCurrentToMaxStats();
-    // }
-
-    // // Restituisce la mossa a seconda che il giocatore sia reale o CPU
-    // private FightActions getAction(boolean isCpu, Player player) {
-    //     if (isCpu) {
-    //         return cpuDecision(player); // Logica CPU
-    //     } else {
-    //         try {
-    //             return view.interpretUserInput(); // Logica giocatore reale
-    //         } catch (Exception e) {
-    //             // TODO: handle exception
-    //             return null;
-    //         }
-    //     }
-    // }
 
     // Metodo per determinare la scelta della CPU
     public FightActions cpuDecision(Player player){

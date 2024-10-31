@@ -13,7 +13,7 @@ public class Match {
     // per una CORRETTA IMPLEMENTAZIONE MVC -> creare qui dentro tutti i Model
     //                                      -> tenere qui dentro solo MatchController a cui passiamo i Model
     //                                      -> MatchController crea i vari Controller specifici
-    //                                      -> Controller specifici creano le proprie View                                                 
+    //                                      -> Controller specifici creano le proprie View
 
     //DICHIARAZIONE VARIABILI
     // Players
