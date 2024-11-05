@@ -515,7 +515,7 @@ public class MatchController {
     }
 
     public void fightEnded(Player player) {
-        System.out.println(player.toString()+" ha perso il Fight! Arretra di 5 caselle.");
+        System.out.println(player.toString()+" ha perso il Fight! Arretra di 2 caselle.");
         this.playerController.movePlayer(player, -MatchController.MALUS_FIGHT, this.boardController.getNumberOfTiles());
         this.matchView.movePlayerToTile(player);
         if (this.nextOpponents != null && !this.nextOpponents.isEmpty()) {

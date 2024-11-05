@@ -45,13 +45,6 @@ public class Shop {
         return this.contents;
     }
 
-    // attivato dal bottone della view
-    public Equipment buyItem() {
-        // scala i soldi
-        // ritorna l'oggetto comprato
-        return null;
-    }
-
     public List<Equipment> getShopContents() {
         return this.contents;
     }

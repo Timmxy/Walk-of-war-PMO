@@ -46,7 +46,7 @@ public class GameLauncher extends Application {
         //MatchController prende info dalla gamemode scelta (click) -> crea Match
         //Match crea tutto il necessario 
         
-        System.out.println("Hello world!!");
+        System.out.println("Launching...");
         // Con JavaFX !!!
         Application.launch(args);
     }

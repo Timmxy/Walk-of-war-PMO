@@ -9,6 +9,13 @@
             "name": "GameLauncher",
             "request": "launch",
             "mainClass": "View.GameLauncher",
+            "projectName": "Walk-of-war-PMO"
+        },
+        {
+            "type": "java",
+            "name": "GameLauncher",
+            "request": "launch",
+            "mainClass": "View.GameLauncher",
             "projectName": "my-project"
         },
         {

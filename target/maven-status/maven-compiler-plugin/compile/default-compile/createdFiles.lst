@@ -33,7 +33,6 @@ View\MatchView.class
 Equipment\Shield.class
 MatchInfo\GameMode.class
 Player\Inventory.class
-View\IOException.class
 Model\Match$1.class
 Test\RealPlayerTest.class
 Controller\BoardController.class
