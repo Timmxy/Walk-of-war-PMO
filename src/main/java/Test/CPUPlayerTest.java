@@ -2,11 +2,11 @@ package Test;
 
 import Model.CPUPlayer;
 import Equipment.Equipment;
-import org.junit.jupiter.api.BeforeEach;
 import org.junit.jupiter.api.Test;
-import org.mockito.Mockito;
 import java.util.List;
 import java.util.Optional;
+import java.util.Random;
+
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
 
@@ -14,13 +14,6 @@ class CPUPlayerTest {
 
     private CPUPlayer cpuPlayer;
     private Random mockRandom;
-    
-    @BeforeEach
-    void setUp() {
-        cpuPlayer = new CPUPlayer(2, "CPUPlayer");
-        mockRandom = Mockito.mock(Random.class);
-        cpuPlayer.setRandom(mockRandom); // Aggiungere un setter per Random nella classe CPUPlayer
-    }
 
     @Test
     void testWantsToVisitShopHighMoney() {

@@ -29,6 +29,7 @@ public class PlayerController implements TileEffectListener {
 
     // quando un Player compra (e quindi equipaggia) un Equipment
     public void equipmentBought(Player p, Equipment e) {
+        p.removeMoney(e.getCost());
         p.addItemToInventory(e);
     }
     

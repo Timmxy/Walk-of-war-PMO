@@ -23,7 +23,7 @@ import java.util.Random;
 
 
 public class MatchController {
-    private static final int MALUS_FIGHT = 2;
+    public static final int MALUS_FIGHT = 2;
 
     // COMPONENTI
     private Match match;

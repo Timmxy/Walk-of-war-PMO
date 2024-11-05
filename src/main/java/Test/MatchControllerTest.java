@@ -1,6 +1,11 @@
 package Test;
 
+import Controller.BoardController;
+import Controller.FightController;
 import Controller.MatchController;
+import Controller.PlayerController;
+import Controller.ShopController;
+import MatchInfo.GameMode;
 import Model.*;
 import View.MatchView;
 import javafx.stage.Stage;
@@ -12,8 +17,6 @@ import org.mockito.MockitoAnnotations;
 
 import java.util.ArrayList;
 import java.util.List;
-import java.util.Optional;
-import java.util.Random;
 
 import static org.junit.jupiter.api.Assertions.*;
 import static org.mockito.Mockito.*;
@@ -52,13 +55,13 @@ class MatchControllerTest {
         
         // Creazione di una lista di giocatori fittizi per i test
         players = new ArrayList<>();
-        players.add(new Player("Player1"));
-        players.add(new CPUPlayer("CPUPlayer1"));
+        players.add(new Player(0, "Player0"));
+        players.add(new CPUPlayer(1, "CPUPlayer1"));
         
-        match = new Match(players, stage);
+        match = new Match(GameMode.P1_C1, stage);
         
         // Inizializzazione del MatchController
-        matchController = new MatchController(match, players, new Board(10), new Shop(), new Fight(), stage);
+        matchController = new MatchController(match, players, new Board(), new Shop(), new Fight(), stage);
     }
     
     @Test
@@ -83,7 +86,7 @@ class MatchControllerTest {
     
     @Test
     void handleCPUTurnShouldCallExpectedMethods() {
-        Player cpuPlayer = new CPUPlayer("CPUPlayer1");
+        Player cpuPlayer = new CPUPlayer(1, "CPUPlayer1");
         when(match.getPlayers()).thenReturn(players);
         when(match.getCurrentPlayerIndex()).thenReturn(1); // CPU Player
 

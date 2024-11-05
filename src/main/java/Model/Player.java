@@ -71,11 +71,6 @@ public class Player {
         this.inventory.addEquipment(equipment);
     }
     
-    // potrebbe servire? // TODO
-    public void removeItemFromInventory(Equipment equipment){
-        
-    }
-    
     // da chiamare a fine scontro
     public void resetCurrentToMaxStats(){
         this.currentHp = this.maxHp;
